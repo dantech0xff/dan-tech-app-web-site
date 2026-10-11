@@ -3,7 +3,6 @@ import { Icon } from "@/components/icon";
 import { PageHero } from "@/components/page-hero";
 import { SiteLink } from "@/components/site-link";
 import ui from "@/components/ui.module.css";
-import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 import styles from "./about.module.css";
@@ -21,8 +20,8 @@ const STATEMENTS = [
     text: "Convenience is what the user feels on day one. Success is what they look back on after a year of use.",
   },
   {
-    title: "A Vietnamese indie studio whose apps feel inevitable — and a generation of developers who can build the same.",
-    text: "Small, honest, used every day. Then taught, so the next builder does not need ten years to get here.",
+    title: "A Vietnamese indie studio whose apps feel inevitable.",
+    text: "Small, honest, used every day.",
   },
 ];
 
@@ -64,7 +63,7 @@ export default function AboutPage() {
         narrowTitle
         wideLead
         title="One person, all the way through."
-        lead="Dan Tech Indiv. is an independent software studio from Vietnam. One founder designs, builds, ships and supports every product — and teaches others to do the same."
+        lead="Dan Tech Indiv. is an independent software studio from Vietnam. One founder designs, builds, ships and supports every product."
       />
 
       <section className={styles.statements}>
@@ -102,16 +101,13 @@ export default function AboutPage() {
       <section className={styles.cta}>
         <div className={`${styles.ctaCard} dt-reveal-60`}>
           <div className={styles.ctaCopy}>
-            <div className={styles.ctaTitle}>Want to build something together — or learn to build it yourself?</div>
-            <div className={styles.ctaText}>Partnerships, press, hiring and coaching all start with one email.</div>
+            <div className={styles.ctaTitle}>Want to build something together?</div>
+            <div className={styles.ctaText}>Partnerships, press and hiring all start with one email.</div>
           </div>
           <div className={ui.buttonRow}>
             <SiteLink href={routes.contact} className={ui.primaryButton}>
               Contact Dan <Icon name="arrow_forward" size={20} />
             </SiteLink>
-            <a href={site.academyUrl} target="_blank" rel="noopener" className={ui.secondaryButton}>
-              Visit the Academy
-            </a>
           </div>
         </div>
       </section>

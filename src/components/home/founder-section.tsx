@@ -32,12 +32,12 @@ export function FounderSection() {
         <p className={styles.founderText}>
           Danh Tran wrote his first line of code in 2012 and turned professional in 2015. The decade in between and
           after ran through Zalo and ShopBack — code on 100 million devices, five billion messages a day — alongside a
-          string of indie games that paid their own way. In 2026 he went independent to build Dan Tech: products that
-          serve people&apos;s everyday lives, and a school that teaches others to do the same.
+          string of indie games that paid their own way. In 2026 he went independent to build Dan Tech: mobile apps
+          that serve people&apos;s everyday lives.
         </p>
         <blockquote className={styles.quote}>
           “I spent five years finding out how a mobile app earns its keep, and five more learning what is worth
-          building. You should not need ten.”
+          building.”
         </blockquote>
         <SiteLink href={routes.about} className={ui.arrowLink}>
           Read the full story <Icon name="arrow_forward" size={18} />

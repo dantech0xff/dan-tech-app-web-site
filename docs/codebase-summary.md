@@ -5,7 +5,7 @@
 | Route | File | Notes |
 | --- | --- | --- |
 | `/` | `page.tsx` | Composes the home sections from `src/components/home/` |
-| `/products/` | `products/page.tsx` | Hero chips + Duoly, Kim Tài, Academy, Earlier work sections (`src/components/products/`) |
+| `/products/` | `products/page.tsx` | Hero chips + Duoly, Kim Tài, Earlier work sections (`src/components/products/`) |
 | `/about/` | `about/page.tsx` | Statements, four rules, tool list, contact CTA |
 | `/contact/` | `contact/page.tsx` | `ContactForm` (mailto) + channels |
 | `/faq/` | `faq/page.tsx` | `FaqList` accordion fed by `src/content/faq.ts` |

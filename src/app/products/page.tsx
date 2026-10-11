@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/page-hero";
-import { AcademySection } from "@/components/products/academy-section";
 import { DuolySection } from "@/components/products/duoly-section";
 import { EarlierWorkSection } from "@/components/products/earlier-work-section";
 import { KimTaiSection } from "@/components/products/kim-tai-section";
@@ -11,15 +10,13 @@ import { productAnchors, routes } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   title: "Products",
-  description:
-    "Duoly in Love, Kim Tài · Tick Vàng Online and Dan Tech Academy — three products built end-to-end by one person.",
+  description: "Duoly in Love and Kim Tài · Tick Vàng Online — two mobile apps built end-to-end by one person.",
   path: routes.products,
 });
 
 const CHIPS = [
   { label: "Duoly in Love", anchor: productAnchors.duoly, icon: "/assets/duoly-icon.png", cover: false },
   { label: "Kim Tài", anchor: productAnchors.kimTai, icon: "/assets/kimtai-icon.png", cover: false },
-  { label: "Dan Tech Academy", anchor: productAnchors.academy, icon: "/assets/academy-logo.png", cover: true },
 ];
 
 export default function ProductsPage() {
@@ -28,8 +25,8 @@ export default function ProductsPage() {
       <PageHero
         compact
         narrowTitle
-        title="Three products, built end-to-end by one person."
-        lead="Two consumer apps on the stores and a school on the web. Each one earns its place by solving a single everyday problem well."
+        title="Two apps, built end-to-end by one person."
+        lead="Two consumer apps on Google Play and the App Store. Each one earns its place by solving a single everyday problem well."
       >
         <div className={styles.chips}>
           {CHIPS.map((chip) => (
@@ -55,7 +52,6 @@ export default function ProductsPage() {
       </PageHero>
       <DuolySection />
       <KimTaiSection />
-      <AcademySection />
       <EarlierWorkSection />
     </main>
   );

@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const PAGES = [
   { path: "/", title: /Apps make life more convenient/, heading: "Apps make life more convenient." },
-  { path: "/products/", title: /^Products · Dan Tech Indiv\.$/, heading: "Three products, built end-to-end by one person." },
+  { path: "/products/", title: /^Products · Dan Tech Indiv\.$/, heading: "Two apps, built end-to-end by one person." },
   { path: "/about/", title: /^About · Dan Tech Indiv\.$/, heading: "One person, all the way through." },
   { path: "/contact/", title: /^Contact · Dan Tech Indiv\.$/, heading: "Talk to Dan." },
   { path: "/faq/", title: /^FAQ · Dan Tech Indiv\.$/, heading: "Quick answers." },
@@ -56,6 +56,9 @@ for (const { path, title, heading } of PAGES) {
     await expect(page).toHaveTitle(title);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(heading);
     await expect(page.locator("footer")).toContainText("Made in Vietnam · one person, all the way through");
+    // The site presents the mobile apps only; the Academy is not part of it.
+    await expect(page.locator("body")).not.toContainText(/academy/i);
+    await expect(page.locator('meta[name="description"]')).not.toHaveAttribute("content", /academy/i);
     expect(errors).toEqual([]);
   });
 }
@@ -99,17 +102,17 @@ test("a link to the current page scrolls in place", async ({ page }) => {
 });
 
 test("opening a section URL directly clears the header", async ({ page }) => {
-  await page.goto("/products/#academy");
+  await page.goto("/products/#kim-tai");
   await scrollSettled(page);
-  await expectSectionBelowHeader(page, "academy");
+  await expectSectionBelowHeader(page, "kim-tai");
 });
 
 test("with reduced motion, in-page jumps happen without animation", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/products/");
-  await page.getByRole("link", { name: "Dan Tech Academy" }).first().click();
+  await page.getByRole("link", { name: "Kim Tài", exact: true }).click();
   await page.waitForTimeout(50);
-  await expectSectionBelowHeader(page, "academy");
+  await expectSectionBelowHeader(page, "kim-tai");
 });
 
 test("another page opens at the top", async ({ page }) => {

@@ -11,7 +11,6 @@ const TOPICS = [
   { value: "Press", label: "Press / media" },
   { value: "Support", label: "App support" },
   { value: "Hiring", label: "Hiring / freelance" },
-  { value: "Coaching", label: "Academy / coaching" },
   { value: "Other", label: "Something else" },
 ];
 

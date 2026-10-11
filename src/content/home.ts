@@ -1,12 +1,9 @@
 export const marqueeItems = [
   { label: "DUOLY IN LOVE", icon: "/assets/duoly-icon.png", cover: false },
   { label: "KIM TÀI", icon: "/assets/kimtai-icon.png", cover: false },
-  { label: "DAN TECH ACADEMY", icon: "/assets/academy-logo.png", cover: true },
-  { label: "MOBILE ACTION PRO", icon: "/assets/dantech-mark.png", cover: false },
   { label: "KBC QUIZ GAME", icon: "/assets/kbc.png", cover: true },
   { label: "WOODY HEXA PUZZLE", icon: "/assets/woody.png", cover: true },
   { label: "KATSU NINJA", icon: "/assets/katsu.png", cover: true },
-  { label: "KOTLIN ACCELERATOR", icon: "/assets/dantech-mark.png", cover: false },
 ];
 
 export const principles = [
@@ -21,10 +18,6 @@ export const principles = [
   {
     title: "Private by design",
     text: "Your gold book never leaves your phone. Your notes open only when you tap them. Widgets know whether you wrote today — never what you wrote.",
-  },
-  {
-    title: "Success, shared",
-    text: "Dan Tech Academy exists to bring mobile development to one million Vietnamese — not theory, but shipping a real product and earning from it.",
   },
 ];
 
@@ -42,12 +35,5 @@ export const reviews = [
     reviewer: "Long Tr. · Kim Tài",
     icon: "/assets/kimtai-icon.png",
     cover: false,
-  },
-  {
-    quote:
-      "“After finishing here I walked into interviews with confidence — and I now build and ship my own mobile apps on the side.”",
-    reviewer: "Linh V.T · Dan Tech Academy",
-    icon: "/assets/academy-logo.png",
-    cover: true,
   },
 ];

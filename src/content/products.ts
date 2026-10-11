@@ -21,13 +21,6 @@ export const kimTaiFeatures: Feature[] = [
   { icon: "palette", title: "Five Elements · Premium", text: "Kim, Mộc, Thuỷ, Hoả, Thổ skins — and no ads." },
 ];
 
-export const academyFeatures: Feature[] = [
-  { icon: "article", title: "81 bilingual articles", text: "Android, Kotlin, Compose, design patterns, AI-assisted workflows — in VI and EN." },
-  { icon: "school", title: "Mobile Action Pro", text: "10 modules, 119+ lessons: from idea to a published app." },
-  { icon: "code", title: "Kotlin Accelerator", text: "120 lessons · 9 modules · 3 real projects." },
-  { icon: "groups", title: "Coaching 1-1", text: "Code review, career and product decisions with Dan directly." },
-];
-
 export const earlierGames = [
   {
     name: "KBC Quiz Game",

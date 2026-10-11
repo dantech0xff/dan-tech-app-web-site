@@ -1,6 +1,6 @@
 # dantech.app
 
-Website of **Dan Tech Indiv.** — a one-person studio from Vietnam (Duoly in Love, Kim Tài · Tick Vàng Online, Dan Tech Academy).
+Website of **Dan Tech Indiv.** — a one-person mobile app studio from Vietnam (Duoly in Love, Kim Tài · Tick Vàng Online).
 It is a pixel-faithful build of the Claude Design project "Dan Tech Landing Page Design" (`dantech.app.dc.html`).
 
 ## Stack
@@ -40,7 +40,7 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 ## Pages
 
-`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#academy`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/`, plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
+`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/`, plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
 
 The contact form has no backend: it opens the visitor's mail app with the subject and body prefilled, exactly as the design specifies.
 

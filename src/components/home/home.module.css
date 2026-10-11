@@ -241,7 +241,6 @@
 }
 .shadowDuoly { box-shadow: 0 10px 30px rgba(255,77,121,0.35); }
 .shadowKimTai { box-shadow: 0 10px 30px rgba(224,179,58,0.3); }
-.shadowAcademy { object-fit: cover; box-shadow: 0 10px 30px rgba(61,220,132,0.25); }
 
 .cardEyebrow {
   font: 500 11px/1 var(--font-mono);
@@ -278,63 +277,6 @@
   color: var(--accent);
 }
 .appCard .learnMore { margin-top: auto; }
-
-.academyCard {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 28px 48px;
-  align-items: center;
-}
-
-.academyGlow {
-  position: absolute;
-  left: 40%;
-  top: -40%;
-  width: 50%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(61,220,132,0.14), transparent 65%);
-  pointer-events: none;
-}
-
-.academyCopy {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.academyCopy .cardText { max-width: 460px; }
-.academyCopy .learnMore { margin-top: 8px; }
-
-.academyStats {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.academyStat {
-  padding: 20px 18px;
-  border-radius: 8px;
-  background: var(--tile);
-  box-shadow: var(--tile-shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.academyStatValue {
-  font: 500 34px/1 var(--font-sans);
-  letter-spacing: -0.04em;
-}
-.academyStatValue.green { color: var(--academy); }
-
-.academyStatLabel {
-  font: 400 11px/1.5 var(--font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(250,250,252,0.6);
-}
 
 /* ---------- Mission & principles ---------- */
 

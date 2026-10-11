@@ -15,7 +15,6 @@ export type SitePath = (typeof routes)[keyof typeof routes];
 export const productAnchors = {
   duoly: "duoly",
   kimTai: "kim-tai",
-  academy: "academy",
   earlier: "earlier",
 } as const;
 

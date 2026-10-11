@@ -4,7 +4,6 @@ export const site = {
   email: "admin@dantech.app",
   description:
     "A one-person studio from Vietnam. Every app designed, coded and shipped by the same pair of hands.",
-  academyUrl: "https://dantech.academy",
 } as const;
 
 export const storeLinks = {

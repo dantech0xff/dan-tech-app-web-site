@@ -17,8 +17,8 @@ const CLAUSES: LegalClause[] = [
     body: (
       <>
         Dan Tech Indiv. (“Dan Tech”, “we”) is an independent software studio operated by Danh Tran in Vietnam. We
-        publish Duoly in Love, Kim Tài · Tick Vàng Online and run Dan Tech Academy. For anything in this policy, write
-        to <a href={`mailto:${site.email}`}>{site.email}</a>.
+        publish Duoly in Love and Kim Tài · Tick Vàng Online. For anything in this policy, write to{" "}
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
       </>
     ),
   },

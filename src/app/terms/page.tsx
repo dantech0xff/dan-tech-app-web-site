@@ -34,7 +34,7 @@ const CLAUSES: LegalClause[] = [
   },
   {
     title: "Intellectual property",
-    body: "Dan Tech, Duoly in Love, Kim Tài, Dan Tech Academy and their logos, designs and code belong to Dan Tech Indiv. Third-party names are the property of their owners.",
+    body: "Dan Tech, Duoly in Love, Kim Tài and their logos, designs and code belong to Dan Tech Indiv. Third-party names are the property of their owners.",
   },
   {
     title: "Warranty and liability",

@@ -2,18 +2,16 @@ import { Icon } from "@/components/icon";
 import type { Feature } from "@/content/products";
 import styles from "./products.module.css";
 
-export type ProductAccent = "duoly" | "kimTai" | "academy";
+export type ProductAccent = "duoly" | "kimTai";
 
 const ICON_SHADOW: Record<ProductAccent, string> = {
   duoly: styles.shadowDuoly,
   kimTai: styles.shadowKimTai,
-  academy: styles.shadowAcademy,
 };
 
 const FEATURE_ICON: Record<ProductAccent, string> = {
   duoly: styles.iconDuoly,
   kimTai: styles.iconKimTai,
-  academy: styles.iconAcademy,
 };
 
 type ProductIntroProps = {

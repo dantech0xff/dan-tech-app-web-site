@@ -4,7 +4,7 @@ import styles from "./products.module.css";
 
 export function EarlierWorkSection() {
   return (
-    <section id={productAnchors.earlier} className={`${styles.section} ${styles.alt}`}>
+    <section id={productAnchors.earlier} className={styles.section}>
       <div className={styles.earlierInner}>
         <div className={styles.earlierHeading}>
           <h2 className={styles.earlierTitle}>

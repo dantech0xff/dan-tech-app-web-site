@@ -10,7 +10,7 @@ import styles from "./contact.module.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: "Partnerships, press, support, hiring or coaching. One inbox, read by the person who built the apps.",
+  description: "Partnerships, press, support or hiring. One inbox, read by the person who built the apps.",
   path: routes.contact,
 });
 
@@ -21,7 +21,7 @@ export default function ContactPage() {
     <main>
       <PageHero
         title="Talk to Dan."
-        lead="Partnerships, press, support, hiring or coaching. One inbox, read by the person who built the apps. Replies within 2–3 working days."
+        lead="Partnerships, press, support or hiring. One inbox, read by the person who built the apps. Replies within 2–3 working days."
       >
         <a href={`mailto:${site.email}`} className={styles.emailLink}>
           {site.email} <Icon name="arrow_outward" size={28} />

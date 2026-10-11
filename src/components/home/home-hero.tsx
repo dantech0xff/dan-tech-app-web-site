@@ -27,7 +27,7 @@ export function HomeHero() {
               Our story
             </SiteLink>
           </div>
-          <div className={styles.heroProof}>10M+ downloads · 10+ products shipped · Android, iOS &amp; web</div>
+          <div className={styles.heroProof}>10M+ downloads · 10+ products shipped · Android &amp; iOS</div>
         </div>
 
         <div className={styles.heroVisual}>

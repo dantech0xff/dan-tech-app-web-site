@@ -60,63 +60,12 @@ function AppCard({ anchor, icon, accent, eyebrow, title, description, tags, scre
   );
 }
 
-const ACADEMY_STATS = [
-  { value: "81", label: "Bilingual posts", green: false },
-  { value: "119+", label: "Course lessons", green: false },
-  { value: "1M", label: "Devs — the goal", green: true },
-];
-
-function AcademyCard() {
-  return (
-    <SiteLink
-      href={routes.products}
-      anchor={productAnchors.academy}
-      className={`${styles.card} ${styles.academyCard} dt-reveal-50`}
-    >
-      <div className={styles.academyGlow} />
-      <div className={styles.academyCopy}>
-        <div className={styles.cardTop}>
-          <img
-            src="/assets/academy-logo.png"
-            alt=""
-            width={56}
-            height={56}
-            className={`${styles.cardIcon} ${styles.shadowAcademy}`}
-          />
-          <div className={styles.cardEyebrow}>03 · Learning</div>
-        </div>
-        <h3 className={styles.cardTitle}>Dan Tech Academy</h3>
-        <p className={styles.cardText}>
-          Where Vietnamese developers learn to ship a real mobile app with AI — bilingual articles, the Mobile Action
-          Pro and Kotlin Accelerator courses, taught by someone who ships.
-        </p>
-        <div className={ui.tagRow}>
-          <span className={ui.tag}>WEB</span>
-          <span className={ui.tag}>VI · EN</span>
-          <span className={ui.tag}>DANTECH.ACADEMY</span>
-        </div>
-        <LearnMore />
-      </div>
-      <div className={styles.academyStats}>
-        {ACADEMY_STATS.map((stat) => (
-          <div key={stat.label} className={styles.academyStat}>
-            <div className={stat.green ? `${styles.academyStatValue} ${styles.green}` : styles.academyStatValue}>
-              {stat.value}
-            </div>
-            <div className={styles.academyStatLabel}>{stat.label}</div>
-          </div>
-        ))}
-      </div>
-    </SiteLink>
-  );
-}
-
 export function ProductsTeaser() {
   return (
     <section className={styles.teaser}>
       <div className={`${styles.teaserHeader} dt-reveal-70`}>
         <div className={styles.teaserHeading}>
-          <h2 className={styles.titleXl}>Three products, one standard.</h2>
+          <h2 className={styles.titleXl}>Two apps, one standard.</h2>
         </div>
         <SiteLink href={routes.products} className={`${ui.arrowLink} ${styles.nowrap}`}>
           All products &amp; stores <Icon name="arrow_forward" size={18} />
@@ -148,7 +97,6 @@ export function ProductsTeaser() {
           screenAlt="Kim Tài — gold ledger"
           statusInk="light"
         />
-        <AcademyCard />
       </div>
     </section>
   );

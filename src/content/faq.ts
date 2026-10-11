@@ -12,7 +12,7 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "What is Dan Tech Indiv.?",
-        a: "An independent, one-person software studio from Vietnam founded by Danh Tran. It builds and publishes consumer apps — Duoly in Love and Kim Tài — and runs Dan Tech Academy, where developers learn to ship mobile apps with AI.",
+        a: "An independent, one-person software studio from Vietnam founded by Danh Tran. It builds and publishes consumer mobile apps: Duoly in Love and Kim Tài.",
       },
       {
         q: "Are the apps free?",
@@ -20,15 +20,11 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Which platforms do you support?",
-        a: "Duoly in Love and Kim Tài are on both Android (Google Play) and iOS (App Store). Dan Tech Academy is on the web at dantech.academy, in Vietnamese and English.",
+        a: "Duoly in Love and Kim Tài are on both Android (Google Play) and iOS (App Store).",
       },
       {
         q: "Do you build apps for clients?",
         a: "Occasionally — partnerships, consulting and select freelance work. Write to admin@dantech.app with what you have in mind and where you are in the process.",
-      },
-      {
-        q: "How can I learn to build apps like these?",
-        a: "Dan Tech Academy teaches exactly that: free bilingual articles, the Mobile Action Pro course (10 modules, 119+ lessons), Kotlin Accelerator (120 lessons, 9 modules, 3 real projects) and 1-1 coaching with Dan.",
       },
     ],
   },

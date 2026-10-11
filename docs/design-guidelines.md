@@ -7,8 +7,9 @@ Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dan
 
 | Since | Change | Reason |
 | --- | --- | --- |
-| 2026-10-11 | Home: the numbers band under the product marquee (10M+ downloads, 10+ products, 14 years, 01 person) is removed. The marquee is followed directly by "Three products, one standard." | Owner's request |
+| 2026-10-11 | Home: the numbers band under the product marquee (10M+ downloads, 10+ products, 14 years, 01 person) is removed. The marquee is followed directly by the products teaser. | Owner's request |
 | 2026-10-11 | Space above every hero (home, inner pages, legal pages) is `--hero-pad-top: clamp(32px, 4vw, 56px)` instead of the design's `clamp(56px, 8vw, 104px)` (home: 112px). | Owner's request: heroes started too far below the header |
+| 2026-10-11 | Dan Tech Academy is gone from the site, which now presents the mobile apps only. Removed: the home Academy card, the Academy marquee items (Dan Tech Academy, Mobile Action Pro, Kotlin Accelerator), the "Success, shared" principle, the Academy review, the `/products/#academy` section and chip, the footer links, the FAQ answers about learning, the contact topic "Academy / coaching", the About "Visit the Academy" button and the `--academy` token. Copy that described a school or teaching now speaks of the apps ("Two apps, one standard.", "Two apps, built end-to-end by one person.", hero platforms "Android & iOS"). Earlier work uses the plain background so the products page still alternates. The marquee repeats its five items three times per group and runs 70 s, which keeps the design's speed (about 44 px/s) without a gap on screens up to about 3,000 px wide. | Owner's request: focus on the mobile apps |
 
 ## Tokens (`src/app/globals.css`)
 
@@ -21,7 +22,7 @@ Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dan
 | `--bg-phone` | `#0B0B0E` | Phone mockup frame |
 | `--fg` | `#FAFAFC` | Text; secondary text uses `rgba(250,250,252,α)` |
 | `--accent` / `--accent-hover` | `#0A84FF` / `#3B9DFF` | Links, primary buttons, markers |
-| `--duoly` / `--gold` / `--academy` / `--star` | `#FF4D79` / `#E0B33A` / `#3DDC84` / `#FFC94A` | Product accents, review stars |
+| `--duoly` / `--gold` / `--star` | `#FF4D79` / `#E0B33A` / `#FFC94A` | Product accents, review stars |
 | `--surface` + `--surface-shadow` | `#212129 → #1B1B1F` gradient + inset/drop shadow | Cards |
 | `--tile` + `--tile-shadow` | `rgba(250,250,252,0.045)` + inset line | Small stat tiles, game cards |
 | `--page-max` / `--gutter` | `1240px` / `clamp(20px, 5vw, 64px)` | Content width and side padding |
@@ -40,7 +41,8 @@ Global utility classes, all disabled under `prefers-reduced-motion: reduce`:
 
 - `dt-reveal-50|60|70` — scroll-driven fade-up (`animation-timeline: view()`); the number is where in the
   entry range it completes. Browsers without scroll timelines show the final state.
-- `dt-pulse` (live dots), `dt-float` (hero app icon), `dt-marquee` (product strip, 40 s loop).
+- `dt-pulse` (live dots), `dt-float` (hero app icon), `dt-marquee` (product strip; 40 s per loop, which
+  `ProductMarquee` sets to 70 s for its longer groups).
 
 ## Building blocks
 
@@ -73,7 +75,7 @@ Global utility classes, all disabled under `prefers-reduced-motion: reduce`:
 
 | File | Source |
 | --- | --- |
-| `dantech-mark.png`, `academy-logo.png`, `duoly-icon.png`, `kbc.png`, `woody.png`, `katsu.png` | Design project (exact files) |
+| `dantech-mark.png`, `duoly-icon.png`, `kbc.png`, `woody.png`, `katsu.png` | Design project (exact files) |
 | `kimtai-icon.png` | Pixel-identical original from `kim-tai-landing-page/public/icons/kim-tai-pwa-512.png` (the design copy exceeded the 256 KiB DesignSync download cap) |
 | `kimtai-screen-ledger.png`, `duoly-screen-today.png`, `duoly-screen-duo.png` | Rebuilt: the design copies were truncated by the download cap. The top 34–79% of each is the design's exact pixels; the rest is the same screen from the ASO exports (Kim Tài `public/iphone-1284x2778/02-so-vang.png` on GitHub; Duoly `export/appstore/iphone-en/01-today.png` and `11-duo.png`), straightened and scaled to the crop. Swap in the design project's files whenever they can be downloaded whole. |
 

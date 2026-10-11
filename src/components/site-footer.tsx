@@ -29,9 +29,6 @@ export function SiteFooter() {
           <SiteLink href={routes.products} anchor={productAnchors.kimTai} className={styles.link}>
             Kim Tài · Tick Vàng Online
           </SiteLink>
-          <SiteLink href={routes.products} anchor={productAnchors.academy} className={styles.link}>
-            Dan Tech Academy
-          </SiteLink>
           <SiteLink href={routes.products} anchor={productAnchors.earlier} className={styles.link}>
             Earlier work
           </SiteLink>
@@ -48,9 +45,6 @@ export function SiteFooter() {
           <SiteLink href={routes.contact} className={styles.link}>
             Contact
           </SiteLink>
-          <a href={site.academyUrl} target="_blank" rel="noopener" className={styles.link}>
-            dantech.academy ↗
-          </a>
         </div>
 
         <div className={styles.column}>

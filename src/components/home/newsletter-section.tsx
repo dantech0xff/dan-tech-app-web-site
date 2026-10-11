@@ -9,7 +9,7 @@ export function NewsletterSection() {
         <div className={styles.newsletterCopy}>
           <h2 className={styles.newsletterTitle}>One email when something ships. No weekly filler.</h2>
           <p className={styles.newsletterText}>
-            New apps, major updates and the occasional course opening. Unsubscribe in one tap.
+            New apps and major updates. Unsubscribe in one tap.
           </p>
         </div>
         <NewsletterForm />

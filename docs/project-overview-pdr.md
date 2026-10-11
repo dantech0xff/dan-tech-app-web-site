@@ -3,7 +3,7 @@
 ## Purpose
 
 dantech.app is the studio site of Dan Tech Indiv., Danh Tran's one-person software studio in Vietnam. It
-presents the products (Duoly in Love, Kim Tài · Tick Vàng Online, Dan Tech Academy, earlier indie games),
+presents the mobile apps (Duoly in Love, Kim Tài · Tick Vàng Online, earlier indie games),
 the founder story and principles, support answers, legal pages, and two contact paths.
 
 ## Requirements

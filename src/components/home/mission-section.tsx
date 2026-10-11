@@ -10,14 +10,13 @@ export function MissionSection() {
             Build apps that make people&apos;s lives more convenient — and more successful.
           </h2>
           <p className={styles.missionText}>
-            Convenience is the product. Success is the outcome. Every app removes one everyday friction; the Academy
-            hands the skill itself to the next builder.
+            Convenience is the product. Success is the outcome. Every app removes one everyday friction, and does
+            that one job well.
           </p>
           <div className={styles.vision}>
             <div className={styles.visionLabel}>Vision</div>
             <div className={styles.visionText}>
-              A Vietnamese indie studio whose apps feel inevitable — small, honest and used every day — and a
-              generation of mobile developers who can build the same.
+              A Vietnamese indie studio whose apps feel inevitable — small, honest and used every day.
             </div>
           </div>
         </div>
