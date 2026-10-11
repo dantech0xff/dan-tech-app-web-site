@@ -33,6 +33,8 @@
 
   --page-max: 1240px;
   --gutter: clamp(20px, 5vw, 64px);
+  /* Space above every page hero; tighter than the design's clamp(56px, 8vw, 104–112px) at the owner's request. */
+  --hero-pad-top: clamp(32px, 4vw, 56px);
   /* Sticky header clearance for anchors and focus; ScrollOnNavigate raises it
      when the header wraps onto more rows on phones. */
   --anchor-offset: 72px;

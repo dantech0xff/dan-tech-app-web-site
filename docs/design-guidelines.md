@@ -8,6 +8,7 @@ Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dan
 | Since | Change | Reason |
 | --- | --- | --- |
 | 2026-10-11 | Home: the numbers band under the product marquee (10M+ downloads, 10+ products, 14 years, 01 person) is removed. The marquee is followed directly by "Three products, one standard." | Owner's request |
+| 2026-10-11 | Space above every hero (home, inner pages, legal pages) is `--hero-pad-top: clamp(32px, 4vw, 56px)` instead of the design's `clamp(56px, 8vw, 104px)` (home: 112px). | Owner's request: heroes started too far below the header |
 
 ## Tokens (`src/app/globals.css`)
 
@@ -24,6 +25,7 @@ Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dan
 | `--surface` + `--surface-shadow` | `#212129 → #1B1B1F` gradient + inset/drop shadow | Cards |
 | `--tile` + `--tile-shadow` | `rgba(250,250,252,0.045)` + inset line | Small stat tiles, game cards |
 | `--page-max` / `--gutter` | `1240px` / `clamp(20px, 5vw, 64px)` | Content width and side padding |
+| `--hero-pad-top` | `clamp(32px, 4vw, 56px)` | Space between the header and every page hero |
 | `--anchor-offset` | `72px` on desktop; header height + 3px when the header wraps | Sticky header clearance (`scroll-padding-top`) for anchors and focus |
 
 Type: Be Vietnam Pro (400–700) for text, IBM Plex Mono (400–500) for labels and meta, Material Symbols
