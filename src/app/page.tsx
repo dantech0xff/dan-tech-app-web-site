@@ -6,7 +6,6 @@ import { NewsletterSection } from "@/components/home/newsletter-section";
 import { ProductMarquee } from "@/components/home/product-marquee";
 import { ProductsTeaser } from "@/components/home/products-teaser";
 import { ReviewsSection } from "@/components/home/reviews-section";
-import { StudioStats } from "@/components/home/studio-stats";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
@@ -18,7 +17,6 @@ export default function HomePage() {
     <main>
       <HomeHero />
       <ProductMarquee />
-      <StudioStats />
       <ProductsTeaser />
       <MissionSection />
       <FounderSection />

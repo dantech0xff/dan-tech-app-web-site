@@ -3,6 +3,12 @@
 Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dantech.app.dc.html`
 (project `434c0ddb-0b26-4d2f-847b-569ce1ad4099`). The site reproduces it 1:1; change the design there first.
 
+## Intentional differences from the design
+
+| Since | Change | Reason |
+| --- | --- | --- |
+| 2026-10-11 | Home: the numbers band under the product marquee (10M+ downloads, 10+ products, 14 years, 01 person) is removed. The marquee is followed directly by "Three products, one standard." | Owner's request |
+
 ## Tokens (`src/app/globals.css`)
 
 | Token | Value | Use |

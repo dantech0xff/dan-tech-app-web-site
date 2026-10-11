@@ -9,13 +9,6 @@ export const marqueeItems = [
   { label: "KOTLIN ACCELERATOR", icon: "/assets/dantech-mark.png", cover: false },
 ];
 
-export const studioStats = [
-  { value: "10M+", label: "Downloads across stores", accent: false },
-  { value: "10+", label: "Products shipped since 2014", accent: false },
-  { value: "14", label: "Years of code, 2012 → today", accent: false },
-  { value: "01", label: "Person, all the way through", accent: true },
-];
-
 export const principles = [
   {
     title: "Convenient by design",
