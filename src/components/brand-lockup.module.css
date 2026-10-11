@@ -1,0 +1,35 @@
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--fg);
+}
+.lockup:hover { color: var(--fg); }
+
+.header { padding: 14px 0; }
+.footer { padding: 0; }
+
+.mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: block;
+}
+
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.name {
+  font: 500 20px/1 var(--font-sans);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.suffix {
+  font: 400 11px/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}

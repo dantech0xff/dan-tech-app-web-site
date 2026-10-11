@@ -1,0 +1,61 @@
+.form {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.input {
+  flex: 1 1 220px;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: 6px;
+  background: var(--bg-field);
+  border: 1px solid transparent;
+  color: var(--fg);
+  outline: none;
+}
+.input:focus { border-color: var(--accent); }
+
+.submit {
+  height: 52px;
+  padding: 0 22px;
+  border-radius: 6px;
+  border: none;
+  white-space: nowrap;
+  background: var(--accent);
+  color: #FFFFFF;
+  font: 500 15px/1 var(--font-sans);
+  cursor: pointer;
+}
+.submit:hover { background: var(--accent-hover); }
+.submit:disabled { cursor: progress; }
+
+.error {
+  flex-basis: 100%;
+  font: 400 14px/1.5 var(--font-sans);
+  color: var(--duoly);
+}
+
+.note {
+  flex-basis: 100%;
+  font: 400 11px/1.6 var(--font-mono);
+  color: rgba(250,250,252,0.45);
+}
+
+.confirmation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 8px;
+  background: rgba(10,132,255,0.1);
+  border: 1px solid rgba(10,132,255,0.35);
+  font: 500 15px/1.4 var(--font-sans);
+  color: var(--fg);
+}
+/* Receives focus programmatically only; it is not a control. */
+.confirmation:focus { outline: none; }
+
+.confirmationIcon { color: var(--accent); }

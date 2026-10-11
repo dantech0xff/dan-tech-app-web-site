@@ -1,0 +1,74 @@
+/*
+ * Global foundation for dantech.app. Values mirror the Claude Design source
+ * (dantech.app.dc.html) one-to-one; component styles live in CSS Modules.
+ */
+
+:root {
+  --bg: #16161A;
+  --bg-alt: #1B1B1F;
+  --bg-footer: #121215;
+  --bg-field: #111114;
+  --bg-phone: #0B0B0E;
+  --fg: #FAFAFC;
+  --accent: #0A84FF;
+  --accent-hover: #3B9DFF;
+  --duoly: #FF4D79;
+  --gold: #E0B33A;
+  --academy: #3DDC84;
+  --star: #FFC94A;
+
+  --surface: linear-gradient(180deg, #212129 0%, #1B1B1F 100%);
+  --surface-hover: #24242C;
+  --surface-shadow: inset 0 1px 0 rgba(250,250,252,0.07), 0 24px 60px rgba(0,0,0,0.38);
+  --tile: rgba(250,250,252,0.045);
+  --tile-shadow: inset 0 1px 0 rgba(250,250,252,0.06);
+
+  /* Families are declared by next/font in layout.tsx. Fallbacks matter for
+     glyphs the web fonts lack: body text falls back to system-ui, element-level
+     `font` declarations to sans-serif/monospace, as in the design. */
+  --font-body: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-sans: "Be Vietnam Pro", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --font-icon: 'Material Symbols Outlined';
+
+  --page-max: 1240px;
+  --gutter: clamp(20px, 5vw, 64px);
+  /* Sticky header clearance for anchors and focus; ScrollOnNavigate raises it
+     when the header wraps onto more rows on phones. */
+  --anchor-offset: 72px;
+}
+
+html { scroll-padding-top: var(--anchor-offset); }
+
+/* Material Symbols subset (same axes as the design); refresh with `npm run icons:update`. */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: block;
+  src: url('/fonts/material-symbols-outlined.woff2') format('woff2');
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); }
+body { color: var(--fg); font-family: var(--font-body); -webkit-font-smoothing: antialiased; text-wrap: pretty; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+input, textarea, button, select { font: inherit; color: inherit; }
+::placeholder { color: rgba(250,250,252,0.4); }
+h1, h2, h3 { text-wrap: balance; }
+
+@keyframes dtReveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes dtPulse { 0%, 100% { box-shadow: 0 0 0 6px rgba(10,132,255,0.18), 0 0 28px 6px rgba(10,132,255,0.35); } 50% { box-shadow: 0 0 0 12px rgba(10,132,255,0.08), 0 0 48px 14px rgba(10,132,255,0.55); } }
+@keyframes dtMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes dtFloat { 0%, 100% { transform: translateY(0) rotate(-10deg); } 50% { transform: translateY(-16px) rotate(-6deg); } }
+
+/* Scroll-driven reveal; the number is where in the entry range it completes. */
+.dt-reveal-50 { animation: dtReveal linear both; animation-timeline: view(); animation-range: entry 0% entry 50%; }
+.dt-reveal-60 { animation: dtReveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+.dt-reveal-70 { animation: dtReveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+.dt-pulse { animation: dtPulse 2.6s ease-in-out infinite; }
+.dt-float { animation: dtFloat 6s ease-in-out infinite; }
+.dt-marquee { animation: dtMarquee 40s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }

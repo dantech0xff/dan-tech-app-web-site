@@ -1,0 +1,61 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /* Unprefixed only: the CSS compiler adds -webkit- for Safari. Declaring the
+     prefixed form after it made the compiler drop the standard property. */
+  backdrop-filter: blur(16px);
+  background: rgba(22,22,26,0.8);
+  border-bottom: 1px solid rgba(250,250,252,0.08);
+}
+
+.nav {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  min-height: 68px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 32px);
+  font: 500 14px/1 var(--font-sans);
+  padding: 8px 0;
+}
+
+.link {
+  color: rgba(250,250,252,0.78);
+  position: relative;
+  padding: 8px 0;
+}
+.link:hover { color: var(--fg); }
+
+.activeDot {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+  white-space: nowrap;
+}
+.cta:hover { background: #FFFFFF; color: var(--bg); }
