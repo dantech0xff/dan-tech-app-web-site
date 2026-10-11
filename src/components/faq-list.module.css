@@ -7,9 +7,11 @@
   gap: 40px;
 }
 
+/* The answer list spans two tracks, so a one-column grid adds an empty track after the 48px gap.
+   Leaving room for that gap keeps the list on screen below 348px. */
 .group {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100% - 48px, 260px), 1fr));
   gap: 24px 48px;
   align-items: start;
 }

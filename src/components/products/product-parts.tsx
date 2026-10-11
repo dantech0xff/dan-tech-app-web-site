@@ -21,13 +21,21 @@ type ProductIntroProps = {
   title: string;
 };
 
+/** Binds each "·"-separated part with no-break spaces, so a narrow screen wraps the eyebrow only after a "·". */
+function eyebrowText(eyebrow: string) {
+  return eyebrow
+    .split(" · ")
+    .map((part) => part.replaceAll(" ", "\u00A0"))
+    .join("\u00A0· ");
+}
+
 /** App icon beside the eyebrow and product name. */
 export function ProductIntro({ accent, icon, eyebrow, title }: ProductIntroProps) {
   return (
     <div className={styles.intro}>
       <img src={icon} alt="" width={64} height={64} loading="lazy" className={`${styles.introIcon} ${ICON_SHADOW[accent]}`} />
       <div className={styles.introText}>
-        <div className={styles.eyebrow}>{eyebrow}</div>
+        <div className={styles.eyebrow}>{eyebrowText(eyebrow)}</div>
         <h2 className={styles.title}>{title}</h2>
       </div>
     </div>

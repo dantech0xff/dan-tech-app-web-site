@@ -63,6 +63,22 @@ for (const { path, title, heading } of PAGES) {
   });
 }
 
+// Small Android phones, the most common Android width, iPhone SE/mini and iPhone 12–16.
+for (const width of [320, 360, 375, 390]) {
+  test(`no page scrolls sideways at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    for (const { path } of PAGES) {
+      await page.goto(path);
+      // Fallback fonts are wider (icons show their names), so measure only once the real ones are in.
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+      });
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect.soft(overflow, `${path} is ${overflow}px wider than the screen`).toBe(0);
+    }
+  });
+}
+
 test("pages hydrate cleanly after the build year has passed", async ({ page }) => {
   await page.clock.setFixedTime(new Date(new Date().getFullYear() + 1, 0, 2));
   const errors = collectErrors(page);

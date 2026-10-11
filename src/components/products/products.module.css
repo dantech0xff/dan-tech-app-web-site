@@ -32,7 +32,12 @@
 
 /* ---------- Product sections ---------- */
 
-.section { border-top: 1px solid rgba(250,250,252,0.08); }
+.section {
+  border-top: 1px solid rgba(250,250,252,0.08);
+  /* On narrow phones the tilted phone mockups reach past the screen edge; clip them there so the page
+     never scrolls sideways. */
+  overflow-x: clip;
+}
 .section.alt { background: var(--bg-alt); }
 
 .inner {
@@ -71,12 +76,14 @@
   gap: 6px;
 }
 
+/* Wraps on narrow phones instead of pushing the page wider. 17px leading minus 3px margins keeps one line in
+   the design's 11px box with its text on the same pixels, while wrapped lines get room to breathe. */
 .eyebrow {
-  font: 500 11px/1 var(--font-mono);
+  font: 500 11px/17px var(--font-mono);
+  margin-block: -3px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(250,250,252,0.55);
-  white-space: nowrap;
 }
 
 .title {
