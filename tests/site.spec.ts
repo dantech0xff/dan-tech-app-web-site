@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const PAGES = [
   { path: "/", title: /Apps make life more convenient/, heading: "Apps make life more convenient." },
-  { path: "/products/", title: /^Products · Dan Tech Indiv\.$/, heading: "Two apps, built end-to-end by one person." },
+  { path: "/products/", title: /^Products · Dan Tech Indiv\.$/, heading: "Every app, built end-to-end by one person." },
   { path: "/about/", title: /^About · Dan Tech Indiv\.$/, heading: "One person, all the way through." },
   { path: "/contact/", title: /^Contact · Dan Tech Indiv\.$/, heading: "Talk to Dan." },
   { path: "/faq/", title: /^FAQ · Dan Tech Indiv\.$/, heading: "Quick answers." },

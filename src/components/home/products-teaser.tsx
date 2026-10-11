@@ -65,7 +65,7 @@ export function ProductsTeaser() {
     <section className={styles.teaser}>
       <div className={`${styles.teaserHeader} dt-reveal-70`}>
         <div className={styles.teaserHeading}>
-          <h2 className={styles.titleXl}>Two apps, one standard.</h2>
+          <h2 className={styles.titleXl}>Different apps, one standard.</h2>
         </div>
         <SiteLink href={routes.products} className={`${ui.arrowLink} ${styles.nowrap}`}>
           All products &amp; stores <Icon name="arrow_forward" size={18} />

@@ -10,7 +10,7 @@ import { productAnchors, routes } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   title: "Products",
-  description: "Duoly in Love and Kim Tài · Tick Vàng Online — two mobile apps built end-to-end by one person.",
+  description: "Duoly in Love, Kim Tài · Tick Vàng Online and more — mobile apps built end-to-end by one person.",
   path: routes.products,
 });
 
@@ -25,8 +25,8 @@ export default function ProductsPage() {
       <PageHero
         compact
         narrowTitle
-        title="Two apps, built end-to-end by one person."
-        lead="Two consumer apps on Google Play and the App Store. Each one earns its place by solving a single everyday problem well."
+        title="Every app, built end-to-end by one person."
+        lead="Consumer apps on Google Play and the App Store. Each one earns its place by solving a single everyday problem well."
       >
         <div className={styles.chips}>
           {CHIPS.map((chip) => (
