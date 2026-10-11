@@ -61,7 +61,7 @@ docs/           design guidelines, codebase summary, deployment guide
 
 ## Deployment
 
-Production runs on Dokploy: every push to `main` builds the `Dockerfile` (static export served by unprivileged nginx on port 8080) and redeploys. The one-time Dokploy, GitHub App and domain setup is in [docs/deployment-guide.md](docs/deployment-guide.md), which also covers other static hosts.
+Production (https://dantech.app) runs on Dokploy behind Cloudflare: every push to `main` builds the `Dockerfile` (static export served by unprivileged nginx on port 8080) and redeploys. The current Dokploy, Cloudflare and DNS setup is in [docs/deployment-guide.md](docs/deployment-guide.md), which also covers other static hosts.
 
 ## Design fidelity
 

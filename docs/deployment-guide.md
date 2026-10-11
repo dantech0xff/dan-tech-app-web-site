@@ -16,46 +16,47 @@ plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, icons, `assets/`, `f
 
 ## Production: Dokploy, deploy on push to `main`
 
-Production runs on the self-hosted Dokploy at `deploy.dantech.academy`, like the owner's other apps. The repository
-`dantech0xff/dan-tech-app-web-site` (private) ships a `Dockerfile`: a Node 22 stage runs `npm ci` and
-`npm run build`, then `nginxinc/nginx-unprivileged:1.30-alpine` serves `out/` on port 8080 with `nginx.conf`
-(relative slash redirects, `404.html` with status 404, gzip, immutable caching for `/_next/static/` and `/fonts/`)
-and a `HEALTHCHECK`. The image was built and the full Playwright suite passed against it (2026-10-11).
+Production (`https://dantech.app`) runs on the self-hosted Dokploy at `deploy.dantech.academy` behind Cloudflare,
+like the owner's other apps. The repository `dantech0xff/dan-tech-app-web-site` (private) ships a `Dockerfile`: a
+Node 22 stage runs `npm ci` and `npm run build`, then `nginxinc/nginx-unprivileged:1.30-alpine` serves `out/` on
+port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404, gzip, immutable caching for
+`/_next/static/` and `/fonts/`) and a `HEALTHCHECK`.
 
-What a push to `main` does once the steps below are done: GitHub sends the push event to the Dokploy GitHub App
-webhook (`https://deploy.dantech.academy/api/deploy/github`, already exempt from Cloudflare Access), Dokploy
-builds the image on the VPS and Swarm swaps the container. A failed build leaves the running site untouched.
-
-One-time setup (manual; the Dokploy API credentials and the Access service token were deleted on 2026-10-04):
-
-1. **GitHub App access.** GitHub → Settings → Applications → Installed GitHub Apps → the Dokploy app →
-   Configure → Repository access: include `dan-tech-app-web-site` (nothing to do if it has all repositories).
-2. **Application.** In Dokploy create a project (for example `dantech-app`) and an Application `dantech-app`.
-   - General → Provider **GitHub**: the Dokploy GitHub App provider, repository `dan-tech-app-web-site`, branch
-     `main`, build path `/`, trigger **On Push**; save and keep **Autodeploy** on. Leave Watch Paths empty.
-   - Build Type **Dockerfile**: file `Dockerfile`, context `.`.
-   - Build Arguments (optional): `NEXT_PUBLIC_NEWSLETTER_ENDPOINT=…` once a newsletter endpoint exists. The
-     Environment tab is not needed: the container reads no variables.
-   - Advanced → Swarm Settings → Update Config, for zero-downtime swaps of this stateless site:
-     `{ "Parallelism": 1, "Delay": 10000000000, "FailureAction": "rollback", "Order": "start-first" }`.
-3. **Domain.** `dantech.app` still uses Namecheap's default DNS and a parking page. Pick one:
-   - *Like the other sites (Cloudflare):* add the zone to Cloudflare and switch the nameservers at Namecheap;
-     proxied A records for `dantech.app` and `www` to the VPS. Traefik's default certificate is the Origin CA
-     for `*.dantech.academy`, which does not cover `dantech.app`: create a Cloudflare Origin certificate for
-     `dantech.app, *.dantech.app` and add it under Dokploy → Certificates. Dokploy domain: host `dantech.app`,
-     path `/`, container port `8080`, HTTPS on, certificate **None**.
-   - *Without Cloudflare:* at Namecheap point an A record for `@` to the VPS and a CNAME `www` to `dantech.app`,
-     removing the parking records. Dokploy domain as above with certificate **Let's Encrypt** (needs the
-     `letsencrypt` resolver still defined in `traefik.yml` and port 80 reachable).
-
-   Add `www.dantech.app` too, with a permanent redirect on the application: regex
-   `^https?://www\.dantech\.app/(.*)`, replacement `https://dantech.app/${1}`.
-4. **First deploy.** Press Deploy once, then check `https://dantech.app/` (200), `/about` (301 to `/about/`) and
-   `/no-such-page` (404). From then on every push to `main` deploys; if one does not, the GitHub App's Recent
-   Deliveries show whether the webhook reached Dokploy.
+A push to `main` reaches Dokploy through its GitHub App webhook (`https://deploy.dantech.academy/api/deploy/github`,
+which Cloudflare Access lets through; Dokploy checks the signature itself). Dokploy builds the image on the VPS
+(the first build took under a minute) and Swarm starts the new container before it stops the old one. A failed build
+or an unhealthy container leaves the running site untouched. If a push does not deploy, the GitHub App's Recent
+Deliveries show whether the webhook reached Dokploy.
 
 Every push to `main` goes to production and no CI runs the tests: run `npm run lint`, `npm run typecheck` and
 `npm test` before pushing.
+
+### Current setup (2026-10-11)
+
+| Piece | Setting |
+| --- | --- |
+| Dokploy application | Project `dantech-app` → environment `production` → application `dantech-app` (Swarm service `dantech-app-xuhkc4`). |
+| Source | GitHub App provider `Dokploy-2026-10-01-g7i5b9`, repository `dantech0xff/dan-tech-app-web-site`, branch `main`, build path `/`, trigger On Push, Autodeploy on, no watch paths. |
+| Build | Build type Dockerfile: file `Dockerfile`, context `.`. No environment variables; add the build argument `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` once a newsletter endpoint exists. |
+| Swarm update | `{ "Parallelism": 1, "Delay": 10000000000, "FailureAction": "rollback", "Order": "start-first" }`. No published ports: Traefik is the only way in. |
+| Traefik | Domains `dantech.app` and `www.dantech.app`: path `/`, container port 8080, HTTPS on, certificate None. Permanent redirect `^https?://www\.dantech\.app/(.*)` → `https://dantech.app/${1}`. |
+| Origin certificate | Cloudflare Origin CA certificate for `dantech.app` and `*.dantech.app` (ECDSA P-256, valid until 2041-10-07), in Dokploy → Certificates as `dantech.app Cloudflare Origin`. Traefik picks certificates by SNI; the one for `*.dantech.academy` does not cover this domain. |
+| Cloudflare | Zone `dantech.app` (Free plan); Namecheap points the domain to `galilea.ns.cloudflare.com` and `noel.ns.cloudflare.com`. SSL/TLS Full (strict), Always Use HTTPS on; the edge certificate is Cloudflare's Universal SSL. |
+| DNS | `A dantech.app` → the VPS and `CNAME www` → `dantech.app`, both proxied. Email stays on Namecheap Private Email (`admin@dantech.app`) with every record DNS only: `MX` `mx1.privateemail.com` and `mx2.privateemail.com` (priority 10), `TXT` `v=spf1 include:spf.privateemail.com ~all`, `CNAME` `mail`, `autodiscover` and `autoconfig` → `privateemail.com`, `SRV _autodiscover._tcp` → `0 0 443 privateemail.com`. |
+
+Keep in mind:
+
+- Keep the mail records DNS only and leave Cloudflare Email Routing off; either change breaks `admin@dantech.app`.
+- Cloudflare error 526 means Traefik answered without the `dantech.app` certificate. Traefik did not load the
+  certificate Dokploy stored until the `dantech.app` domain was saved again (unchanged) in Dokploy, which rewrites
+  the app's Traefik file; do the same after adding or replacing a certificate.
+- Cloudflare issues Origin CA certificates only for an active zone. The current one expires on 2041-10-07.
+- The domain's "Redirect Domain" entry at Namecheap no longer applies, since Namecheap no longer serves its DNS.
+
+To rebuild the setup, recreate the rows above in this order: GitHub App access to the repository, the application
+with its source, build type and Swarm settings, a first deploy, the two domains and the redirect, the Cloudflare
+zone and its records (mail records DNS only), the nameservers at the registrar, and once the zone is active the
+Origin certificate in Dokploy followed by the domain save that reloads Traefik.
 
 ## Other hosts
 
