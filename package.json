@@ -1,0 +1,29 @@
+{
+  "name": "dantech-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "clean": "rm -rf .next out test-results playwright-report",
+    "start": "node scripts/serve-static.mjs out",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "playwright test",
+    "icons:update": "node scripts/update-icon-font.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "typescript": "^5"
+  }
+}
