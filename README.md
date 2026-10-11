@@ -61,7 +61,7 @@ docs/           design guidelines, codebase summary, deployment guide
 
 ## Deployment
 
-`npm run build` produces plain HTML/CSS/JS in `out/` (one `index.html` per route folder), deployable to any static host: Vercel, Cloudflare Pages, Netlify, GitHub Pages or Nginx. See [docs/deployment-guide.md](docs/deployment-guide.md).
+Production runs on Dokploy: every push to `main` builds the `Dockerfile` (static export served by unprivileged nginx on port 8080) and redeploys. The one-time Dokploy, GitHub App and domain setup is in [docs/deployment-guide.md](docs/deployment-guide.md), which also covers other static hosts.
 
 ## Design fidelity
 
