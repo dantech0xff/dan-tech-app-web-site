@@ -19,7 +19,7 @@ plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, icons, `assets/`, `f
 Production (`https://dantech.app`) runs on the self-hosted Dokploy at `deploy.dantech.academy` behind Cloudflare,
 like the owner's other apps. The repository `dantech0xff/dan-tech-app-web-site` (private) ships a `Dockerfile`: a
 Node 22 stage runs `npm ci` and `npm run build`, then `nginxinc/nginx-unprivileged:1.30-alpine` serves `out/` on
-port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404, UTF-8 charset on text files such as `llms.txt`, gzip, immutable caching for
+port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404 and `Cache-Control: no-store`, UTF-8 charset on text files such as `llms.txt`, gzip, immutable caching for
 `/_next/static/` and `/fonts/`) and a `HEALTHCHECK`.
 
 A push to `main` reaches Dokploy through its GitHub App webhook (`https://deploy.dantech.academy/api/deploy/github`,
@@ -47,6 +47,11 @@ Every push to `main` goes to production and no CI runs the tests: run `npm run l
 Keep in mind:
 
 - Keep the mail records DNS only and leave Cloudflare Email Routing off; either change breaks `admin@dantech.app`.
+- Cloudflare caches a 404 for a static file for about 3 minutes (and used to pass `max-age=14400` on to browsers), so
+  a new file requested just before its deploy finished stayed "not found" after it existed. `nginx.conf` now sends
+  `Cache-Control: no-store` with every 404, so a 404 is never cached. To check a deploy anyway, poll an HTML page (not
+  cached) for something new in it and fetch the new file once afterwards; a 404 already cached expires by itself, or
+  can be purged by URL in Cloudflare (Caching, Configuration, Purge Cache, Custom Purge).
 - Cloudflare error 526 means Traefik answered without the `dantech.app` certificate. Traefik did not load the
   certificate Dokploy stored until the `dantech.app` domain was saved again (unchanged) in Dokploy, which rewrites
   the app's Traefik file; do the same after adding or replacing a certificate.

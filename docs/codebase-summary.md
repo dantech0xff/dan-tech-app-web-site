@@ -69,7 +69,7 @@ Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and so
 - `site.spec.ts` — every page renders without console errors (also with the clock a year past the build);
   per-page share metadata; active nav state; product deep links, same-page links and direct hash visits land
   below the sticky header (including the wrapped mobile header); reduced motion; new pages open at the top;
-  FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status. The game page has its own group: share
+  FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status, and that a miss is sent with `no-store`. The game page has its own group: share
   card and sitemap entry, "coming soon" with no store link, no ads/purchase/upgrade words (text and alt texts), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.

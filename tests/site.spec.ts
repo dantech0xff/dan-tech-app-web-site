@@ -314,6 +314,13 @@ test.describe("Garage to AGI page", () => {
   });
 });
 
+test("a missing file is never cached", async ({ request }) => {
+  // A new file requested before its deploy is live must not stay "not found" in a CDN or a browser once it exists.
+  const response = await request.get("/assets/not-deployed-yet.jpg");
+  expect(response.status()).toBe(404);
+  expect(response.headers()["cache-control"]).toBe("no-store");
+});
+
 test("unknown paths get the 404 page", async ({ page }) => {
   const response = await page.goto("/no-such-page");
   expect(response?.status()).toBe(404);
