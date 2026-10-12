@@ -4,7 +4,8 @@
 
 dantech.app is the studio site of Dan Tech Indiv., Danh Tran's one-person software studio in Vietnam. It
 presents the mobile apps (Duoly in Love, Kim Tài · Tick Vàng Online, earlier indie games),
-the founder story and principles, support answers, legal pages, and two contact paths.
+the founder story and principles, support answers, legal pages, and two contact paths. It also hosts the landing page
+of the upcoming game Garage to AGI at `/idle-ai-tycoon/`, which the game's store listings can use as their website.
 
 ## Requirements
 
@@ -28,3 +29,4 @@ CMS, analytics, accounts, localisation and any backend beyond the newsletter end
 | Visual parity with the design | Verified by screenshot, text and computed-style comparison |
 | App screen images | Rebuilt from the design's partial files plus the App Store screenshots; replace with the design project's originals when available (see design-guidelines.md, Assets) |
 | Newsletter provider | Endpoint not chosen yet; mailto fallback active |
+| Garage to AGI page | Done, built from the game's own pixel art. Says "Coming soon to Google Play"; add the store link when the listing is live (README, Pages) |

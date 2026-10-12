@@ -7,6 +7,7 @@ export const routes = {
   faq: "/faq/",
   privacy: "/privacy/",
   terms: "/terms/",
+  idleAiTycoon: "/idle-ai-tycoon/",
 } as const;
 
 export type SitePath = (typeof routes)[keyof typeof routes];

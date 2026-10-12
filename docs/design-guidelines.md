@@ -13,6 +13,35 @@ Source of truth: Claude Design project "Dan Tech Landing Page Design", file `dan
 | 2026-10-11 | Copy never says how many apps there are, so adding an app needs no copy change: home teaser "Different apps, one standard.", products hero "Every app, built end-to-end by one person." with the lead "Consumer apps on Google Play and the App Store. …", and the products description "Duoly in Love, Kim Tài · Tick Vàng Online and more — …". Keep new copy count-free too. | Owner's request: more apps are coming |
 | 2026-10-11 | No page is wider than a phone screen; a Playwright test checks 320, 360, 375 and 390 px. In the design, `/products/` scrolled sideways below about 400 px: the one-line eyebrow "01 · For couples · formerly Amor AI" made it up to 26 px too wide (10 px at the 390 px parity width), and at 360 px and narrower the tilted Duoly phones reached past the edge too. On `/faq/` the answer list ran 8 px off a 320 px screen. Product eyebrows now wrap, but only after a "·" (`ProductIntro` joins the words of each part with no-break spaces). They use `11px/17px` with `-3px` block margins, which keeps a single line on the design's exact pixels. Product sections clip sideways overflow (`overflow-x: clip`), and the FAQ grid's column minimum is `min(100% - 48px, 260px)`. At 430 px and wider nothing moves. | Pages scrolled sideways on phones |
 
+## Garage to AGI page (idle AI tycoon)
+
+`/idle-ai-tycoon/` is not in the Claude Design project. It is the landing page of the owner's game (private repo
+`dantech0xff/flutter-idle-ai-lab`), added 2026-10-12. It keeps the site's tokens, type and surfaces and adds the game's look.
+Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS module), copy and data in
+`src/content/idle-ai-tycoon.ts`; the closing newsletter section is the home page's.
+
+- **Copy rules (owner).** Never mention ads, purchases, subscriptions, premium currency or upgrades; describe only
+  special features the game has today. The sources are the game's `docs/prototype/` boards and `docs/store/listing.md`
+  (the first store build). Left out until the app has them: the weekly deepest-layer board, content drops and titles other
+  players see. Keep counts to the stable ones (ten products and eight models per era, twelve star hires, 100 layers) and
+  give none for minds, achievements or specialists, which grow. English, like the rest of the site. A Playwright test
+  scans the page and its alt texts for the banned words.
+- **Status.** The game is not on Google Play production yet, so the hero says "Coming soon to Google Play" and links no
+  store. When it is live, change `game.status` and `game.statusNote`, and add a `StoreButton` (see
+  `components/products/product-parts.tsx`) to the hero; the test "says the game is not out yet" then needs updating.
+- **Palette.** The game's own (Sweetie 16), declared on `.page` in `game.module.css`: `--g-ink #1A1C2C`, `--g-panel #333C57`,
+  `--g-lime #A7F070`, `--g-gold #FFCD75`, `--g-orange #EF7D57`, `--g-blue #41A6F6` and the rest. Rarity frames use the game's
+  colours (Common `#94B0C2`, Rare `#41A6F6`, Epic `#B13E53`, Legendary `#FFCD75`). Everything else is the site's tokens.
+- **Pixel art.** Always drawn with `image-rendering: pixelated` (`.pixel`). Sprites are 16×16, shown at 3x (48px) or 4x
+  (64px); scenes (128×48, 128×40, 128×64) scale with their box. Do not use the game's `docs/store/screenshots/`: they date
+  from 2026-09-27, before the Layer 100 ending and the font change, and the game's listing doc says not to publish them.
+  The loss-spike dialog is rebuilt in CSS from the game's `Main.dc.html` (colours, wording, bevelled buttons) and hidden from
+  assistive tech because the text beside it says the same.
+- **Font.** Jersey 10 (SIL Open Font License), the Latin subset Google Fonts serves, in `public/fonts/jersey-10.woff2` with
+  its `@font-face` in `game.module.css`, preloaded by the page through `preload()` from `react-dom`. It is not loaded with
+  `next/font`: in this static export that preloaded the font on every page, home included. nginx caches `/fonts/` as
+  immutable, so a replacement file needs a new name.
+
 ## Tokens (`src/app/globals.css`)
 
 | Token | Value | Use |
@@ -78,6 +107,7 @@ Global utility classes, all disabled under `prefers-reduced-motion: reduce`:
 | File | Source |
 | --- | --- |
 | `dantech-mark.png`, `duoly-icon.png`, `kbc.png`, `woody.png`, `katsu.png` | Design project (exact files) |
+| `idle-ai-tycoon/*` | Exact files from the game repo: `assets/images/{eras,crew,products,ui}/` renamed to kebab-case (`s_scene_garage` → `scene-garage`, `s_hq_*` → `scene-*`, `s_event_*` → `event-*`, `c_*` → `crew-*`, `brain_*` and `i_brain` → `mind-*`, `p_*` → `product-*`, `i_*` → `icon-*`, `s_viral` and `s_offline` → `art-*`), and the app icon `docs/store/icon/google-play/icon-512-jackpot-agi.png` as `icon-512.png`. The owner holds every right to the art, marketing use included (`docs/legal/art-provenance.md` in that repo). |
 | `kimtai-icon.png` | Pixel-identical original from `kim-tai-landing-page/public/icons/kim-tai-pwa-512.png` (the design copy exceeded the 256 KiB DesignSync download cap) |
 | `kimtai-screen-ledger.png`, `duoly-screen-today.png`, `duoly-screen-duo.png` | Rebuilt: the design copies were truncated by the download cap. The top 34–79% of each is the design's exact pixels; the rest is the same screen from the ASO exports (Kim Tài `public/iphone-1284x2778/02-so-vang.png` on GitHub; Duoly `export/appstore/iphone-en/01-today.png` and `11-duo.png`), straightened and scaled to the crop. Swap in the design project's files whenever they can be downloaded whole. |
 

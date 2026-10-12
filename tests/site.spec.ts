@@ -8,6 +8,7 @@ const PAGES = [
   { path: "/faq/", title: /^FAQ · Dan Tech Indiv\.$/, heading: "Quick answers." },
   { path: "/privacy/", title: /^Privacy Policy · Dan Tech Indiv\.$/, heading: "Privacy Policy" },
   { path: "/terms/", title: /^Terms of Service · Dan Tech Indiv\.$/, heading: "Terms of Service" },
+  { path: "/idle-ai-tycoon/", title: /^Garage to AGI: Idle AI Tycoon · Dan Tech Indiv\.$/, heading: "Garage to AGI" },
 ];
 
 function collectErrors(page: Page) {
@@ -191,6 +192,90 @@ test("newsletter falls back to an email request without an endpoint", async ({ p
   await expect(confirmation).toBeFocused();
   await expect.poll(() => mailto.length).toBe(1);
   expect(new URL(mailto[0]).searchParams.get("body")).toBe("Please add reader@example.com to the Ship notes list.");
+});
+
+test.describe("Garage to AGI page", () => {
+  const GAME = "/idle-ai-tycoon/";
+
+  test("shares the game's icon, title and URL", async ({ page }) => {
+    await page.goto(GAME);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      "content",
+      "Garage to AGI: Idle AI Tycoon · Dan Tech Indiv.",
+    );
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", "https://dantech.app/idle-ai-tycoon/");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://dantech.app/idle-ai-tycoon/");
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      "https://dantech.app/assets/idle-ai-tycoon/icon-512.png",
+    );
+  });
+
+  test("other pages keep sharing the studio mark", async ({ page }) => {
+    await page.goto("/about/");
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://dantech.app/assets/dantech-mark.png");
+  });
+
+  test("is listed in the sitemap", async ({ request }) => {
+    const response = await request.get("/sitemap.xml");
+    expect(await response.text()).toContain("<loc>https://dantech.app/idle-ai-tycoon/</loc>");
+  });
+
+  test("says the game is not out yet and links no store", async ({ page }) => {
+    await page.goto(GAME);
+    await expect(page.getByText("Coming soon to Google Play")).toBeVisible();
+    await expect(page.locator("main a[href*='play.google.com'], main a[href*='apps.apple.com']")).toHaveCount(0);
+  });
+
+  test("never mentions ads, purchases or upgrades", async ({ page }) => {
+    await page.goto(GAME);
+    // The newsletter form that closes the page is the studio's, not the game's, so it is left out.
+    const sections = page.locator("main > section:not(:last-child)");
+    const text = (await sections.allInnerTexts()).join("\n");
+    const alts = (await sections.locator("img").evaluateAll((images) => images.map((image) => image.getAttribute("alt") ?? ""))).join("\n");
+    // A guard against checking nothing: the copy of the whole page is well over this.
+    expect(text.length).toBeGreaterThan(4000);
+    const banned = /\b(ads?|advert\w*|purchas\w*|in-app|subscription|premium|upgrad\w*|paywall|chips?|coins?|buy|shop|free[- ]to[- ]play)\b/i;
+    expect(text).not.toMatch(banned);
+    expect(alts).not.toMatch(banned);
+  });
+
+  test("the hero link jumps to the gameplay section below the sticky header", async ({ page }) => {
+    await page.goto(GAME);
+    await page.getByRole("link", { name: /See how it plays/ }).click();
+    await expect(page).toHaveURL(/\/idle-ai-tycoon\/#gameplay$/);
+    await scrollSettled(page);
+    await expectSectionBelowHeader(page, "gameplay");
+  });
+
+  test("every picture and the pixel font are served", async ({ page, request }) => {
+    await page.goto(GAME);
+    const sources = await page.evaluate(() => [...new Set([...document.images].map((image) => image.getAttribute("src") ?? ""))]);
+    expect(sources.length).toBeGreaterThan(40);
+    for (const src of [...sources, "/fonts/jersey-10.woff2"]) {
+      const response = await request.get(src);
+      expect(response.status(), `${src} did not load`).toBe(200);
+    }
+  });
+
+  test("pixel art is drawn with hard edges and the title uses the pixel font", async ({ page }) => {
+    await page.goto(GAME);
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+    });
+    const scene = page.getByRole("img", { name: /Pixel-art garage lab/ }).first();
+    await expect(scene).toHaveCSS("image-rendering", "pixelated");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCSS("font-family", /Jersey 10/);
+    const loaded = await page.evaluate(() => [...document.fonts].some((font) => font.family.includes("Jersey 10") && font.status === "loaded"));
+    expect(loaded, "Jersey 10 should be downloaded and in use").toBe(true);
+  });
+
+  test("the pixel font is preloaded on this page only", async ({ page }) => {
+    await page.goto(GAME);
+    await expect(page.locator('head link[rel="preload"][href="/fonts/jersey-10.woff2"]')).toHaveCount(1);
+    await page.goto("/");
+    await expect(page.locator('link[href="/fonts/jersey-10.woff2"]')).toHaveCount(0);
+  });
 });
 
 test("unknown paths get the 404 page", async ({ page }) => {

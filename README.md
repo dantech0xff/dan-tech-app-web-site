@@ -1,13 +1,14 @@
 # dantech.app
 
 Website of **Dan Tech Indiv.** — a one-person mobile app studio from Vietnam (Duoly in Love, Kim Tài · Tick Vàng Online).
-It is a pixel-faithful build of the Claude Design project "Dan Tech Landing Page Design" (`dantech.app.dc.html`).
+It is a pixel-faithful build of the Claude Design project "Dan Tech Landing Page Design" (`dantech.app.dc.html`),
+plus one page that is not in that design: the landing page of the game Garage to AGI.
 
 ## Stack
 
 - Next.js 16 (App Router) + React 19 + TypeScript, exported as a fully static site (`output: "export"`).
 - CSS Modules plus global design tokens in `src/app/globals.css`; no CSS framework.
-- Fonts, all self-hosted: Be Vietnam Pro and IBM Plex Mono through `next/font`; Material Symbols Outlined as an 18 KB subset of the icons the site uses (`public/fonts/`).
+- Fonts, all self-hosted: Be Vietnam Pro and IBM Plex Mono through `next/font`; Material Symbols Outlined as an 18 KB subset of the icons the site uses and Jersey 10 (the game's pixel font, 5 KB, preloaded by its page only), both in `public/fonts/`.
 - Playwright for end-to-end and unit tests.
 
 ## Getting started
@@ -40,7 +41,9 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 ## Pages
 
-`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/`, plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
+`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
+
+The game page is in the sitemap but not in the header, footer or Products page. It says "Coming soon to Google Play" with no store link: add the link and change the two status lines in `src/content/idle-ai-tycoon.ts` when the listing is live. Rules for its copy are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
 
 The contact form has no backend: it opens the visitor's mail app with the subject and body prefilled, exactly as the design specifies.
 
@@ -50,9 +53,9 @@ The contact form has no backend: it opens the visitor's mail app with the subjec
 src/
   app/          routes, root layout, metadata, sitemap/robots, global CSS
   components/   shared UI (header, footer, phone mockup, forms) and per-page sections
-  content/      copy and data (site links, FAQ, products, home)
+  content/      copy and data (site links, FAQ, products, home, the game page)
   lib/          routes, scroll behaviour, mailto + newsletter helpers
-public/assets/  images from the design project
+public/assets/  images from the design project; idle-ai-tycoon/ holds the game's pixel art
 public/fonts/   self-hosted icon font subset
 scripts/        static preview server, icon font updater
 tests/          Playwright specs
