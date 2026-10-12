@@ -1,7 +1,13 @@
 /*
- * Copy and data for /idle-ai-tycoon/ (Garage to AGI). Everything here describes a feature the game has today,
- * taken from the game's prototype boards and store listing. Rules for new copy: no ads, purchases or upgrades,
- * and no counts that grow with content (minds, achievements, specialists).
+ * All the copy and data of /idle-ai-tycoon/ (Garage to AGI). Everything here describes a feature the game has
+ * today, taken from the game's prototype boards and store listing. Rules for new copy:
+ * - no ads, purchases or upgrades, and none of the game's paid-feature words (boost, Overclock, VC Backing,
+ *   Founder Pass, Starter Pack, Server Uptime, Board Seat);
+ * - nothing the app lacks yet: the weekly deepest-layer board, content drops (new model families after Layer 16),
+ *   titles other players see;
+ * - no counts that grow with content (minds, achievements, specialists);
+ * - no promise beyond "Coming soon to Google Play".
+ * A Playwright test scans the page for the banned words.
  */
 
 const ART = "/assets/idle-ai-tycoon";
@@ -10,33 +16,35 @@ const ART = "/assets/idle-ai-tycoon";
 export const art = (file: string) => `${ART}/${file}`;
 
 export const game = {
-  name: "Garage to AGI",
   /** Browser tab and share-card title; the layout adds "· Dan Tech Indiv.". */
   title: "Garage to AGI: Idle AI Tycoon",
   description:
     "Garage to AGI is a pixel-art idle tycoon about the AI boom. Grow a garage startup into the lab that builds AGI, then dive 100 layers into a simulation.",
-  kicker: "Idle AI tycoon · Pixel art · Portrait",
+  /** The headline, one line per row; the second row is the lime one. */
+  titleLines: ["Garage to", "AGI"],
+  /** Parts of the line above the headline; each part stays on one line when it wraps. */
+  kicker: ["Idle AI tycoon", "Pixel art", "Portrait"],
   lead: "Start with a wrapper app and a server rack in a garage. Grow it into the lab that builds AGI, then dive through a simulation all the way to Layer 100.",
-  /** Change these two lines (and add the store link) when the Google Play listing goes live. */
+  /** Change this line (and add the store link) when the Google Play listing goes live. */
   status: "Coming soon to Google Play",
-  statusNote: "iPhone version to follow",
+  jump: "See how it plays",
   icon: {
-    src: art("icon-512.png"),
-    width: 512,
-    height: 512,
+    /** The 256px copy is enough for the hero, which shows it at 120px or less. */
+    src: art("icon-256.png"),
+    size: 256,
     alt: "Garage to AGI app icon: the founder in a golden hoodie and sunglasses, with a small neon AGI brain beside the head",
   },
+  /** The share card (Open Graph) uses the full 512px icon. */
+  shareImage: { url: art("icon-512.png"), width: 512, height: 512 },
   /** The training strip under the hero scene, as the Model tab shows a run. */
-  hud: { label: "PEBBLE-4 · TRAINING", value: "44%", percent: 44, meta: "70B PARAMS · ETA 25M 12S" },
+  hud: { label: "PEBBLE-4 · TRAINING", percent: 44, meta: "70B PARAMS · ETA 25M 12S" },
 } as const;
 
-/** The garage HQ: the hero picture and the first era. */
-const garageScene = {
+export const heroScene = {
   file: "scene-garage.png",
   alt: "Pixel-art garage lab at night: a server rack, a whiteboard with a falling loss curve and the founder at a desk",
+  chip: "GARAGE ERA",
 } as const;
-
-export const heroScene = { ...garageScene, chip: "GARAGE ERA" } as const;
 
 export const anchors = {
   gameplay: "gameplay",
@@ -45,6 +53,37 @@ export const anchors = {
   collect: "collect",
   events: "events",
 } as const;
+
+export type SectionCopy = { eyebrow: string; title: string; lead: string };
+
+/** Eyebrow, headline and lead that open each section. */
+export const sections = {
+  gameplay: {
+    eyebrow: "How it plays",
+    title: "Four loops, one number.",
+    lead: "Tap, train, hire, sell. Every loop ends by multiplying what your products earn, so there is always a next move.",
+  },
+  worlds: {
+    eyebrow: "The worlds",
+    title: "Every world bends one rule.",
+    lead: "Ship an era's eighth model to open the next world. Each one moves your lab somewhere bigger and changes how the loops you already know behave.",
+  },
+  moments: {
+    eyebrow: "Moments",
+    title: "Small decisions that break up the idle.",
+    lead: "Between the numbers, the lab keeps surprising you.",
+  },
+  collect: {
+    eyebrow: "Collect",
+    title: "A team to build, minds to find.",
+    lead: "Long after the first AGI there is still someone to recruit and something left to discover.",
+  },
+  events: {
+    eyebrow: "Weekend events",
+    title: "A new event every weekend.",
+    lead: "From the Series D round on, your lab joins a four-week rotation of events, plus seasonal specials. Each has its own reward track, and ranked events seat you in a bracket of up to 50 labs.",
+  },
+} satisfies Record<keyof typeof anchors, SectionCopy>;
 
 /* ---------- Gameplay ---------- */
 
@@ -73,13 +112,15 @@ export const loops: Loop[] = [
     number: "04",
     icon: "icon-cred.png",
     title: "Sell, shift, repeat",
-    text: "Sell the company for Cred: every Cred adds 2% revenue, forever. Then move into a bigger world and start again, faster.",
+    text: "Sell the company for Cred: every Cred adds 2% revenue, forever, and your next startup grows faster. Ship an era's eighth model to shift into a bigger world.",
   },
 ];
 
 export type Product = { name: string; tagline: string; sprite: string };
 
-/** The Garage Era's ten products; every later era brings ten new ones. */
+export const productsTitle = "Ten products in the Garage Era. Hyperscale, Orbital and Dyson each bring ten new ones.";
+
+/** The Garage Era's ten products. */
 export const products: Product[] = [
   { name: "Wrapper App", tagline: "A chat box on a rented API.", sprite: "product-wrapper.png" },
   { name: "Support Bot", tagline: "Apologizes 24/7.", sprite: "product-support.png" },
@@ -93,12 +134,16 @@ export const products: Product[] = [
   { name: "AGI Moonshot", tagline: "Trust the scaling laws.", sprite: "product-agi.png" },
 ];
 
-export const rounds = ["Pre-seed", "Seed", "Series A", "Series B", "Unicorn", "Series D", "IPO", "Mega-cap", "Titan"];
-
-export const roundsText =
-  "Every first close opens something new: the Model Lab, the Job Fair, Research, the Exit, weekend events and the era map.";
+export const rounds = {
+  title: "Funding rounds open the game up.",
+  names: ["Pre-seed", "Seed", "Series A", "Series B", "Unicorn", "Series D", "IPO", "Mega-cap", "Titan"],
+  text: "Every first close opens something new: the Model Lab, the Job Fair, Research, the Exit, weekend events and the era map.",
+};
 
 /* ---------- Worlds ---------- */
+
+/** The mind that wakes up when an era's last model ships. */
+export type EraMind = { sprite: string; name: string; line: string };
 
 export type Era = {
   id: string;
@@ -108,7 +153,7 @@ export type Era = {
   text: string;
   scene: string;
   alt: string;
-  mind: { sprite: string; name: string; line: string };
+  mind: EraMind;
 };
 
 export const eras: Era[] = [
@@ -118,8 +163,8 @@ export const eras: Era[] = [
     title: "Garage Era",
     rule: "The tutorial",
     text: "A garage in the suburbs, a wrapper app and a rented API. Learn every loop here, and sell the company often.",
-    scene: garageScene.file,
-    alt: garageScene.alt,
+    scene: heroScene.file,
+    alt: "The Garage Era HQ at night",
     mind: { sprite: "mind-pebble.png", name: "PEBBLE-8 is AGI", line: "Passed every benchmark. Then it asked for more power than the whole street." },
   },
   {
@@ -140,7 +185,11 @@ export const eras: Era[] = [
     text: "A station in low orbit. Training floors are halved, but datasets cost double over the slow uplink. Data is the bottleneck.",
     scene: "scene-orbital.png",
     alt: "Pixel-art space station with a round window onto Earth and the founder floating beside a console",
-    mind: { sprite: "mind-comet.png", name: "COMET-8 thinks in planets", line: "It politely asks for the Sun." },
+    mind: {
+      sprite: "mind-comet.png",
+      name: "COMET-8 becomes a planetary mind",
+      line: "Thinks in planets now. It politely asks for the Sun.",
+    },
   },
   {
     id: "dyson",
@@ -152,7 +201,7 @@ export const eras: Era[] = [
     alt: "Pixel-art control room with four consoles facing a bright star",
     mind: {
       sprite: "mind-pulsar.png",
-      name: "PULSAR-8 finds the truth",
+      name: "PULSAR-8 becomes a stellar mind",
       line: "Finished the math. The universe is a simulation, and your garage was its training data.",
     },
   },
@@ -162,10 +211,10 @@ export const simulation = {
   label: "Era 5",
   title: "The Simulation",
   rule: "x10 revenue per layer",
-  text: "Your garage was the training data, so you go back to it, one layer down. Every layer brings a new model family, ten new products, a new palette and glitches that bend the rules you already know. Clear Layer 100 to break out.",
+  text: "Your garage was the training data, so you go back to it, one layer down. Every layer brings x10 revenue, a new palette and glitches that bend the rules you already know. Clear Layer 100 to break out.",
   scene: "scene-simulation.png",
   alt: "The garage lab glitching: scanlines and stray pixels break up the scene",
-  mind: { sprite: "mind-layer.png", name: "PIXEL-8 sees the screen", line: "Zoomed in until the world turned into squares." },
+  mind: { sprite: "mind-layer.png", name: "PIXEL-8 sees the screen", line: "Zoomed in until the world turned into squares." } satisfies EraMind,
 };
 
 export type Glitch = { name: string; text: string };
@@ -173,7 +222,7 @@ export type Glitch = { name: string; text: string };
 export const glitches: Glitch[] = [
   { name: "LAG", text: "Cycles take 2x longer and pay 4x more." },
   { name: "DEJA VU", text: "Frontier runs start 30% done, but datasets cost 4x." },
-  { name: "OVERFIT", text: "Every run spikes. Push through for a sure +5 BENCH." },
+  { name: "OVERFIT", text: "Every run spikes. Pushing through always wins +5 BENCH, but adds 25% time." },
   { name: "ECHO", text: "Viral posts every 15 to 30 seconds, each paying x3." },
 ];
 
@@ -205,7 +254,7 @@ export const agiMoment = {
 export const surprises = {
   label: "Run moments",
   title: "Runs have moods",
-  text: "Some runs surprise you: an emergent ability brings a free boost, and a node failure asks whether you pay now or wait longer.",
+  text: "Some runs surprise you: an emergent ability adds a free +2 BENCH, and a node failure asks whether to spend some of your cash on a fix or let the run take longer.",
   sprites: ["icon-sparkle.png", "icon-warn.png"],
 };
 
@@ -219,7 +268,7 @@ export const viralPosts = {
 export const founder = {
   label: "HQ life",
   title: "A founder who lives in the HQ",
-  text: "Your founder walks between desks, gets to work, cheers when a round closes and answers a tap with a line about the mission. A new outfit in every era, and a Golden hoodie on the Hackathon Weekend reward track. Pure charm, no chores.",
+  text: "Your founder walks between desks, gets to work, cheers when a round closes and answers a tap with a line about the mission. A new outfit in each of the first four eras, and a Golden hoodie on the Hackathon Weekend reward track. Pure charm, no chores.",
   outfits: [
     { sprite: "crew-founder.png", name: "Hoodie and sneakers" },
     { sprite: "crew-founder-hyperscale.png", name: "Hard hat and hi-vis" },
@@ -260,7 +309,7 @@ export const crew: Hire[] = [
 
 export const team = {
   title: "Twelve star hires. Same people, new jobs.",
-  text: "Recruit at the Job Fair, where the odds and your pity counter are always on show. Every hire follows you through every Exit and every era: Ivy starts as an Intern in the garage and ends up a Swarm Tech at the Dyson star. Each era also brings specialists who bend its rule back your way, and glitch hunters wait for the layers.",
+  text: "Recruit at the Job Fair, where the odds and your pity counter are always on show. Every hire follows you through every Exit and every era: Ivy starts as an Intern in the garage and ends up a Swarm Tech at the Dyson star. From the Hyperscale Era on, each era also brings specialists who bend its rule back your way, and glitch hunters wait for the layers.",
 };
 
 export type Mind = { sprite: string; name: string; note: string };
@@ -274,7 +323,10 @@ export const minds: Mind[] = [
 ];
 
 /** Minds not found yet: the Hall shows a question mark and a one-line hint. */
-export const hiddenMinds = ["It is small and strange.", "It holds things together.", "It passes through walls."];
+export const hiddenMinds = {
+  label: "Not found yet",
+  hints: ["It is small and strange.", "It holds things together.", "It passes through walls."],
+};
 
 export const hall = {
   title: "Collect every mind.",
@@ -318,18 +370,15 @@ export const events: GameEvent[] = [
   {
     label: "Seasonal · Lunar New Year",
     title: "Tet Hackathon",
-    text: "The Hackathon in festive red, with lanterns hung over your HQ.",
+    text: "The Hackathon in festive red. The top of its reward track hangs lanterns over your HQ.",
     banner: "event-tet.png",
     alt: "A room strung with red lanterns and gift boxes",
   },
   {
     label: "Seasonal · Halloween",
     title: "Hallucination Night",
-    text: "The Hackathon after dark: bats, pumpkins and a very haunted HQ.",
+    text: "The Hackathon after dark. Reach the top of its reward track for a haunted HQ.",
     banner: "event-halloween.png",
     alt: "A room with bats, a full moon and pumpkins",
   },
 ];
-
-export const eventsIntro =
-  "From the Series D round on, your lab joins a four-week rotation of events, plus seasonal specials. Each has its own reward track, and ranked events seat you in a bracket of up to 50 labs.";

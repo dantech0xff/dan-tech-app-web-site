@@ -1,12 +1,10 @@
-import { anchors, eras, glitches, simulation } from "@/content/idle-ai-tycoon";
+import { anchors, eras, glitches, sections, simulation, type EraMind } from "@/content/idle-ai-tycoon";
 import styles from "./game.module.css";
 import { PixelImage, Sprite } from "./pixel-image";
 import { SectionHeading } from "./section-heading";
 
-type MindProps = { mind: { sprite: string; name: string; line: string } };
-
 /** The mind that wakes up when an era's last model ships. */
-function MindLine({ mind }: MindProps) {
+function MindLine({ mind }: { mind: EraMind }) {
   return (
     <div className={styles.mind}>
       <Sprite file={mind.sprite} className={styles.spriteSmall} />
@@ -22,10 +20,7 @@ export function WorldsSection() {
   return (
     <section id={anchors.worlds} className={`${styles.section} ${styles.alt}`} aria-labelledby="worlds-title">
       <div className={styles.inner}>
-        <SectionHeading id="worlds-title" eyebrow="The worlds" title="Every world bends one rule.">
-          Ship an era&apos;s eighth model to open the next world. Each one moves your lab somewhere bigger and changes how
-          the loops you already know behave.
-        </SectionHeading>
+        <SectionHeading id="worlds-title" {...sections.worlds} />
 
         <div className={styles.eras}>
           {eras.map((era) => (

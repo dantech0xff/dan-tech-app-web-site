@@ -43,7 +43,7 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 `/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
 
-The game page is in the sitemap but not in the header, footer or Products page. It says "Coming soon to Google Play" with no store link: add the link and change the two status lines in `src/content/idle-ai-tycoon.ts` when the listing is live. Rules for its copy are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
+The game page is in the sitemap but not in the header, footer or Products page. It says "Coming soon to Google Play" with no store link: add the link and change the status line in `src/content/idle-ai-tycoon.ts` when the listing is live. Rules for its copy are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
 
 The contact form has no backend: it opens the visitor's mail app with the subject and body prefilled, exactly as the design specifies.
 
@@ -56,7 +56,7 @@ src/
   content/      copy and data (site links, FAQ, products, home, the game page)
   lib/          routes, scroll behaviour, mailto + newsletter helpers
 public/assets/  images from the design project; idle-ai-tycoon/ holds the game's pixel art
-public/fonts/   self-hosted icon font subset
+public/fonts/   self-hosted icon font subset and the game page's pixel font
 scripts/        static preview server, icon font updater
 tests/          Playwright specs
 docs/           design guidelines, codebase summary, deployment guide

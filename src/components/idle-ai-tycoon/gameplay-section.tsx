@@ -1,4 +1,4 @@
-import { anchors, loops, products, rounds, roundsText } from "@/content/idle-ai-tycoon";
+import { anchors, loops, products, productsTitle, rounds, sections } from "@/content/idle-ai-tycoon";
 import styles from "./game.module.css";
 import { Sprite } from "./pixel-image";
 import { SectionHeading } from "./section-heading";
@@ -7,9 +7,7 @@ export function GameplaySection() {
   return (
     <section id={anchors.gameplay} className={styles.section} aria-labelledby="gameplay-title">
       <div className={styles.inner}>
-        <SectionHeading id="gameplay-title" eyebrow="How it plays" title="Four loops, one number.">
-          Tap, train, hire, sell. Every loop ends by multiplying what your products earn, so there is always a next move.
-        </SectionHeading>
+        <SectionHeading id="gameplay-title" {...sections.gameplay} />
 
         <ol className={styles.loops}>
           {loops.map((loop) => (
@@ -25,7 +23,7 @@ export function GameplaySection() {
         </ol>
 
         <div className={`${styles.block} dt-reveal-60`}>
-          <h3 className={styles.blockTitle}>Ten products in the Garage Era. Ten new ones in every world after it.</h3>
+          <h3 className={styles.blockTitle}>{productsTitle}</h3>
           <ul className={styles.products}>
             {products.map((product) => (
               <li key={product.name} className={styles.product}>
@@ -38,15 +36,15 @@ export function GameplaySection() {
         </div>
 
         <div className={`${styles.block} dt-reveal-60`}>
-          <h3 className={styles.blockTitle}>Funding rounds open the game up.</h3>
+          <h3 className={styles.blockTitle}>{rounds.title}</h3>
           <ol className={styles.rounds}>
-            {rounds.map((round, index) => (
-              <li key={round} className={index === rounds.length - 1 ? `${styles.round} ${styles.top}` : styles.round}>
+            {rounds.names.map((round, index) => (
+              <li key={round} className={index === rounds.names.length - 1 ? `${styles.round} ${styles.top}` : styles.round}>
                 {round}
               </li>
             ))}
           </ol>
-          <p className={styles.note}>{roundsText}</p>
+          <p className={styles.note}>{rounds.text}</p>
         </div>
       </div>
     </section>

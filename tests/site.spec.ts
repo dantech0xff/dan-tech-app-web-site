@@ -221,23 +221,44 @@ test.describe("Garage to AGI page", () => {
     expect(await response.text()).toContain("<loc>https://dantech.app/idle-ai-tycoon/</loc>");
   });
 
-  test("says the game is not out yet and links no store", async ({ page }) => {
+  test("says the game is not out yet, links no store and promises nothing more", async ({ page }) => {
     await page.goto(GAME);
     await expect(page.getByText("Coming soon to Google Play")).toBeVisible();
     await expect(page.locator("main a[href*='play.google.com'], main a[href*='apps.apple.com']")).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText(/\b(iphone|ios|app store)\b/i);
   });
 
-  test("never mentions ads, purchases or upgrades", async ({ page }) => {
+  test("never mentions ads, purchases or upgrades, nor features the app lacks", async ({ page }) => {
     await page.goto(GAME);
-    // The newsletter form that closes the page is the studio's, not the game's, so it is left out.
-    const sections = page.locator("main > section:not(:last-child)");
+    // The studio newsletter that closes the page is the only form; it is not the game's copy, so it is left out.
+    const sections = page.locator("main > section:not(:has(form))");
     const text = (await sections.allInnerTexts()).join("\n");
-    const alts = (await sections.locator("img").evaluateAll((images) => images.map((image) => image.getAttribute("alt") ?? ""))).join("\n");
-    // A guard against checking nothing: the copy of the whole page is well over this.
+    const images = sections.locator("img");
+    const alts = (await images.evaluateAll((list) => list.map((image) => image.getAttribute("alt") ?? ""))).filter(Boolean);
+    const files = await images.evaluateAll((list) => list.map((image) => image.getAttribute("src") ?? ""));
+    const labels = await sections.locator("[aria-label]").evaluateAll((list) => list.map((element) => element.getAttribute("aria-label") ?? ""));
+    const meta = await page.evaluate(() => [
+      document.title,
+      ...[...document.querySelectorAll('meta[name="description"], meta[property^="og:"], meta[name^="twitter:"]')].map(
+        (tag) => tag.getAttribute("content") ?? "",
+      ),
+    ]);
+    // Guards against checking nothing: the page is much bigger than this.
     expect(text.length).toBeGreaterThan(4000);
-    const banned = /\b(ads?|advert\w*|purchas\w*|in-app|subscription|premium|upgrad\w*|paywall|chips?|coins?|buy|shop|free[- ]to[- ]play)\b/i;
-    expect(text).not.toMatch(banned);
-    expect(alts).not.toMatch(banned);
+    expect(alts.length).toBeGreaterThan(15);
+    expect(files.length).toBeGreaterThan(40);
+    expect(meta.length).toBeGreaterThan(5);
+
+    // Ads, purchases, upgrades and the game's own paid-feature words (its x2 "boost" is an ad and subscription perk).
+    const banned =
+      /\b(ads?|advert\w*|purchas\w*|in-app|iap|subscri\w*|premium|upgrad\w*|paywall|chips?|coins?|gems?|currenc\w*|buy\w*|shop\w*|boost\w*|overclock|founder pass|vc backing|board seat|server uptime|starter pack|free[- ]to[- ]play)\b|\$\d/i;
+    // Features the app does not have yet.
+    const notYet = /weekly (deepest[- ]layer )?board|content drops?|titles? other players|new model famil\w*/i;
+    const surfaces = { text, alts: alts.join("\n"), labels: labels.join("\n"), files: files.join("\n"), meta: meta.join("\n") };
+    for (const [name, value] of Object.entries(surfaces)) {
+      expect(value, `${name} mentions a banned topic`).not.toMatch(banned);
+      expect(value, `${name} mentions a feature the app lacks`).not.toMatch(notYet);
+    }
   });
 
   test("the hero link jumps to the gameplay section below the sticky header", async ({ page }) => {
@@ -252,7 +273,8 @@ test.describe("Garage to AGI page", () => {
     await page.goto(GAME);
     const sources = await page.evaluate(() => [...new Set([...document.images].map((image) => image.getAttribute("src") ?? ""))]);
     expect(sources.length).toBeGreaterThan(40);
-    for (const src of [...sources, "/fonts/jersey-10.woff2"]) {
+    // The share card uses the full-size icon, which no <img> shows.
+    for (const src of [...sources, "/assets/idle-ai-tycoon/icon-512.png", "/fonts/jersey-10.woff2"]) {
       const response = await request.get(src);
       expect(response.status(), `${src} did not load`).toBe(200);
     }
@@ -272,9 +294,20 @@ test.describe("Garage to AGI page", () => {
 
   test("the pixel font is preloaded on this page only", async ({ page }) => {
     await page.goto(GAME);
-    await expect(page.locator('head link[rel="preload"][href="/fonts/jersey-10.woff2"]')).toHaveCount(1);
+    // Without `crossorigin` a font preload is fetched twice.
+    await expect(
+      page.locator('head link[rel="preload"][as="font"][type="font/woff2"][crossorigin][href="/fonts/jersey-10.woff2"]'),
+    ).toHaveCount(1);
     await page.goto("/");
     await expect(page.locator('link[href="/fonts/jersey-10.woff2"]')).toHaveCount(0);
+  });
+
+  test("the loss-spike picture and the hidden minds have text for assistive tech", async ({ page }) => {
+    await page.goto(GAME);
+    const picture = page.getByRole("img", { name: /LOSS SPIKE!.*ROLL BACK: Safe: lose 8% progress.*PUSH THROUGH: 50%: \+3 BENCH/ });
+    await expect(picture).toBeVisible();
+    // Three minds are still hidden; each is announced as not found yet, not as "???".
+    await expect(page.getByText("Not found yet.")).toHaveCount(3);
   });
 });
 

@@ -1,4 +1,4 @@
-import { anchors, events, eventsIntro } from "@/content/idle-ai-tycoon";
+import { anchors, events, sections } from "@/content/idle-ai-tycoon";
 import styles from "./game.module.css";
 import { PixelImage } from "./pixel-image";
 import { SectionHeading } from "./section-heading";
@@ -7,9 +7,7 @@ export function EventsSection() {
   return (
     <section id={anchors.events} className={styles.section} aria-labelledby="events-title">
       <div className={styles.inner}>
-        <SectionHeading id="events-title" eyebrow="Weekend events" title="A new event every weekend.">
-          {eventsIntro}
-        </SectionHeading>
+        <SectionHeading id="events-title" {...sections.events} />
 
         <ul className={styles.events}>
           {events.map((event) => (

@@ -1,13 +1,18 @@
-import { agiMoment, anchors, away, founder, lossSpike, surprises, viralPosts } from "@/content/idle-ai-tycoon";
+import { agiMoment, anchors, away, founder, lossSpike, sections, surprises, viralPosts } from "@/content/idle-ai-tycoon";
 import styles from "./game.module.css";
 import { PixelImage, Sprite } from "./pixel-image";
 import { SectionHeading } from "./section-heading";
 
-/** The training-incident dialog, rebuilt from the game's own screen. It is a picture, so it is hidden from assistive tech. */
+/**
+ * The training-incident dialog, rebuilt from the game's own screen. It is a picture, not a control: the label gives
+ * assistive tech the same words and numbers the picture shows.
+ */
 function LossSpikeDialog() {
   const { dialog } = lossSpike;
+  const label = `${dialog.title} ${dialog.sub}. ${dialog.rollBack.title}: ${dialog.rollBack.sub}. ${dialog.pushThrough.title}: ${dialog.pushThrough.sub}.`;
+
   return (
-    <div className={styles.featureStage} aria-hidden="true">
+    <div className={styles.featureStage} role="img" aria-label={label}>
       <div className={styles.dialog}>
         <div className={styles.dialogHead}>
           <PixelImage file="icon-warn.png" width={16} height={16} />
@@ -34,9 +39,7 @@ export function MomentsSection() {
   return (
     <section id={anchors.moments} className={styles.section} aria-labelledby="moments-title">
       <div className={styles.inner}>
-        <SectionHeading id="moments-title" eyebrow="Moments" title="Small decisions that break up the idle.">
-          Between the numbers, the lab keeps surprising you.
-        </SectionHeading>
+        <SectionHeading id="moments-title" {...sections.moments} />
 
         <div className={styles.stack}>
           <div className={`${styles.feature} dt-reveal-50`}>

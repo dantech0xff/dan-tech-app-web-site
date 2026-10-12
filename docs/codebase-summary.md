@@ -51,7 +51,7 @@ reach pages that do not use them. See [design-guidelines.md](design-guidelines.m
 ## Content
 
 Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and socials, `home.ts`,
-`products.ts`, `faq.ts`, `idle-ai-tycoon.ts` for the whole game page); one-off prose stays in the page components.
+`products.ts`, `faq.ts`, `idle-ai-tycoon.ts` for every word of the game page); one-off prose stays in the page components.
 
 ## Tests (`tests/`)
 
