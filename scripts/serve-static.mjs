@@ -19,6 +19,8 @@ const CONTENT_TYPES = {
   ".txt": "text/plain; charset=utf-8",
   ".xml": "application/xml",
   ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
   ".webp": "image/webp",
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",

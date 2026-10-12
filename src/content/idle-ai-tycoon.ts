@@ -36,8 +36,15 @@ export const game = {
     size: 256,
     alt: "Garage to AGI app icon: the founder in a golden hoodie and sunglasses, with a small neon AGI brain beside the head",
   },
-  /** The share card (Open Graph) uses the full 512px icon. */
-  shareImage: { url: art("icon-512.png"), width: 512, height: 512 },
+  /** The full-size icon, for the structured data. */
+  iconFull: art("icon-512.png"),
+  /** The share card, 1200x630 (made by `npm run share-images`): the title over the garage, with the icon. */
+  shareImage: {
+    url: "/assets/share/idle-ai-tycoon.png",
+    width: 1200,
+    height: 630,
+    alt: "Garage to AGI: Idle AI Tycoon, with the pixel-art garage lab and the app icon below the title.",
+  },
   /** The training strip under the hero scene, as the Model tab shows a run. */
   hud: { label: "PEBBLE-4 · TRAINING", percent: 44, meta: "70B PARAMS · ETA 25M 12S" },
 } as const;

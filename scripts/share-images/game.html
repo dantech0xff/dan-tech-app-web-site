@@ -1,0 +1,96 @@
+<!doctype html>
+<!--
+  Share image of /idle-ai-tycoon/ (1200x630), rendered by scripts/make-share-images.mjs.
+  The title band follows the game's own feature-graphic idea (navy, the garage scene along the bottom edge, the title in
+  Jersey 10). The text is only the game's name and genre: nothing about prices, ads or release, so the image never goes
+  stale. Pixel art is scaled by whole numbers: the scene x10 (cropped at the edges), the icon x6.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=block" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: "Jersey 10";
+      src: url("../../public/fonts/jersey-10.woff2") format("woff2");
+      font-display: block;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; background: #1A1C2C; }
+    .canvas { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #1A1C2C; }
+
+    /* The garage at x10: 1280x480, centred, so 40px of each side is cropped. */
+    .scene {
+      position: absolute;
+      left: -40px;
+      bottom: 0;
+      width: 1280px;
+      height: 480px;
+      image-rendering: pixelated;
+    }
+    /* The wall fades into the night sky behind the title. */
+    .fade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, #1A1C2C 0, #1A1C2C 168px, rgba(26,28,44,0.88) 214px, rgba(26,28,44,0.45) 270px, rgba(26,28,44,0) 340px),
+        radial-gradient(ellipse 60% 70% at 80% 6%, rgba(255,205,117,0.16), transparent 70%);
+    }
+    /* A soft vignette keeps the corners calm. */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 85% at 50% 55%, transparent 55%, rgba(26,28,44,0.55) 100%);
+    }
+
+    .kicker {
+      position: absolute;
+      left: 64px;
+      top: 42px;
+      font: 500 22px/1 "IBM Plex Mono", monospace;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #94B0C2;
+    }
+    .title {
+      position: absolute;
+      left: 60px;
+      top: 78px;
+      white-space: nowrap;
+      font: 400 156px/0.84 "Jersey 10", monospace;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: #F4F4F4;
+      text-shadow: 0 8px 0 rgba(0,0,0,0.35);
+    }
+    .title .agi {
+      color: #A7F070;
+      text-shadow: 0 0 36px rgba(167,240,112,0.45), 0 8px 0 rgba(0,0,0,0.35);
+    }
+
+    /* The app icon: 32x32 art, so 192px is exactly x6. */
+    .icon {
+      position: absolute;
+      right: 64px;
+      top: 40px;
+      width: 192px;
+      height: 192px;
+      border-radius: 22%;
+      image-rendering: pixelated;
+      box-shadow: 0 24px 60px rgba(255,205,117,0.4), 0 0 0 4px rgba(244,244,244,0.12);
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <img class="scene" src="../../public/assets/idle-ai-tycoon/scene-garage.png" alt="" />
+    <div class="fade"></div>
+    <div class="vignette"></div>
+    <div class="kicker">Idle AI tycoon · Pixel art</div>
+    <div class="title">Garage to <span class="agi">AGI</span></div>
+    <img class="icon" src="../../public/assets/idle-ai-tycoon/icon-512.png" alt="" />
+  </div>
+</body>
+</html>

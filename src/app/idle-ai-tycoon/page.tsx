@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMetadata({
   title: game.title,
   description: pageDescriptions[routes.idleAiTycoon],
   path: routes.idleAiTycoon,
-  image: { ...game.shareImage, alt: game.icon.alt },
+  image: game.shareImage,
 });
 
 export default function IdleAiTycoonPage() {

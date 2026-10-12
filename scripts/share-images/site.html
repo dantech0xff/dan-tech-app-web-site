@@ -1,0 +1,158 @@
+<!doctype html>
+<!--
+  Share image of the studio, used by every page that has none of its own (1200x630), rendered by
+  scripts/make-share-images.mjs. It is the home hero, tightened for a card: the dotted dark ground, the headline and
+  the two apps' phones, with the brand lockup on top. Sizes follow the hero's CSS (src/components/home/home.module.css,
+  phone-mockup.module.css, brand-lockup.module.css) scaled up so the headline reads in a small preview.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=block"
+    rel="stylesheet"
+  />
+  <style>
+    @font-face {
+      font-family: "Material Symbols Outlined";
+      font-style: normal;
+      font-weight: 300 500;
+      src: url("../../public/fonts/material-symbols-outlined.woff2") format("woff2");
+      font-display: block;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; background: #16161A; }
+
+    .canvas {
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      color: #FAFAFC;
+      background-color: #16161A;
+      background-image: radial-gradient(circle at center, rgba(250,250,252,0.085) 0 1.4px, transparent 1.4px);
+      background-size: 34px 34px;
+      font-family: "Be Vietnam Pro", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 74% 38%, rgba(10,132,255,0.16), transparent 70%),
+        linear-gradient(to bottom, transparent 78%, rgba(22,22,26,0.7));
+    }
+
+    /* Brand lockup, as in the header. */
+    .lockup { position: absolute; left: 64px; top: 48px; display: flex; align-items: center; gap: 14px; }
+    .lockup img { width: 46px; height: 46px; border-radius: 11px; display: block; }
+    .wordmark { display: flex; align-items: baseline; gap: 10px; }
+    .name { font: 500 33px/1 "Be Vietnam Pro", sans-serif; letter-spacing: -0.04em; }
+    .suffix { font: 400 17px/1 "IBM Plex Mono", monospace; letter-spacing: 0.06em; color: #0A84FF; }
+
+    .copy { position: absolute; left: 64px; top: 150px; width: 580px; }
+    .headline { font: 700 92px/0.98 "Be Vietnam Pro", sans-serif; letter-spacing: -0.035em; }
+    .lead { margin-top: 30px; font: 400 29px/1.45 "Be Vietnam Pro", sans-serif; color: rgba(250,250,252,0.72); }
+
+    /* Phones: the home hero's frame and tilt, a little bigger, bleeding off the bottom edge. */
+    .phone {
+      position: absolute;
+      width: 300px;
+      aspect-ratio: 9 / 19.3;
+      padding: 11px;
+      border-radius: 46px;
+      background: #0B0B0E;
+      box-shadow: 0 40px 90px rgba(0,0,0,0.65), 0 0 0 1px rgba(250,250,252,0.14);
+    }
+    .phone img.screen {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 36px;
+    }
+    .status {
+      position: absolute;
+      top: 25px;
+      left: 34px;
+      right: 34px;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .time { font: 600 15px/1 "Be Vietnam Pro", sans-serif; }
+    .indicators { display: flex; align-items: center; gap: 4px; }
+    .mi {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      font-feature-settings: "liga";
+      font-variation-settings: "FILL" 1;
+      font-size: 17px;
+    }
+    .mi.battery { transform: rotate(90deg); font-size: 19px; }
+    .ink-dark { color: #4A1530; }
+    .ink-light { color: #FAFAFC; }
+
+    .back { left: 640px; top: 118px; transform: rotate(-6deg); z-index: 1; }
+    .front { left: 846px; top: 168px; transform: rotate(5deg); z-index: 3; }
+
+    /* The Duoly icon floats behind the front phone, as on the home page. */
+    .app-icon {
+      position: absolute;
+      left: 1006px;
+      top: 62px;
+      width: 124px;
+      height: 124px;
+      border-radius: 26%;
+      overflow: hidden;
+      z-index: 2;
+      transform: rotate(-8deg);
+      box-shadow: 0 24px 50px rgba(255,77,121,0.4);
+    }
+    .app-icon img { display: block; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="glow"></div>
+
+    <div class="lockup">
+      <img src="../../public/assets/dantech-mark.png" alt="" />
+      <div class="wordmark"><span class="name">dan tech</span><span class="suffix">indiv.</span></div>
+    </div>
+
+    <div class="copy">
+      <div class="headline">Apps make life more convenient.</div>
+      <div class="lead">A one-person studio from Vietnam.</div>
+    </div>
+
+    <div class="app-icon"><img src="../../public/assets/duoly-icon.png" alt="" /></div>
+
+    <div class="phone back">
+      <div class="status ink-dark">
+        <span class="time">9:41</span>
+        <span class="indicators"><span class="mi">signal_cellular_alt</span><span class="mi">wifi</span><span class="mi battery">battery_full</span></span>
+      </div>
+      <img class="screen" src="../../public/assets/duoly-screen-today.png" alt="" />
+    </div>
+
+    <div class="phone front">
+      <div class="status ink-light">
+        <span class="time">9:41</span>
+        <span class="indicators"><span class="mi">signal_cellular_alt</span><span class="mi">wifi</span><span class="mi battery">battery_full</span></span>
+      </div>
+      <img class="screen" src="../../public/assets/kimtai-screen-ledger.png" alt="" />
+    </div>
+  </div>
+</body>
+</html>

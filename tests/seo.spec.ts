@@ -72,7 +72,8 @@ test("titles, descriptions and share tags are complete, consistent and unique", 
     expect(await share("og:title"), `${url} og:title`).toBe(title);
     expect(await share("og:description"), `${url} og:description`).toBe(description);
     expect(await share("og:url"), `${url} og:url`).toBe(url);
-    await expect(page.locator('meta[name="twitter:card"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute("content", await share("og:image"));
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /\bindex\b/);
 
     const image = await share("og:image");
@@ -81,6 +82,36 @@ test("titles, descriptions and share tags are complete, consistent and unique", 
 
     expect(titles.has(title), `${url} repeats the title of ${titles.get(title)}`).toBe(false);
     titles.set(title, url);
+  }
+});
+
+test("share cards are 1200x630 pictures small enough for every app", async ({ page, request }) => {
+  await page.goto("/");
+  const cards = new Set<string>();
+  for (const url of await sitemapUrls(request)) {
+    await page.goto(pathOf(url));
+    const image = await page.locator('meta[property="og:image"]').getAttribute("content");
+    expect(image, `${url} og:image`).toBeTruthy();
+    await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute("content", "1200");
+    await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute("content", "630");
+    cards.add(image!);
+  }
+  // The studio's card and the game's, at least.
+  expect(cards.size).toBeGreaterThanOrEqual(2);
+  for (const card of cards) {
+    const response = await request.get(pathOf(card));
+    expect(response.status(), card).toBe(200);
+    expect(response.headers()["content-type"], card).toMatch(/^image\/(png|jpeg)/);
+    // WhatsApp and some other apps drop a preview picture above about 300 KB.
+    expect((await response.body()).length, `${card} size`).toBeLessThanOrEqual(300 * 1024);
+    // Decoded by the browser, so PNG and JPEG are checked the same way.
+    const size = await page.evaluate(async (src) => {
+      const picture = new Image();
+      picture.src = src;
+      await picture.decode();
+      return [picture.naturalWidth, picture.naturalHeight];
+    }, pathOf(card));
+    expect(size, `${card} dimensions`).toEqual([1200, 630]);
   }
 });
 

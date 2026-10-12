@@ -10,7 +10,8 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "playwright test",
-    "icons:update": "node scripts/update-icon-font.mjs"
+    "icons:update": "node scripts/update-icon-font.mjs",
+    "share-images": "node scripts/make-share-images.mjs"
   },
   "dependencies": {
     "next": "16.4.0",

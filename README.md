@@ -28,6 +28,7 @@ npm run dev        # http://localhost:3000
 | `npm test` | Builds, serves and runs the Playwright suite (desktop + mobile). |
 | `npm run clean` | Removes build and test output. |
 | `npm run icons:update` | Re-downloads the icon font subset after an icon is added or removed (list in `scripts/update-icon-font.mjs`). |
+| `npm run share-images` | Re-renders the 1200×630 share cards in `public/assets/share/` from the HTML templates in `scripts/share-images/` (needs the network for Google Fonts). Commit the result. |
 
 Playwright needs its Chromium build once: `npx playwright install chromium`.
 
@@ -54,6 +55,7 @@ Everything search engines read is generated when the site is built, so it is alr
 - `sitemap.xml` and `robots.txt` come from `src/app/sitemap.ts` and `src/app/robots.ts`. The sitemap lists every route in `src/lib/routes.ts`, so a new route is in it with no other step. It has no `lastmod` on purpose: the Docker build has no git history, so there is no honest date, and search engines ignore a date that is not reliable.
 - Each page's title, description, canonical URL, Open Graph and Twitter cards and robots tags come from `pageMetadata()` in `src/lib/metadata.ts`. The 404 page keeps its `noindex`.
 - Structured data (schema.org JSON-LD) is written by `src/lib/structured-data.ts` from the site's own content: the studio and the website on every page, a breadcrumb trail on every inner page, the two apps on Products, every question on FAQ and the game on its page. It states no ratings, no counts and no offer for the game.
+- Share cards: `public/assets/share/site.jpg` (the studio, used by every page that has no card of its own) and `idle-ai-tycoon.png`, both 1200×630 and under 300 KB, with the `summary_large_image` Twitter card. `npm run share-images` renders them from `scripts/share-images/site.html` and `game.html` with the project's Playwright Chromium; a page picks its own with `pageMetadata({ image })`.
 - `llms.txt` (the llmstxt.org guide for language models) is written to `out/llms.txt` by `src/app/llms.txt/route.ts` from `src/lib/llms.ts`: a summary of the studio, the apps with their store listings, every page with its description, and the policies. It leaves the email address out on purpose: the live site's host hides it from scrapers in the page.
 - `tests/seo.spec.ts`, `tests/structured-data.unit.spec.ts` and `tests/llms.unit.spec.ts` check all of it on every page the sitemap lists.
 

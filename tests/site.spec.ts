@@ -198,7 +198,7 @@ test("newsletter falls back to an email request without an endpoint", async ({ p
 test.describe("Garage to AGI page", () => {
   const GAME = "/idle-ai-tycoon/";
 
-  test("shares the game's icon, title and URL", async ({ page }) => {
+  test("shares the game's card, title and URL", async ({ page }) => {
     await page.goto(GAME);
     await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
       "content",
@@ -208,13 +208,17 @@ test.describe("Garage to AGI page", () => {
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://dantech.app/idle-ai-tycoon/");
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
-      "https://dantech.app/assets/idle-ai-tycoon/icon-512.png",
+      "https://dantech.app/assets/share/idle-ai-tycoon.png",
+    );
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+      "content",
+      "https://dantech.app/assets/share/idle-ai-tycoon.png",
     );
   });
 
-  test("other pages keep sharing the studio mark", async ({ page }) => {
+  test("other pages share the studio's card", async ({ page }) => {
     await page.goto("/about/");
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://dantech.app/assets/dantech-mark.png");
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://dantech.app/assets/share/site.jpg");
   });
 
   test("is listed in the sitemap", async ({ request }) => {

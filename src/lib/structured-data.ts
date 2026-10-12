@@ -124,7 +124,8 @@ export function gamePage() {
     description: game.description,
     url,
     mainEntityOfPage: url,
-    image: abs(game.shareImage.url),
+    // The square icon and the 1.91:1 card, so a result can use whichever shape it needs.
+    image: [abs(game.iconFull), abs(game.shareImage.url)],
     genre: game.genres,
     applicationCategory: "GameApplication",
     operatingSystem: "Android",
