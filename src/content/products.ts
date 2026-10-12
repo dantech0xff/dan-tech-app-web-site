@@ -5,6 +5,25 @@ export type Feature = {
   text: string;
 };
 
+/** What each app is called and how it describes itself; the products page and its structured data both read this. */
+export const apps = {
+  duoly: {
+    name: "Duoly in Love",
+    pitch:
+      "A private, gentle space for one couple — a daily ritual for keeping the small moments and staying connected. Not a social network, not a tracker.",
+    icon: "/assets/duoly-icon.png",
+    /** schema.org applicationCategory. */
+    category: "LifestyleApplication",
+  },
+  kimTai: {
+    name: "Kim Tài · Tick Vàng Online",
+    pitch:
+      "Your gold book, in your pocket. Know what you hold and what it is worth — a tracking tool, not an invitation to invest.",
+    icon: "/assets/kimtai-icon.png",
+    category: "FinanceApplication",
+  },
+} as const;
+
 export const duolyFeatures: Feature[] = [
   { icon: "favorite", title: "Count your days together", text: "Total days, years–months–days, or your start date. Tap to switch." },
   { icon: "auto_stories", title: "Story & notes", text: "A line or a page, with photos. Memories settle into a warm wall." },

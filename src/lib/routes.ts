@@ -12,6 +12,18 @@ export const routes = {
 
 export type SitePath = (typeof routes)[keyof typeof routes];
 
+/** Name of each page in breadcrumbs. A page's <title> starts with its name (the home page has its own title). */
+export const pageNames = {
+  [routes.home]: "Home",
+  [routes.products]: "Products",
+  [routes.about]: "About",
+  [routes.contact]: "Contact",
+  [routes.faq]: "FAQ",
+  [routes.privacy]: "Privacy Policy",
+  [routes.terms]: "Terms of Service",
+  [routes.idleAiTycoon]: "Garage to AGI",
+} satisfies Record<SitePath, string>;
+
 /** Section ids on /products that the rest of the site deep-links into. */
 export const productAnchors = {
   duoly: "duoly",

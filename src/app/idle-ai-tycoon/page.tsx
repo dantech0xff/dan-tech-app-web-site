@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { preload } from "react-dom";
 import { NewsletterSection } from "@/components/home/newsletter-section";
+import { JsonLd } from "@/components/json-ld";
 import { CollectSection } from "@/components/idle-ai-tycoon/collect-section";
 import { EventsSection } from "@/components/idle-ai-tycoon/events-section";
 import { GameHero } from "@/components/idle-ai-tycoon/game-hero";
@@ -11,6 +12,7 @@ import { WorldsSection } from "@/components/idle-ai-tycoon/worlds-section";
 import { game } from "@/content/idle-ai-tycoon";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { breadcrumbs, gamePage } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: game.title,
@@ -25,6 +27,8 @@ export default function IdleAiTycoonPage() {
 
   return (
     <main className={styles.page}>
+      <JsonLd data={breadcrumbs(routes.idleAiTycoon)} />
+      <JsonLd data={gamePage()} />
       <GameHero />
       <GameplaySection />
       <WorldsSection />

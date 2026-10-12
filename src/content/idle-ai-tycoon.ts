@@ -24,6 +24,8 @@ export const game = {
   titleLines: ["Garage to", "AGI"],
   /** Parts of the line above the headline; each part stays on one line when it wraps. */
   kicker: ["Idle AI tycoon", "Pixel art", "Portrait"],
+  /** schema.org genre of the game (the store category is Simulation). */
+  genres: ["Idle", "Tycoon", "Simulation"],
   lead: "Start with a wrapper app and a server rack in a garage. Grow it into the lab that builds AGI, then dive through a simulation all the way to Layer 100.",
   /** Change this line (and add the store link) when the Google Play listing goes live. */
   status: "Coming soon to Google Play",

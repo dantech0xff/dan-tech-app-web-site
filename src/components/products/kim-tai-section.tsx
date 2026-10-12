@@ -1,5 +1,5 @@
 import { PhoneMockup } from "@/components/phone-mockup";
-import { kimTaiFeatures } from "@/content/products";
+import { apps, kimTaiFeatures } from "@/content/products";
 import { storeLinks } from "@/content/site";
 import { productAnchors } from "@/lib/routes";
 import { FeatureList, ProductIntro, StoreButton } from "./product-parts";
@@ -28,14 +28,11 @@ export function KimTaiSection() {
         <div className={`${styles.copy} dt-reveal-50`}>
           <ProductIntro
             accent="kimTai"
-            icon="/assets/kimtai-icon.png"
+            icon={apps.kimTai.icon}
             eyebrow="02 · Personal finance"
-            title="Kim Tài · Tick Vàng Online"
+            title={apps.kimTai.name}
           />
-          <p className={styles.pitch}>
-            Your gold book, in your pocket. Know what you hold and what it is worth — a tracking tool, not an invitation
-            to invest.
-          </p>
+          <p className={styles.pitch}>{apps.kimTai.pitch}</p>
           <FeatureList accent="kimTai" features={kimTaiFeatures} />
           <div className={styles.actions}>
             <StoreButton store="appStore" href={storeLinks.kimTaiAppStore} />

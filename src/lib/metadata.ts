@@ -4,6 +4,13 @@ import type { SitePath } from "./routes";
 
 export const HOME_TITLE = "Dan Tech Indiv. — Apps make life more convenient";
 
+/** Lets search results use large image previews and full snippets. Only pages built with `pageMetadata` get it, so the 404 page keeps its noindex. */
+const ROBOTS: Metadata["robots"] = {
+  index: true,
+  follow: true,
+  googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+};
+
 type ShareImage = { url: string; width: number; height: number; alt: string };
 
 const SHARE_IMAGE: ShareImage = { url: "/assets/dantech-mark.png", width: 512, height: 512, alt: "Dan Tech" };
@@ -27,6 +34,7 @@ export function pageMetadata({ title, description, path, image = SHARE_IMAGE }: 
   return {
     ...(title ? { title } : {}),
     description,
+    robots: ROBOTS,
     alternates: { canonical: path },
     openGraph: {
       type: "website",

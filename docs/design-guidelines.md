@@ -34,6 +34,7 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
 - **Status.** The game is not on Google Play production yet, so the hero says "Coming soon to Google Play" and links no
   store, with no promise of an iPhone release. When it is live, change `game.status`, and add a `StoreButton` (see
   `components/products/product-parts.tsx`) to the hero; the test "says the game is not out yet" then needs updating.
+- **Structured data.** `gamePage()` in `src/lib/structured-data.ts` marks the page up as a `VideoGame` from the same content file and states no offer, rating or release date; the banned-word test scans it like the visible copy.
 - **Palette.** The game's own (Sweetie 16), declared on `.page` in `game.module.css`: `--g-ink #1A1C2C`, `--g-panel #333C57`,
   `--g-lime #A7F070`, `--g-gold #FFCD75`, `--g-orange #EF7D57`, `--g-blue #41A6F6` and the rest. Rarity frames use the game's
   colours (Common `#94B0C2`, Rare `#41A6F6`, Epic `#B13E53`, Legendary `#FFCD75`). Everything else is the site's tokens.

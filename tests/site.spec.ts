@@ -243,8 +243,11 @@ test.describe("Garage to AGI page", () => {
         (tag) => tag.getAttribute("content") ?? "",
       ),
     ]);
+    // The structured data is public metadata too: the same words must stay out of it.
+    const jsonLd = (await page.locator('script[type="application/ld+json"]').allTextContents()).join("\n");
     // Guards against checking nothing: the page is much bigger than this.
     expect(text.length).toBeGreaterThan(4000);
+    expect(jsonLd.length).toBeGreaterThan(1500);
     expect(alts.length).toBeGreaterThan(15);
     expect(files.length).toBeGreaterThan(40);
     expect(meta.length).toBeGreaterThan(5);
@@ -254,7 +257,7 @@ test.describe("Garage to AGI page", () => {
       /\b(ads?|advert\w*|purchas\w*|in-app|iap|subscri\w*|premium|upgrad\w*|paywall|chips?|coins?|gems?|currenc\w*|buy\w*|shop\w*|boost\w*|overclock|founder pass|vc backing|board seat|server uptime|starter pack|free[- ]to[- ]play)\b|\$\d/i;
     // Features the app does not have yet.
     const notYet = /weekly (deepest[- ]layer )?board|content drops?|titles? other players|new model famil\w*/i;
-    const surfaces = { text, alts: alts.join("\n"), labels: labels.join("\n"), files: files.join("\n"), meta: meta.join("\n") };
+    const surfaces = { text, alts: alts.join("\n"), labels: labels.join("\n"), files: files.join("\n"), meta: meta.join("\n"), jsonLd };
     for (const [name, value] of Object.entries(surfaces)) {
       expect(value, `${name} mentions a banned topic`).not.toMatch(banned);
       expect(value, `${name} mentions a feature the app lacks`).not.toMatch(notYet);

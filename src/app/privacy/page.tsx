@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/json-ld";
 import { LegalDocument, type LegalClause } from "@/components/legal-document";
 import { SiteLink } from "@/components/site-link";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { breadcrumbs } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
@@ -63,15 +65,18 @@ const CLAUSES: LegalClause[] = [
 
 export default function PrivacyPage() {
   return (
-    <LegalDocument
-      title="Privacy Policy"
-      effective="11 October 2026"
-      clauses={CLAUSES}
-      seeAlso={
-        <>
-          See also the <SiteLink href={routes.terms}>Terms of Service</SiteLink>.
-        </>
-      }
-    />
+    <>
+      <JsonLd data={breadcrumbs(routes.privacy)} />
+      <LegalDocument
+        title="Privacy Policy"
+        effective="11 October 2026"
+        clauses={CLAUSES}
+        seeAlso={
+          <>
+            See also the <SiteLink href={routes.terms}>Terms of Service</SiteLink>.
+          </>
+        }
+      />
+    </>
   );
 }

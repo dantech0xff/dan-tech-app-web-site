@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { FaqList } from "@/components/faq-list";
+import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { breadcrumbs, faqPage } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "FAQ",
@@ -14,6 +16,8 @@ export const metadata: Metadata = pageMetadata({
 export default function FaqPage() {
   return (
     <main>
+      <JsonLd data={breadcrumbs(routes.faq)} />
+      <JsonLd data={faqPage()} />
       <PageHero
         title="Quick answers."
         lead={

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { DuolySection } from "@/components/products/duoly-section";
 import { EarlierWorkSection } from "@/components/products/earlier-work-section";
@@ -7,6 +8,7 @@ import styles from "@/components/products/products.module.css";
 import { SiteLink } from "@/components/site-link";
 import { pageMetadata } from "@/lib/metadata";
 import { productAnchors, routes } from "@/lib/routes";
+import { breadcrumbs, productsGraph } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Products",
@@ -22,6 +24,8 @@ const CHIPS = [
 export default function ProductsPage() {
   return (
     <main>
+      <JsonLd data={breadcrumbs(routes.products)} />
+      <JsonLd data={productsGraph()} />
       <PageHero
         compact
         narrowTitle

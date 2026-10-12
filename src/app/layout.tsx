@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro, IBM_Plex_Mono } from "next/font/google";
+import { JsonLd } from "@/components/json-ld";
 import { ScrollOnNavigate } from "@/components/scroll-on-navigate";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/content/site";
 import { HOME_TITLE } from "@/lib/metadata";
+import { siteGraph } from "@/lib/structured-data";
 import "./globals.css";
 
 // Self-hosted at build time. globals.css references the families by name rather
@@ -43,6 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <link rel="preload" href="/fonts/material-symbols-outlined.woff2" as="font" type="font/woff2" crossOrigin="" />
       </head>
       <body>
+        <JsonLd data={siteGraph()} />
         <SiteHeader />
         {children}
         <SiteFooter />

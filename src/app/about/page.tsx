@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/icon";
+import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { SiteLink } from "@/components/site-link";
 import ui from "@/components/ui.module.css";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { breadcrumbs } from "@/lib/structured-data";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -59,6 +61,7 @@ const TOOLS = [
 export default function AboutPage() {
   return (
     <main>
+      <JsonLd data={breadcrumbs(routes.about)} />
       <PageHero
         narrowTitle
         wideLead

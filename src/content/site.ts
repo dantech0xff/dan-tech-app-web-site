@@ -1,5 +1,8 @@
 export const site = {
   name: "Dan Tech Indiv.",
+  /** The brand as the header lockup writes it ("dan tech"). */
+  shortName: "Dan Tech",
+  founder: "Danh Tran",
   url: "https://dantech.app",
   email: "admin@dantech.app",
   description:

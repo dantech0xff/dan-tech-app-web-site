@@ -1,3 +1,5 @@
+import { site } from "./site";
+
 export type FaqGroup = {
   /** Short key; combined with the item index it identifies an answer (e.g. "g0"). */
   key: string;
@@ -12,7 +14,7 @@ export const faqGroups: FaqGroup[] = [
     items: [
       {
         q: "What is Dan Tech Indiv.?",
-        a: "An independent, one-person software studio from Vietnam founded by Danh Tran. It builds and publishes consumer mobile apps: Duoly in Love and Kim Tài.",
+        a: `An independent, one-person software studio from Vietnam founded by ${site.founder}. It builds and publishes consumer mobile apps: Duoly in Love and Kim Tài.`,
       },
       {
         q: "Are the apps free?",

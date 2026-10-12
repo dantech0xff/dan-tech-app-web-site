@@ -1,5 +1,5 @@
 import { PhoneMockup } from "@/components/phone-mockup";
-import { duolyFeatures } from "@/content/products";
+import { apps, duolyFeatures } from "@/content/products";
 import { storeLinks } from "@/content/site";
 import { productAnchors } from "@/lib/routes";
 import { FeatureList, ProductIntro, StoreButton } from "./product-parts";
@@ -12,14 +12,11 @@ export function DuolySection() {
         <div className={`${styles.copy} dt-reveal-50`}>
           <ProductIntro
             accent="duoly"
-            icon="/assets/duoly-icon.png"
+            icon={apps.duoly.icon}
             eyebrow="01 · For couples · formerly Amor AI"
-            title="Duoly in Love"
+            title={apps.duoly.name}
           />
-          <p className={styles.pitch}>
-            A private, gentle space for one couple — a daily ritual for keeping the small moments and staying
-            connected. Not a social network, not a tracker.
-          </p>
+          <p className={styles.pitch}>{apps.duoly.pitch}</p>
           <FeatureList accent="duoly" features={duolyFeatures} />
           <div className={styles.actions}>
             <StoreButton store="googlePlay" href={storeLinks.duolyGooglePlay} />

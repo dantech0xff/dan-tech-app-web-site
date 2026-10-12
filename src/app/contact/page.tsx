@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { Icon } from "@/components/icon";
+import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { SiteLink } from "@/components/site-link";
 import { site, social } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { breadcrumbs } from "@/lib/structured-data";
 import styles from "./contact.module.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -19,6 +21,7 @@ const CHANNELS = [social.telegram, social.facebook, social.linkedin, social.gith
 export default function ContactPage() {
   return (
     <main>
+      <JsonLd data={breadcrumbs(routes.contact)} />
       <PageHero
         title="Talk to Dan."
         lead="Partnerships, press, support or hiring. One inbox, read by the person who built the apps. Replies within 2–3 working days."

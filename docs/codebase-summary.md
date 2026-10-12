@@ -36,6 +36,15 @@ navigation finds no intent for its path, so the browser's own scroll restoration
 `src/lib/metadata.ts` builds each page's title, description, canonical URL and Open Graph/Twitter cards. A page about
 one product passes its own `image` for the share card (the game page uses the app icon); the others share the studio mark.
 
+## SEO and structured data
+
+All of it is produced at build time and lands in the static HTML.
+
+- `src/app/sitemap.ts` lists `Object.values(routes)` (no `lastmod`, see the README) and `src/app/robots.ts` allows everything and names the sitemap. Both are `force-static`.
+- `pageMetadata()` also sets the robots tags (`index, follow` and Googlebot's large-preview directives). Only pages built with it get them, so `not-found.tsx` keeps Next's lone `noindex`; setting robots in the root layout gave the 404 page two conflicting tags.
+- `src/lib/structured-data.ts` builds the JSON-LD; `components/json-ld.tsx` writes it into a `<script type="application/ld+json">` (`toJsonLd` escapes `<`, so no value can close the tag). `layout.tsx` renders `siteGraph()` (Organization with its social profiles and the founder, plus WebSite) on every page, and pages add `breadcrumbs()`, `productsGraph()`, `faqPage()` or `gamePage()`. Page nodes refer to the studio by `@id`, which resolves on the same page.
+- `pageNames` in `src/lib/routes.ts` names each page in breadcrumbs; a page's `<title>` starts with its name (a test checks it). `apps` in `content/products.ts` is where the two apps' names and descriptions live, read by the products page and by the markup.
+
 ## Client components
 
 `nav-links.tsx` (active-page dot), `site-link.tsx`, `scroll-on-navigate.tsx`, `current-year.tsx`,
@@ -61,6 +70,7 @@ Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and so
   FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status. The game page has its own group: share
   card and sitemap entry, "coming soon" with no store link, no ads/purchase/upgrade words (text and alt texts), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
-- `mailto-and-newsletter.unit.spec.ts` — mailto builders and the endpoint client (no browser).
+- `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
+- `structured-data.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the mailto builders and the endpoint client.
 
 Runs on desktop Chrome and a Pixel 7 profile against the static export.
