@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FaqList } from "@/components/faq-list";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
+import { pageDescriptions } from "@/content/pages";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
@@ -9,7 +10,7 @@ import { breadcrumbs, faqPage } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "FAQ",
-  description: "Quick answers about the studio, Duoly in Love, Kim Tài and your account.",
+  description: pageDescriptions[routes.faq],
   path: routes.faq,
 });
 

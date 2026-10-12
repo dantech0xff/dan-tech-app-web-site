@@ -4,6 +4,7 @@ import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { SiteLink } from "@/components/site-link";
 import ui from "@/components/ui.module.css";
+import { pageDescriptions } from "@/content/pages";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 import { breadcrumbs } from "@/lib/structured-data";
@@ -11,8 +12,7 @@ import styles from "./about.module.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
-  description:
-    "Dan Tech Indiv. is an independent software studio from Vietnam. One founder designs, builds, ships and supports every product.",
+  description: pageDescriptions[routes.about],
   path: routes.about,
 });
 

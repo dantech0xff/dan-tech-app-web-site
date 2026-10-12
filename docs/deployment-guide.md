@@ -19,7 +19,7 @@ plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, icons, `assets/`, `f
 Production (`https://dantech.app`) runs on the self-hosted Dokploy at `deploy.dantech.academy` behind Cloudflare,
 like the owner's other apps. The repository `dantech0xff/dan-tech-app-web-site` (private) ships a `Dockerfile`: a
 Node 22 stage runs `npm ci` and `npm run build`, then `nginxinc/nginx-unprivileged:1.30-alpine` serves `out/` on
-port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404, gzip, immutable caching for
+port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404, UTF-8 charset on text files such as `llms.txt`, gzip, immutable caching for
 `/_next/static/` and `/fonts/`) and a `HEALTHCHECK`.
 
 A push to `main` reaches Dokploy through its GitHub App webhook (`https://deploy.dantech.academy/api/deploy/github`,

@@ -4,6 +4,7 @@ import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { SiteLink } from "@/components/site-link";
+import { pageDescriptions } from "@/content/pages";
 import { site, social } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
@@ -12,7 +13,7 @@ import styles from "./contact.module.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: "Partnerships, press, support or hiring. One inbox, read by the person who built the apps.",
+  description: pageDescriptions[routes.contact],
   path: routes.contact,
 });
 

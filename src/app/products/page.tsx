@@ -6,13 +6,14 @@ import { EarlierWorkSection } from "@/components/products/earlier-work-section";
 import { KimTaiSection } from "@/components/products/kim-tai-section";
 import styles from "@/components/products/products.module.css";
 import { SiteLink } from "@/components/site-link";
+import { pageDescriptions } from "@/content/pages";
 import { pageMetadata } from "@/lib/metadata";
 import { productAnchors, routes } from "@/lib/routes";
 import { breadcrumbs, productsGraph } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Products",
-  description: "Duoly in Love, Kim Tài · Tick Vàng Online and more — mobile apps built end-to-end by one person.",
+  description: pageDescriptions[routes.products],
   path: routes.products,
 });
 

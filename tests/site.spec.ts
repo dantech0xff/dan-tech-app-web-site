@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { BANNED, NOT_YET } from "./copy-rules";
 
 const PAGES = [
   { path: "/", title: /Apps make life more convenient/, heading: "Apps make life more convenient." },
@@ -252,15 +253,10 @@ test.describe("Garage to AGI page", () => {
     expect(files.length).toBeGreaterThan(40);
     expect(meta.length).toBeGreaterThan(5);
 
-    // Ads, purchases, upgrades and the game's own paid-feature words (its x2 "boost" is an ad and subscription perk).
-    const banned =
-      /\b(ads?|advert\w*|purchas\w*|in-app|iap|subscri\w*|premium|upgrad\w*|paywall|chips?|coins?|gems?|currenc\w*|buy\w*|shop\w*|boost\w*|overclock|founder pass|vc backing|board seat|server uptime|starter pack|free[- ]to[- ]play)\b|\$\d/i;
-    // Features the app does not have yet.
-    const notYet = /weekly (deepest[- ]layer )?board|content drops?|titles? other players|new model famil\w*/i;
     const surfaces = { text, alts: alts.join("\n"), labels: labels.join("\n"), files: files.join("\n"), meta: meta.join("\n"), jsonLd };
     for (const [name, value] of Object.entries(surfaces)) {
-      expect(value, `${name} mentions a banned topic`).not.toMatch(banned);
-      expect(value, `${name} mentions a feature the app lacks`).not.toMatch(notYet);
+      expect(value, `${name} mentions a banned topic`).not.toMatch(BANNED);
+      expect(value, `${name} mentions a feature the app lacks`).not.toMatch(NOT_YET);
     }
   });
 

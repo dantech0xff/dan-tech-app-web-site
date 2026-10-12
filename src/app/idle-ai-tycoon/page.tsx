@@ -10,13 +10,14 @@ import { GameplaySection } from "@/components/idle-ai-tycoon/gameplay-section";
 import { MomentsSection } from "@/components/idle-ai-tycoon/moments-section";
 import { WorldsSection } from "@/components/idle-ai-tycoon/worlds-section";
 import { game } from "@/content/idle-ai-tycoon";
+import { pageDescriptions } from "@/content/pages";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 import { breadcrumbs, gamePage } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: game.title,
-  description: game.description,
+  description: pageDescriptions[routes.idleAiTycoon],
   path: routes.idleAiTycoon,
   image: { ...game.shareImage, alt: game.icon.alt },
 });

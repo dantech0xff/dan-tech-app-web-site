@@ -36,6 +36,19 @@ test("robots.txt lets search engines in and names the sitemap", async ({ request
   expect(text).toContain(`Sitemap: ${ORIGIN}/sitemap.xml`);
 });
 
+test("llms.txt is UTF-8 text and every link to this site resolves", async ({ request }) => {
+  const response = await request.get("/llms.txt");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toMatch(/^text\/plain; charset=utf-8/i);
+  const text = await response.text();
+  expect(text, "accented letters must survive").toContain("Kim Tài");
+  const own = [...text.matchAll(/\]\((https:\/\/dantech\.app[^)\s]*)\)/g)].map((match) => match[1]);
+  expect(own.length).toBeGreaterThan(8);
+  for (const url of own) {
+    expect((await request.get(pathOf(url))).status(), `${url} should answer 200`).toBe(200);
+  }
+});
+
 test("every sitemap page is live and names itself as the canonical address", async ({ page, request }) => {
   for (const url of await sitemapUrls(request)) {
     expect((await request.get(pathOf(url))).status(), `${url} should answer 200`).toBe(200);

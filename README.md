@@ -54,9 +54,10 @@ Everything search engines read is generated when the site is built, so it is alr
 - `sitemap.xml` and `robots.txt` come from `src/app/sitemap.ts` and `src/app/robots.ts`. The sitemap lists every route in `src/lib/routes.ts`, so a new route is in it with no other step. It has no `lastmod` on purpose: the Docker build has no git history, so there is no honest date, and search engines ignore a date that is not reliable.
 - Each page's title, description, canonical URL, Open Graph and Twitter cards and robots tags come from `pageMetadata()` in `src/lib/metadata.ts`. The 404 page keeps its `noindex`.
 - Structured data (schema.org JSON-LD) is written by `src/lib/structured-data.ts` from the site's own content: the studio and the website on every page, a breadcrumb trail on every inner page, the two apps on Products, every question on FAQ and the game on its page. It states no ratings, no counts and no offer for the game.
-- `tests/seo.spec.ts` and `tests/structured-data.unit.spec.ts` check all of it on every page the sitemap lists.
+- `llms.txt` (the llmstxt.org guide for language models) is written to `out/llms.txt` by `src/app/llms.txt/route.ts` from `src/lib/llms.ts`: a summary of the studio, the apps with their store listings, every page with its description, and the policies. It leaves the email address out on purpose: the live site's host hides it from scrapers in the page.
+- `tests/seo.spec.ts`, `tests/structured-data.unit.spec.ts` and `tests/llms.unit.spec.ts` check all of it on every page the sitemap lists.
 
-To add a page: add its route in `src/lib/routes.ts` and its name in `pageNames` (TypeScript refuses a route without one), export `metadata` from `pageMetadata()`, and render `<JsonLd data={breadcrumbs(routes.thePage)} />` in the page. The sitemap and the SEO tests pick it up by themselves.
+To add a page: add its route in `src/lib/routes.ts` and its name in `pageNames` (TypeScript refuses a route without one), its description in `pageDescriptions` (`src/content/pages.ts`, used by the page's metadata and by llms.txt), export `metadata` from `pageMetadata()`, render `<JsonLd data={breadcrumbs(routes.thePage)} />` in the page and list it in `src/lib/llms.ts` (a test fails if a route is missing from llms.txt). The sitemap and the SEO tests pick it up by themselves.
 
 ## Project layout
 

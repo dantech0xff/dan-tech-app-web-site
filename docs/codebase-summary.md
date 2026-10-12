@@ -43,6 +43,7 @@ All of it is produced at build time and lands in the static HTML.
 - `src/app/sitemap.ts` lists `Object.values(routes)` (no `lastmod`, see the README) and `src/app/robots.ts` allows everything and names the sitemap. Both are `force-static`.
 - `pageMetadata()` also sets the robots tags (`index, follow` and Googlebot's large-preview directives). Only pages built with it get them, so `not-found.tsx` keeps Next's lone `noindex`; setting robots in the root layout gave the 404 page two conflicting tags.
 - `src/lib/structured-data.ts` builds the JSON-LD; `components/json-ld.tsx` writes it into a `<script type="application/ld+json">` (`toJsonLd` escapes `<`, so no value can close the tag). `layout.tsx` renders `siteGraph()` (Organization with its social profiles and the founder, plus WebSite) on every page, and pages add `breadcrumbs()`, `productsGraph()`, `faqPage()` or `gamePage()`. Page nodes refer to the studio by `@id`, which resolves on the same page.
+- `src/app/llms.txt/route.ts` (`force-static`) writes `out/llms.txt` from `src/lib/llms.ts`, which reads the same content as the pages and the markup: `pageDescriptions` in `src/content/pages.ts` (each page's meta description and its line in llms.txt), `apps`, `game` and `storeLinks`. nginx adds `charset utf-8`, so the accented letters in it (Kim Tài) are read correctly.
 - `pageNames` in `src/lib/routes.ts` names each page in breadcrumbs; a page's `<title>` starts with its name (a test checks it). `apps` in `content/products.ts` is where the two apps' names and descriptions live, read by the products page and by the markup.
 
 ## Client components
@@ -60,7 +61,7 @@ reach pages that do not use them. See [design-guidelines.md](design-guidelines.m
 ## Content
 
 Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and socials, `home.ts`,
-`products.ts`, `faq.ts`, `idle-ai-tycoon.ts` for every word of the game page); one-off prose stays in the page components.
+`products.ts` with the two apps, `faq.ts`, `pages.ts` with each page's description, `idle-ai-tycoon.ts` for every word of the game page); one-off prose stays in the page components.
 
 ## Tests (`tests/`)
 
@@ -71,6 +72,6 @@ Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and so
   card and sitemap entry, "coming soon" with no store link, no ads/purchase/upgrade words (text and alt texts), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
-- `structured-data.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the mailto builders and the endpoint client.
+- `structured-data.unit.spec.ts`, `llms.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
 
 Runs on desktop Chrome and a Pixel 7 profile against the static export.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JsonLd } from "@/components/json-ld";
 import { LegalDocument, type LegalClause } from "@/components/legal-document";
 import { SiteLink } from "@/components/site-link";
+import { pageDescriptions } from "@/content/pages";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
@@ -9,7 +10,7 @@ import { breadcrumbs } from "@/lib/structured-data";
 
 export const metadata: Metadata = pageMetadata({
   title: "Terms of Service",
-  description: "The terms for using dantech.app and the apps published by Dan Tech Indiv.",
+  description: pageDescriptions[routes.terms],
   path: routes.terms,
 });
 

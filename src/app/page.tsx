@@ -6,11 +6,11 @@ import { NewsletterSection } from "@/components/home/newsletter-section";
 import { ProductMarquee } from "@/components/home/product-marquee";
 import { ProductsTeaser } from "@/components/home/products-teaser";
 import { ReviewsSection } from "@/components/home/reviews-section";
-import { site } from "@/content/site";
+import { pageDescriptions } from "@/content/pages";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
-export const metadata: Metadata = pageMetadata({ description: site.description, path: routes.home });
+export const metadata: Metadata = pageMetadata({ description: pageDescriptions[routes.home], path: routes.home });
 
 export default function HomePage() {
   return (
