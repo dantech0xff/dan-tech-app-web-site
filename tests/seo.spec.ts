@@ -36,6 +36,19 @@ test("robots.txt lets search engines in and names the sitemap", async ({ request
   expect(text).toContain(`Sitemap: ${ORIGIN}/sitemap.xml`);
 });
 
+test("app-ads.txt is plain text at the site root and holds valid AdMob lines", async ({ request }) => {
+  // AdMob reads https://dantech.app/app-ads.txt from the developer website of the store listings: no redirect, no HTML.
+  const response = await request.get("/app-ads.txt", { maxRedirects: 0 });
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toMatch(/^text\/plain/i);
+  const lines = (await response.text()).split(/\r?\n/).filter((line) => line.trim() && !line.startsWith("#"));
+  expect(lines).toContain("google.com, pub-2313206220567592, DIRECT, f08c47fec0942fa0");
+  // IAB format: domain, publisher id, DIRECT or RESELLER, and the certification authority id.
+  for (const line of lines) {
+    expect(line, "an app-ads.txt line").toMatch(/^[a-z0-9.-]+\.[a-z]{2,}, [A-Za-z0-9._-]+, (DIRECT|RESELLER)(, [0-9a-f]+)?$/);
+  }
+});
+
 test("llms.txt is UTF-8 text and every link to this site resolves", async ({ request }) => {
   const response = await request.get("/llms.txt");
   expect(response.status()).toBe(200);

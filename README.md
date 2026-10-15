@@ -42,9 +42,11 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 ## Pages
 
-`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml` and `robots.txt`. URLs end with a slash (`trailingSlash: true`).
+`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml`, `robots.txt` and `app-ads.txt`. URLs end with a slash (`trailingSlash: true`).
 
 The game page is in the sitemap but not in the header, footer or Products page. It says "Coming soon to Google Play" with no store link: add the link and change the status line in `src/content/idle-ai-tycoon.ts` when the listing is live. Rules for its copy are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
+
+`public/app-ads.txt` is the file Google AdMob reads to check who may sell ads in the studio's apps; it holds the studio's AdMob line (add one line per extra ad network, only when mediation is added). AdMob finds it at `https://dantech.app/app-ads.txt` from the developer website of an app's store listing, so that listing's website must be on `dantech.app`.
 
 The contact form has no backend: it opens the visitor's mail app with the subject and body prefilled, exactly as the design specifies.
 

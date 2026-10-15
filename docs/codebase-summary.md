@@ -13,6 +13,7 @@
 | `/idle-ai-tycoon/` | `idle-ai-tycoon/page.tsx` | Garage to AGI landing page: hero, gameplay, worlds, moments, collect, weekend events (`src/components/idle-ai-tycoon/`), then the home page's `NewsletterSection` |
 | 404 | `not-found.tsx` | Exported as `out/404.html` |
 | `sitemap.xml`, `robots.txt` | `sitemap.ts`, `robots.ts` | Forced static for the export |
+| `app-ads.txt` | `public/app-ads.txt` | Plain file for Google AdMob, copied to the site root as it is |
 
 `layout.tsx` loads the text fonts, preloads the self-hosted icon font, sets default metadata, and renders `SiteHeader`, the page,
 `SiteFooter` and `ScrollOnNavigate`.

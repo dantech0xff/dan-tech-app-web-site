@@ -11,7 +11,7 @@ NEXT_PUBLIC_NEWSLETTER_ENDPOINT=https://… npm run build   # endpoint optional
 ```
 
 With `trailingSlash: true`, `out/` holds one folder per route (`about/index.html`, `products/index.html`, …)
-plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, icons, `assets/`, `fonts/` and hashed
+plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, `app-ads.txt`, icons, `assets/`, `fonts/` and hashed
 `_next/static/` bundles. Canonical URLs end with a slash (`https://dantech.app/about/`).
 
 ## Production: Dokploy, deploy on push to `main`
@@ -77,6 +77,14 @@ Any host that serves `index.html` for a folder URL and uses `404.html` for misse
 | Nginx | `root /var/www/out; location / { try_files $uri $uri/ =404; } error_page 404 /404.html;` |
 
 Cache `/_next/static/*` and `/fonts/*` long-term (immutable); keep HTML short-lived so new builds appear at once.
+
+## app-ads.txt
+
+`public/app-ads.txt` is served at `https://dantech.app/app-ads.txt` as plain text, with no redirect: that is where
+Google AdMob looks, starting from the developer website in each app's store listing (Google Play: the store listing's
+website; App Store: the marketing URL). After a deploy, AdMob (Apps, app-ads.txt) can take up to a day to report the file
+as found. If it still reports it missing after that, check that no Cloudflare rule (bot fight mode, a WAF or Access rule)
+challenges or blocks that URL.
 
 ## Domain and metadata
 
