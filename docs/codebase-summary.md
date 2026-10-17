@@ -4,7 +4,7 @@
 
 | Route | File | Notes |
 | --- | --- | --- |
-| `/` | `page.tsx` | Composes the home sections from `src/components/home/` |
+| `/` | `page.tsx` | Composes the home sections from `src/components/home/`; the products teaser has a card per app and game |
 | `/products/` | `products/page.tsx` | Hero chips + Duoly, Kim Tài, Earlier work sections (`src/components/products/`) |
 | `/about/` | `about/page.tsx` | Statements, four rules, tool list, contact CTA |
 | `/contact/` | `contact/page.tsx` | `ContactForm` (mailto) + channels |
@@ -46,7 +46,7 @@ All of it is produced at build time and lands in the static HTML.
 - `src/lib/structured-data.ts` builds the JSON-LD; `components/json-ld.tsx` writes it into a `<script type="application/ld+json">` (`toJsonLd` escapes `<`, so no value can close the tag). `layout.tsx` renders `siteGraph()` (Organization with its social profiles and the founder, plus WebSite) on every page, and pages add `breadcrumbs()`, `productsGraph()`, `faqPage()` or `gamePage()`. Page nodes refer to the studio by `@id`, which resolves on the same page.
 - Share cards (Open Graph and Twitter) are 1200×630 pictures in `public/assets/share/`, rendered by `scripts/make-share-images.mjs` from the HTML templates in `scripts/share-images/` and committed; `pageMetadata()` defaults to the studio's card and adds `twitter:image` with the `summary_large_image` card. `tests/seo.spec.ts` decodes each card to check its size and weight.
 - `src/app/llms.txt/route.ts` (`force-static`) writes `out/llms.txt` from `src/lib/llms.ts`, which reads the same content as the pages and the markup: `pageDescriptions` in `src/content/pages.ts` (each page's meta description and its line in llms.txt), `apps`, `game` and `storeLinks`. nginx adds `charset utf-8`, so the accented letters in it (Kim Tài) are read correctly.
-- `pageNames` in `src/lib/routes.ts` names each page in breadcrumbs; a page's `<title>` starts with its name (a test checks it). `apps` in `content/products.ts` is where the two apps' names and descriptions live, read by the products page and by the markup.
+- `pageNames` in `src/lib/routes.ts` names each page in breadcrumbs; a page's `<title>` starts with its name (a test checks it). `apps` in `content/products.ts` is where the apps' names and descriptions live: Duoly in Love and Kim Tài, read by the products page and by the markup, and 1010!, read by the home card and llms.txt. `gamePage()` links Garage to AGI's Google Play listing (`sameAs`, `installUrl`) and still states no offer or rating.
 
 ## Client components
 
@@ -62,8 +62,11 @@ reach pages that do not use them. See [design-guidelines.md](design-guidelines.m
 
 ## Content
 
-Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and socials, `home.ts`,
-`products.ts` with the two apps, `faq.ts`, `pages.ts` with each page's description, `idle-ai-tycoon.ts` for every word of the game page); one-off prose stays in the page components.
+Copy that repeats or is data-like sits in `src/content/` (`site.ts` links, store listings and socials, `home.ts`,
+`products.ts` with the apps, `faq.ts`, `pages.ts` with each page's description, `idle-ai-tycoon.ts` for every word of the game page and its home card); one-off prose stays in the page components.
+
+`components/store-button.tsx` is the light store badge (Google Play, App Store) used by the products sections, the 1010!
+home card and the game page's hero.
 
 ## Tests (`tests/`)
 
@@ -71,8 +74,10 @@ Copy that repeats or is data-like sits in `src/content/` (`site.ts` links and so
   per-page share metadata; active nav state; product deep links, same-page links and direct hash visits land
   below the sticky header (including the wrapped mobile header); reduced motion; new pages open at the top;
   FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status, and that a miss is sent with `no-store`. The game page has its own group: share
-  card and sitemap entry, "coming soon" with no store link, no ads/purchase/upgrade words (text and alt texts), the hero link
+  card and sitemap entry, the Google Play link and no iPhone promise, no ads/purchase/upgrade words (text and alt texts), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
+  The home page's games group checks the marquee names, the 1010! store links (clickable over the tilted phone), the
+  Garage to AGI card's link and that card's copy rules.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
 - `structured-data.unit.spec.ts`, `llms.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
 

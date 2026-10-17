@@ -44,7 +44,9 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 `/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml`, `robots.txt` and `app-ads.txt`. URLs end with a slash (`trailingSlash: true`).
 
-The game page is in the sitemap but not in the header, footer or Products page. It says "Coming soon to Google Play" with no store link: add the link and change the status line in `src/content/idle-ai-tycoon.ts` when the listing is live. Rules for its copy are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
+The game page is in the sitemap and has a card on the home page, but it is not in the header, footer or Products page. It says "Out now on Google Play" and links the game's listing; it promises no iPhone release. Rules for its copy, which its home card follows too, are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
+
+The home page also presents the block puzzle game 1010! (listed in the stores as "Block Puzzle Original"). It has no page on the site: its card links its Google Play and App Store listings (`storeLinks` in `src/content/site.ts`).
 
 `public/app-ads.txt` is the file Google AdMob reads to check who may sell ads in the studio's apps; it holds the studio's AdMob line (add one line per extra ad network, only when mediation is added). AdMob finds it at `https://dantech.app/app-ads.txt` from the developer website of an app's store listing, so that listing's website must be on `dantech.app`.
 
