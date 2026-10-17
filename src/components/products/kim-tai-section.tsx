@@ -1,8 +1,9 @@
 import { PhoneMockup } from "@/components/phone-mockup";
+import { StoreButton } from "@/components/store-button";
 import { apps, kimTaiFeatures } from "@/content/products";
 import { storeLinks } from "@/content/site";
 import { productAnchors } from "@/lib/routes";
-import { FeatureList, ProductIntro, StoreButton } from "./product-parts";
+import { FeatureList, ProductIntro } from "./product-parts";
 import styles from "./products.module.css";
 
 export function KimTaiSection() {

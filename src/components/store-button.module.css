@@ -1,0 +1,24 @@
+/* Light store badge with a mono kicker over the store name; values are copied from the design source. */
+
+.storeButton {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  height: 50px;
+  padding: 0 18px;
+  border-radius: 7px;
+  white-space: nowrap;
+  background: var(--fg);
+  color: var(--bg);
+  min-width: 150px;
+}
+.storeButton:hover { background: #FFFFFF; color: var(--bg); }
+
+.storeKicker {
+  font: 500 9px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  color: rgba(22,22,26,0.6);
+}
+
+.storeName { font: 600 15px/1 var(--font-sans); }
