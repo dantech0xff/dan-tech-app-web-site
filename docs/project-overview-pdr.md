@@ -30,5 +30,5 @@ CMS, analytics, accounts, localisation and any backend beyond the newsletter end
 | Visual parity with the design | Verified by screenshot, text and computed-style comparison |
 | App screen images | Rebuilt from the design's partial files plus the App Store screenshots; replace with the design project's originals when available (see design-guidelines.md, Assets) |
 | Newsletter provider | Endpoint not chosen yet; mailto fallback active |
-| Garage to AGI page | Done, built from the game's own pixel art. Out on Google Play since October 2026; the page links the listing |
+| Garage to AGI page | Done, built from the game's own pixel art. Out on Google Play since 2026-10-15; the page links the listing |
 | Games on the home page | 1010! Block Puzzle (store buttons, no page of its own) and Garage to AGI (links its page), as cards and marquee items |

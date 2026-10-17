@@ -19,7 +19,7 @@ page stops saying "Coming soon" and links the listing.
 - Its card screen is the in-phone screen of the owner's Google Play screenshot "10×10. NO TIMER." (1080×1920): the
   screenshot's status bar painted over (the mockup draws its own), cut above the pieces in the trays, the empty trays
   extended down to the mockup's aspect, 428×954.
-- Garage to AGI (`com.dantech.idle_ai_lab`) has a public Google Play listing (seen 2026-10-17, last updated 2026-10-15). Its card keeps the
+- Garage to AGI (`com.dantech.idle_ai_lab`) has been on Google Play since 2026-10-15 (owner). Its card keeps the
   game's copy rules and uses its pixel art, not store screenshots.
 
 ## Phases
@@ -38,9 +38,9 @@ page stops saying "Coming soon" and links the listing.
 
 ## Review
 Report: `plans/reports/code-reviewer-261017-2333-home-games-review.md` (no critical, high or regression finding). Applied:
-the Garage to AGI card's words moved into `game.card`, the release date in the docs is "October 2026", `installUrl` is
+the Garage to AGI card's words moved into `game.card`, the docs give the release date 2026-10-15 (confirmed by the owner), `installUrl` is
 asserted, the card's "Learn more" rule no longer depends on file order, and the scene window is capped at 482px so a
 one-column tablet card stays near the others' height.
 
 ## Open questions
-- Since when has the Garage to AGI listing been public? The site says only "October 2026".
+- None. The owner confirmed the Google Play release date, 2026-10-15, on 2026-10-18.

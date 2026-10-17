@@ -32,7 +32,7 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
   100 layers) and give none for minds, achievements or specialists, which grow. English, like the rest of the site. All
   copy sits in `src/content/idle-ai-tycoon.ts`. A Playwright test scans the page text, alt texts, aria labels, image file
   names and metadata for the banned words and the unreleased features.
-- **Status.** The game is out on Google Play (public listing, October 2026), so the hero says "Out now on Google Play"
+- **Status.** The game is out on Google Play (released 2026-10-15), so the hero says "Out now on Google Play"
   next to a Google Play `StoreButton` (`components/store-button.tsx`), with no promise of an iPhone release.
 - **Home card.** The game's card on the home page (`GarageToAgiCard` in `components/home/products-teaser.tsx`) takes its
   words from `game.card` and follows the same rules; a test scans its text, alt texts and file names.
