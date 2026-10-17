@@ -1,11 +1,11 @@
 import { marqueeItems } from "@/content/home";
 import styles from "./home.module.css";
 
-/** The list repeats inside each group so one group (about 3,000 px) is wider than the screen. */
+/** The list repeats inside each group so one group (about 4,400 px) is wider than the screen. */
 const REPEATS = 3;
 const GROUP_ITEMS = Array.from({ length: REPEATS }, () => marqueeItems).flat();
-/** Scrolls one group at the design's pace, about 44 px/s (the design's 1,740 px group took 40 s). */
-const DURATION = "70s";
+/** Scrolls one group at the design's pace, about 44 px/s (the design's 1,740 px group took 40 s); retune it with the list. */
+const DURATION = "100s";
 
 /** Endless strip of product marks; the second copy makes the loop seamless. */
 export function ProductMarquee() {

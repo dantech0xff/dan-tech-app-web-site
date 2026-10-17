@@ -5,7 +5,10 @@ export type Feature = {
   text: string;
 };
 
-/** What each app is called and how it describes itself; the products page and its structured data both read this. */
+/**
+ * What each app is called and how it describes itself. The products page and its structured data read Duoly in Love
+ * and Kim Tài; 1010! has no page of its own, so only the home page and llms.txt read it.
+ */
 export const apps = {
   duoly: {
     name: "Duoly in Love",
@@ -21,6 +24,14 @@ export const apps = {
       "Your gold book, in your pocket. Know what you hold and what it is worth — a tracking tool, not an invitation to invest.",
     icon: "/assets/kimtai-icon.png",
     category: "FinanceApplication",
+  },
+  /** Listed in the stores as "Block Puzzle Original"; the game's own wordmark is "1010!". */
+  blockPuzzle: {
+    name: "1010! Block Puzzle",
+    pitch:
+      "A block puzzle on a 10×10 board: place the pieces, clear full rows and columns, and beat your own best score. No timer and no color matching.",
+    icon: "/assets/1010-icon.png",
+    category: "GameApplication",
   },
 } as const;
 

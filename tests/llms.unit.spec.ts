@@ -31,11 +31,19 @@ test("llms.txt keeps the email address out, as the structured data does", () => 
   expect(text).not.toMatch(/mailto:/);
 });
 
-test("the game's line promises only Coming soon to Google Play and avoids the banned topics", () => {
+test("the game's line says it is out on Google Play and avoids the banned topics", () => {
   const game = lines.find((line) => line.includes("](https://dantech.app/idle-ai-tycoon/)"));
   expect(game).toBeDefined();
-  expect(game).toContain("Coming soon to Google Play");
+  expect(game).toContain("Out now on Google Play");
   expect(game).not.toMatch(/\b(iphone|ios|app store)\b/i);
   expect(game).not.toMatch(BANNED);
   expect(game).not.toMatch(NOT_YET);
+});
+
+test("llms.txt lists the store listings of both games", () => {
+  expect(text).toContain("](https://play.google.com/store/apps/details?id=com.dantech.idle_ai_lab)");
+  expect(text).toContain("](https://play.google.com/store/apps/details?id=com.creative.bbpuzzle)");
+  expect(text).toContain("](https://apps.apple.com/vn/app/block-puzzle-original/id1268716035)");
+  // Garage to AGI is on Google Play only.
+  expect(lines.filter((line) => line.startsWith("- [Garage to AGI") && line.includes("apps.apple.com"))).toEqual([]);
 });

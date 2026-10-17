@@ -7,7 +7,7 @@ import { pageNames, productAnchors, routes, type SitePath } from "./routes";
 /*
  * Structured data (schema.org JSON-LD) for search engines. Every builder reads the site's own content and runs while
  * the pages are generated, so the markup is in the static HTML and always says what the page says. Keep it to facts
- * the pages state: no ratings or counts, and no offer for the game (it is not out yet).
+ * the pages state: no ratings or counts, and no offer for the game (its page never speaks of prices or purchases).
  */
 
 type JsonLdNode = { "@type": string; "@id"?: string; [property: string]: unknown };
@@ -112,7 +112,7 @@ export function faqPage() {
   };
 }
 
-/** The game's page. No offers or ratings: it is not out yet, and the page promises only "Coming soon to Google Play". */
+/** The game's page, with its Google Play listing. No offers or ratings: the page never speaks of prices or purchases. */
 export function gamePage() {
   const url = abs(routes.idleAiTycoon);
   return {
@@ -131,5 +131,7 @@ export function gamePage() {
     operatingSystem: "Android",
     inLanguage: "en",
     publisher: organization,
+    installUrl: storeLinks.garageToAgiGooglePlay,
+    sameAs: [storeLinks.garageToAgiGooglePlay],
   };
 }

@@ -6,8 +6,8 @@
  * - nothing the app lacks yet: the weekly deepest-layer board, content drops (new model families after Layer 16),
  *   titles other players see;
  * - no counts that grow with content (minds, achievements, specialists);
- * - no promise beyond "Coming soon to Google Play".
- * A Playwright test scans the page for the banned words.
+ * - it is out on Google Play only: no promise of an iPhone release.
+ * Playwright tests scan the page and the game's card on the home page for the banned words.
  */
 
 const ART = "/assets/idle-ai-tycoon";
@@ -20,6 +20,14 @@ export const game = {
   title: "Garage to AGI: Idle AI Tycoon",
   description:
     "Garage to AGI is a pixel-art idle tycoon about the AI boom. Grow a garage startup into the lab that builds AGI, then dive 100 layers into a simulation.",
+  /** The game's card on the home page: its kind after the card number, the text under its name, tags and the scene's alt. */
+  card: {
+    kind: "Idle AI tycoon",
+    pitch:
+      "A pixel-art idle tycoon about the AI boom: grow a garage startup into the lab that builds AGI, then dive 100 layers into a simulation.",
+    tags: ["ANDROID", "PIXEL ART", "IDLE TYCOON"],
+    sceneAlt: "Garage to AGI — the pixel-art garage lab",
+  },
   /** The headline, one line per row; the second row is the lime one. */
   titleLines: ["Garage to", "AGI"],
   /** Parts of the line above the headline; each part stays on one line when it wraps. */
@@ -27,8 +35,8 @@ export const game = {
   /** schema.org genre of the game (the store category is Simulation). */
   genres: ["Idle", "Tycoon", "Simulation"],
   lead: "Start with a wrapper app and a server rack in a garage. Grow it into the lab that builds AGI, then dive through a simulation all the way to Layer 100.",
-  /** Change this line (and add the store link) when the Google Play listing goes live. */
-  status: "Coming soon to Google Play",
+  /** Shown above the Google Play button. */
+  status: "Out now on Google Play",
   jump: "See how it plays",
   icon: {
     /** The 256px copy is enough for the hero, which shows it at 120px or less. */

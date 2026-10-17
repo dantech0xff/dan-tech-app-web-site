@@ -14,6 +14,9 @@ export const storeLinks = {
   duolyAppStore: "https://apps.apple.com/vn/app/duoly-in-love-relationship-app/id6805425660",
   kimTaiAppStore: "https://apps.apple.com/vn/app/kim-t%C3%A0i-gi%C3%A1-v%C3%A0ng-online/id6798353852",
   kimTaiGooglePlay: "https://play.google.com/store/apps/details?id=com.creative.kimtai.tichvang",
+  blockPuzzleGooglePlay: "https://play.google.com/store/apps/details?id=com.creative.bbpuzzle",
+  blockPuzzleAppStore: "https://apps.apple.com/vn/app/block-puzzle-original/id1268716035",
+  garageToAgiGooglePlay: "https://play.google.com/store/apps/details?id=com.dantech.idle_ai_lab",
 } as const;
 
 export type SocialChannel = {

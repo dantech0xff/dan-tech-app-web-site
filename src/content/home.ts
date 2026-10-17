@@ -1,6 +1,8 @@
 export const marqueeItems = [
   { label: "DUOLY IN LOVE", icon: "/assets/duoly-icon.png", cover: false },
   { label: "KIM TÀI", icon: "/assets/kimtai-icon.png", cover: false },
+  { label: "1010! BLOCK PUZZLE", icon: "/assets/1010-icon.png", cover: false },
+  { label: "GARAGE TO AGI", icon: "/assets/idle-ai-tycoon/icon-256.png", cover: false },
   { label: "KBC QUIZ GAME", icon: "/assets/kbc.png", cover: true },
   { label: "WOODY HEXA PUZZLE", icon: "/assets/woody.png", cover: true },
   { label: "KATSU NINJA", icon: "/assets/katsu.png", cover: true },

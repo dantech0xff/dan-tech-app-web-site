@@ -1,6 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
 import { BANNED, NOT_YET } from "./copy-rules";
 
+const GAME_LISTING = "https://play.google.com/store/apps/details?id=com.dantech.idle_ai_lab";
+const BLOCK_PUZZLE_LISTINGS = {
+  googlePlay: "https://play.google.com/store/apps/details?id=com.creative.bbpuzzle",
+  appStore: "https://apps.apple.com/vn/app/block-puzzle-original/id1268716035",
+};
+
 const PAGES = [
   { path: "/", title: /Apps make life more convenient/, heading: "Apps make life more convenient." },
   { path: "/products/", title: /^Products · Dan Tech Indiv\.$/, heading: "Every app, built end-to-end by one person." },
@@ -109,6 +115,48 @@ test("a product card opens its section just below the sticky header", async ({ p
   await expect(page).toHaveURL(/\/products\/#kim-tai$/);
   await scrollSettled(page);
   await expectSectionBelowHeader(page, "kim-tai");
+});
+
+test.describe("home page games", () => {
+  test("the marquee names both games", async ({ page }) => {
+    await page.goto("/");
+    const marquee = page.locator("main > section").nth(1);
+    await expect(marquee).toContainText("1010! BLOCK PUZZLE");
+    await expect(marquee).toContainText("GARAGE TO AGI");
+  });
+
+  test("the 1010! card opens its two store listings", async ({ page }) => {
+    await page.goto("/");
+    const card = page.locator("div", { has: page.getByRole("heading", { level: 3, name: "1010! Block Puzzle", exact: true }) }).last();
+    await expect(card.getByRole("img", { name: /10×10 board/ })).toBeVisible();
+    await expect(card.getByRole("link", { name: /Google Play/ })).toHaveAttribute("href", BLOCK_PUZZLE_LISTINGS.googlePlay);
+    await expect(card.getByRole("link", { name: /App Store/ })).toHaveAttribute("href", BLOCK_PUZZLE_LISTINGS.appStore);
+    // Its store buttons stay clickable where the tilted phone reaches them.
+    await card.getByRole("link", { name: /App Store/ }).click({ trial: true });
+  });
+
+  test("the Garage to AGI card opens the game's page", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: /Garage to AGI/ }).click();
+    await expect(page).toHaveURL(/\/idle-ai-tycoon\/$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Garage to AGI");
+  });
+
+  test("the Garage to AGI card keeps the game's copy rules", async ({ page }) => {
+    await page.goto("/");
+    const card = page.getByRole("link", { name: /Garage to AGI/ });
+    const text = await card.innerText();
+    const alts = await card.locator("img").evaluateAll((list) => list.map((image) => image.getAttribute("alt") ?? ""));
+    const files = await card.locator("img").evaluateAll((list) => list.map((image) => image.getAttribute("src") ?? ""));
+    // Guards against checking nothing.
+    expect(text.length).toBeGreaterThan(100);
+    expect(files.length).toBe(2);
+    for (const value of [text, ...alts, ...files]) {
+      expect(value, "the card mentions a banned topic").not.toMatch(BANNED);
+      expect(value, "the card mentions a feature the app lacks").not.toMatch(NOT_YET);
+      expect(value, "the card promises an iPhone release").not.toMatch(/\b(iphone|ios|app store)\b/i);
+    }
+  });
 });
 
 test("a link to the current page scrolls in place", async ({ page }) => {
@@ -226,10 +274,13 @@ test.describe("Garage to AGI page", () => {
     expect(await response.text()).toContain("<loc>https://dantech.app/idle-ai-tycoon/</loc>");
   });
 
-  test("says the game is not out yet, links no store and promises nothing more", async ({ page }) => {
+  test("links its Google Play listing and promises no iPhone release", async ({ page }) => {
     await page.goto(GAME);
-    await expect(page.getByText("Coming soon to Google Play")).toBeVisible();
-    await expect(page.locator("main a[href*='play.google.com'], main a[href*='apps.apple.com']")).toHaveCount(0);
+    await expect(page.getByText("Out now on Google Play")).toBeVisible();
+    const stores = page.locator("main a[href*='play.google.com'], main a[href*='apps.apple.com']");
+    await expect(stores).toHaveCount(1);
+    await expect(stores).toHaveAttribute("href", GAME_LISTING);
+    await expect(stores).toHaveAttribute("target", "_blank");
     await expect(page.locator("main")).not.toContainText(/\b(iphone|ios|app store)\b/i);
   });
 

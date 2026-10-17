@@ -1,7 +1,9 @@
 import { Icon } from "@/components/icon";
 import { SiteLink } from "@/components/site-link";
+import { StoreButton } from "@/components/store-button";
 import ui from "@/components/ui.module.css";
 import { anchors, game, heroScene } from "@/content/idle-ai-tycoon";
+import { storeLinks } from "@/content/site";
 import { routes } from "@/lib/routes";
 import styles from "./game.module.css";
 import { PixelImage } from "./pixel-image";
@@ -32,6 +34,7 @@ export function GameHero() {
             </span>
           </div>
           <div className={ui.buttonRow}>
+            <StoreButton store="googlePlay" href={storeLinks.garageToAgiGooglePlay} />
             <SiteLink href={routes.idleAiTycoon} anchor={anchors.gameplay} className={`${ui.secondaryButton} ${ui.lift}`}>
               {game.jump} <Icon name="arrow_forward" size={20} className={styles.jumpIcon} />
             </SiteLink>

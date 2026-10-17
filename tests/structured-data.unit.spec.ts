@@ -51,10 +51,12 @@ test("the FAQ markup has one question for each visible question", () => {
   expect(questions).toEqual(faqGroups.flatMap((group) => group.items.map((item) => item.q)));
 });
 
-test("the game's markup claims no price, offer or rating", () => {
+test("the game's markup links its Google Play listing and claims no price, offer or rating", () => {
   const game = gamePage() as Record<string, unknown>;
   expect(game["@type"]).toBe("VideoGame");
+  expect(game.sameAs).toEqual(["https://play.google.com/store/apps/details?id=com.dantech.idle_ai_lab"]);
+  expect(game.installUrl).toBe("https://play.google.com/store/apps/details?id=com.dantech.idle_ai_lab");
   for (const key of ["offers", "aggregateRating", "review", "isAccessibleForFree", "datePublished"]) {
-    expect(game, `${key} would promise more than "Coming soon"`).not.toHaveProperty(key);
+    expect(game, `${key} says more than the page does`).not.toHaveProperty(key);
   }
 });

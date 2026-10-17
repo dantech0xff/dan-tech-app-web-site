@@ -202,8 +202,9 @@
   color: var(--fg);
   transition: border-color .2s, transform .2s;
 }
-/* `!important` lets the lift win over the filled scroll-reveal animation, as in the design. */
-.card:hover {
+/* `!important` lets the lift win over the filled scroll-reveal animation, as in the design. Only cards that are links
+   react: the 1010! card holds store buttons instead. */
+a.card:hover {
   background: var(--surface-hover);
   transform: translateY(-3px) !important;
   color: var(--fg);
@@ -226,6 +227,9 @@
 }
 .glowDuoly { background: radial-gradient(circle, rgba(255,77,121,0.28), transparent 65%); }
 .glowKimTai { background: radial-gradient(circle, rgba(224,179,58,0.26), transparent 65%); }
+/* The orange of the 1010! wordmark and the lime of the Garage to AGI title. */
+.glowBlockPuzzle { background: radial-gradient(circle, rgba(255,107,53,0.24), transparent 65%); }
+.glowGarage { background: radial-gradient(circle, rgba(167,240,112,0.18), transparent 65%); }
 
 .cardTop {
   display: flex;
@@ -241,6 +245,8 @@
 }
 .shadowDuoly { box-shadow: 0 10px 30px rgba(255,77,121,0.35); }
 .shadowKimTai { box-shadow: 0 10px 30px rgba(224,179,58,0.3); }
+.shadowBlockPuzzle { box-shadow: 0 10px 30px rgba(255,107,53,0.3); }
+.shadowGarage { box-shadow: 0 10px 30px rgba(255,205,117,0.3); }
 
 .cardEyebrow {
   font: 500 11px/1 var(--font-mono);
@@ -277,6 +283,49 @@
   color: var(--accent);
 }
 .appCard .learnMore { margin-top: auto; }
+
+/* 1010!: the store buttons sit where "Learn more" sits, above the phone where it reaches them. */
+.cardStores {
+  position: relative;
+  z-index: 3;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Garage to AGI: the game's garage scene in a window, as on its page, just above "Learn more". Capped at the width
+   it has in the two-column grid, so a one-column tablet card stays near the others' height. */
+.gameWindow {
+  position: relative;
+  max-width: 482px;
+  margin-top: auto;
+  border-radius: 10px;
+  overflow: clip;
+  background: #1A1C2C;
+  box-shadow: 0 0 0 1px rgba(250,250,252,0.14), 0 30px 70px rgba(0,0,0,0.5);
+}
+.appCard .gameWindow + .learnMore { margin-top: 6px; }
+
+.gameScene {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.gameChip {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 6px 8px 5px;
+  background: rgba(26,28,44,0.88);
+  box-shadow: inset 0 0 0 2px #566C86;
+  color: #FFCD75;
+  font: 500 10px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+}
 
 /* ---------- Mission & principles ---------- */
 
