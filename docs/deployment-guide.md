@@ -56,7 +56,7 @@ npm run build && npx wrangler deploy
 | Workers Builds | Repository `dantech0xff/dan-tech-app-web-site` (private), branch `main`, build command `npm run build`, deploy command `npx wrangler deploy`, root directory `/` (Settings → Build). No build variables; add `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` under "Build variables and secrets" once a newsletter endpoint exists (runtime variables never reach the build). |
 | Redirect Rule | Zone `dantech.app` → Rules → "www to root": wildcard pattern `https://www.dantech.app/*` → `https://dantech.app/${1}`, status 301, Preserve query string on. |
 | Cloudflare | Zone `dantech.app` (Free plan); Namecheap points the domain to `galilea.ns.cloudflare.com` and `noel.ns.cloudflare.com`. SSL/TLS Full (strict), Always Use HTTPS on; the edge certificate is Cloudflare's Universal SSL. |
-| DNS | `A dantech.app` → the old VPS (never reached while the route exists) and `CNAME www` → `dantech.app`, both proxied: the route and the Redirect Rule only see proxied traffic. Email stays on Namecheap Private Email (`admin@dantech.app`) with every record DNS only: `MX` `mx1.privateemail.com` and `mx2.privateemail.com` (priority 10), `TXT` `v=spf1 include:spf.privateemail.com ~all`, `CNAME` `mail`, `autodiscover` and `autoconfig` → `privateemail.com`, `SRV _autodiscover._tcp` → `0 0 443 privateemail.com`. |
+| DNS | `A dantech.app` → the placeholder `192.0.2.0` (never reached: the route answers first) and `CNAME www` → `dantech.app`, both proxied: the route and the Redirect Rule only see proxied traffic. Email stays on Namecheap Private Email (`admin@dantech.app`) with every record DNS only: `MX` `mx1.privateemail.com` and `mx2.privateemail.com` (priority 10), `TXT` `v=spf1 include:spf.privateemail.com ~all`, `CNAME` `mail`, `autodiscover` and `autoconfig` → `privateemail.com`, `SRV _autodiscover._tcp` → `0 0 443 privateemail.com`. |
 
 Keep in mind:
 
@@ -64,30 +64,18 @@ Keep in mind:
 - To check a deploy, poll an HTML page for something new in it and fetch a new file once afterwards. For about a
   minute after a deploy, some locations still serve the previous version.
 - Cloudflare's Email Address Obfuscation does not apply to what a Worker sends, so since the move `admin@dantech.app`
-  appears as plain text in the pages; the Dokploy host's pages had it hidden.
+  appears as plain text in the pages; the old Dokploy host's pages had it hidden.
 - The domain's "Redirect Domain" entry at Namecheap no longer applies, since Namecheap no longer serves its DNS.
 
 To rebuild the setup: a first `npx wrangler deploy` creates the Worker and its route from `wrangler.jsonc`; then
 connect the repository in Workers Builds with the settings above, add the Redirect Rule, and keep the zone's records
 as listed (mail records DNS only, a proxied record for `dantech.app`).
 
-### The old Dokploy host (rollback until it is removed)
+### Before Cloudflare
 
-Until 2026-10-27 the site ran on the self-hosted Dokploy at `deploy.dantech.academy`: `Dockerfile` builds the export
-and serves it with unprivileged nginx (`nginx.conf`) on port 8080. That application (project `dantech-app` →
-environment `production` → application `dantech-app`, Swarm service `dantech-app-xuhkc4`, GitHub App provider
-`Dokploy-2026-10-01-g7i5b9`) still runs and still rebuilds on every push, but gets no traffic. Its Traefik serves both
-domains with the Cloudflare Origin CA certificate stored in Dokploy as `dantech.app Cloudflare Origin` (valid until
-2041-10-07).
-
-To roll back, remove the route in the dashboard (Workers & Pages → `dantech-app` → Settings → Domains & Routes):
-`dantech.app` goes back to the VPS at once, and `www` keeps its redirect. Remove `routes` from `wrangler.jsonc` as
-well, or the next push adds the route back.
-
-To retire it: point `A dantech.app` at the placeholder `192.0.2.0` (still proxied), delete the Dokploy application
-(and its project once empty) and the certificate, and take this repository out of the Dokploy GitHub App's repository
-list (the App itself stays for the owner's other apps). Then delete `Dockerfile`, `.dockerignore` and `nginx.conf`
-and this section.
+Until 2026-10-27 the site ran as a Docker image (nginx) on the self-hosted Dokploy at `deploy.dantech.academy`. That
+application, its Origin CA certificate and its `Dockerfile`, `.dockerignore` and `nginx.conf` were removed the same
+day; git history keeps the files. There is no rollback host any more: to move the site again, see Other hosts.
 
 ## Other hosts
 

@@ -84,7 +84,7 @@ docs/           design guidelines, codebase summary, deployment guide
 
 ## Deployment
 
-Production (https://dantech.app) is a Cloudflare Worker that serves the static export (`wrangler.jsonc`): every push to `main` runs Workers Builds, which builds the site and deploys it. Slash redirects and cache headers live in `public/_redirects` and `public/_headers`. The current Worker, Cloudflare and DNS setup, the rollback to the old Dokploy host and other static hosts are in [docs/deployment-guide.md](docs/deployment-guide.md).
+Production (https://dantech.app) is a Cloudflare Worker that serves the static export (`wrangler.jsonc`): every push to `main` runs Workers Builds, which builds the site and deploys it. Slash redirects and cache headers live in `public/_redirects` and `public/_headers`. The current Worker, Cloudflare and DNS setup and other static hosts are in [docs/deployment-guide.md](docs/deployment-guide.md).
 
 ## Design fidelity
 

@@ -1,6 +1,6 @@
 # Move dantech.app from Dokploy to Cloudflare Workers
 
-Status: in progress · Created 2026-10-27
+Status: done (2026-10-27) · Created 2026-10-27
 
 ## Outcome
 dantech.app is served by a Cloudflare Worker with static assets (the owner's Workers Paid plan) instead of the Dokploy
@@ -30,7 +30,7 @@ container on the VPS, which can then be removed to free its memory. A push to `m
 3. [x] Owner: connect the repository in Workers Builds (build `npm run build`, deploy `npx wrangler deploy`).
 4. [x] Cutover: owner adds the www Redirect Rule; the Worker takes `dantech.app/*` through a route in `wrangler.jsonc`
    (instant, and removing the route rolls back to the VPS). Check the live site.
-5. [ ] After a quiet period: owner points `A dantech.app` at the placeholder `192.0.2.0` (proxied) and deletes the
+5. [x] After a quiet period: owner points `A dantech.app` at the placeholder `192.0.2.0` (proxied) and deletes the
    Dokploy application; the repo drops `Dockerfile` and `nginx.conf`; docs follow.
 
 ## Notes
@@ -50,4 +50,4 @@ container on the VPS, which can then be removed to free its memory. A push to `m
   guidelines); the Dokploy section stays as the rollback until phase 5.
 
 ## Rollback
-Until phase 5, delete the route (dashboard or `wrangler.jsonc`) and the VPS serves the site again.
+None since phase 5 (2026-10-27): the owner retired the Dokploy app the same day.

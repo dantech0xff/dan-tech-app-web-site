@@ -45,7 +45,7 @@ function sendFile(response, status, file) {
   const stream = createReadStream(file);
   stream.on("open", () => {
     const headers = { "Content-Type": CONTENT_TYPES[extname(file)] ?? "application/octet-stream" };
-    // As in nginx.conf: a miss is never cached.
+    // A miss is never cached (production revalidates it on every request).
     if (status === 404) headers["Cache-Control"] = "no-store";
     response.writeHead(status, headers);
     stream.pipe(response);
