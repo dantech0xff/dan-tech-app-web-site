@@ -365,11 +365,12 @@ test.describe("Garage to AGI page", () => {
   });
 });
 
-test("a missing file is never cached", async ({ request }) => {
-  // A new file requested before its deploy is live must not stay "not found" in a CDN or a browser once it exists.
+test("a missing file is never served from a cache", async ({ request }) => {
+  // A new file requested before its deploy is live must not stay "not found" in a CDN or a browser once it exists:
+  // the 404 is either not stored (the local preview server) or revalidated on every request (Cloudflare Workers).
   const response = await request.get("/assets/not-deployed-yet.jpg");
   expect(response.status()).toBe(404);
-  expect(response.headers()["cache-control"]).toBe("no-store");
+  expect(response.headers()["cache-control"]).toMatch(/^(no-store|public, max-age=0, must-revalidate)$/);
 });
 
 test("unknown paths get the 404 page", async ({ page }) => {

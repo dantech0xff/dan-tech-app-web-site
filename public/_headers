@@ -5,3 +5,14 @@
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+
+# The host sends text files as plain "text/plain"; llms.txt has accented letters (Kim Tài) that a browser would then
+# misread, so the text files at the root say they are UTF-8.
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+
+/app-ads.txt
+  Content-Type: text/plain; charset=utf-8

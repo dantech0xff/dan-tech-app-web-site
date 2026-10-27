@@ -18,11 +18,15 @@ test("every folder route answers its slash-less URL with a 301", () => {
   expect(redirects).toEqual(expected);
 });
 
-test("hashed bundles and fonts are cached as immutable, nothing else is", () => {
+test("hashed bundles and fonts are cached as immutable, and the root text files say they are UTF-8", () => {
+  const utf8 = (path: string) => [path, "  Content-Type: text/plain; charset=utf-8"];
   expect(rules("_headers")).toEqual([
     "/_next/static/*",
     "  Cache-Control: public, max-age=31536000, immutable",
     "/fonts/*",
     "  Cache-Control: public, max-age=31536000, immutable",
+    ...utf8("/llms.txt"),
+    ...utf8("/robots.txt"),
+    ...utf8("/app-ads.txt"),
   ]);
 });
