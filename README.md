@@ -63,7 +63,7 @@ Everything search engines read is generated when the site is built, so it is alr
 - `llms.txt` (the llmstxt.org guide for language models) is written to `out/llms.txt` by `src/app/llms.txt/route.ts` from `src/lib/llms.ts`: a summary of the studio, the apps with their store listings, every page with its description, and the policies. It leaves the email address out on purpose: the live site's host hides it from scrapers in the page.
 - `tests/seo.spec.ts`, `tests/structured-data.unit.spec.ts` and `tests/llms.unit.spec.ts` check all of it on every page the sitemap lists.
 
-To add a page: add its route in `src/lib/routes.ts` and its name in `pageNames` (TypeScript refuses a route without one), its description in `pageDescriptions` (`src/content/pages.ts`, used by the page's metadata and by llms.txt), export `metadata` from `pageMetadata()`, render `<JsonLd data={breadcrumbs(routes.thePage)} />` in the page and list it in `src/lib/llms.ts` (a test fails if a route is missing from llms.txt). The sitemap and the SEO tests pick it up by themselves.
+To add a page: add its route in `src/lib/routes.ts` and its name in `pageNames` (TypeScript refuses a route without one), its description in `pageDescriptions` (`src/content/pages.ts`, used by the page's metadata and by llms.txt), export `metadata` from `pageMetadata()`, render `<JsonLd data={breadcrumbs(routes.thePage)} />` in the page, list it in `src/lib/llms.ts` (a test fails if a route is missing from llms.txt) and add its slash-less 301 to `public/_redirects` (a test checks that too). The sitemap and the SEO tests pick it up by themselves.
 
 ## Project layout
 
@@ -75,6 +75,8 @@ src/
   lib/          routes, scroll behaviour, mailto + newsletter helpers
 public/assets/  images from the design project; idle-ai-tycoon/ holds the game's pixel art
 public/fonts/   self-hosted icon font subset and the game page's pixel font
+public/_redirects, public/_headers
+                the Cloudflare Worker's 301s and headers (read at deploy, never served)
 scripts/        static preview server, icon font updater
 tests/          Playwright specs
 docs/           design guidelines, codebase summary, deployment guide
@@ -82,7 +84,7 @@ docs/           design guidelines, codebase summary, deployment guide
 
 ## Deployment
 
-Production (https://dantech.app) runs on Dokploy behind Cloudflare: every push to `main` builds the `Dockerfile` (static export served by unprivileged nginx on port 8080) and redeploys. The current Dokploy, Cloudflare and DNS setup is in [docs/deployment-guide.md](docs/deployment-guide.md), which also covers other static hosts.
+Production (https://dantech.app) is a Cloudflare Worker that serves the static export (`wrangler.jsonc`): every push to `main` runs Workers Builds, which builds the site and deploys it. Slash redirects and cache headers live in `public/_redirects` and `public/_headers`. The current Worker, Cloudflare and DNS setup, the rollback to the old Dokploy host and other static hosts are in [docs/deployment-guide.md](docs/deployment-guide.md).
 
 ## Design fidelity
 

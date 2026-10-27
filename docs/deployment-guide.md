@@ -14,59 +14,85 @@ With `trailingSlash: true`, `out/` holds one folder per route (`about/index.html
 plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, `app-ads.txt`, icons, `assets/`, `fonts/` and hashed
 `_next/static/` bundles. Canonical URLs end with a slash (`https://dantech.app/about/`).
 
-## Production: Dokploy, deploy on push to `main`
+## Production: Cloudflare Worker, deploy on push to `main`
 
-Production (`https://dantech.app`) runs on the self-hosted Dokploy at `deploy.dantech.academy` behind Cloudflare,
-like the owner's other apps. The repository `dantech0xff/dan-tech-app-web-site` (private) ships a `Dockerfile`: a
-Node 22 stage runs `npm ci` and `npm run build`, then `nginxinc/nginx-unprivileged:1.30-alpine` serves `out/` on
-port 8080 with `nginx.conf` (relative slash redirects, `404.html` with status 404 and `Cache-Control: no-store`, UTF-8 charset on text files such as `llms.txt`, gzip, immutable caching for
-`/_next/static/` and `/fonts/`) and a `HEALTHCHECK`.
-
-A push to `main` reaches Dokploy through its GitHub App webhook (`https://deploy.dantech.academy/api/deploy/github`,
-which Cloudflare Access lets through; Dokploy checks the signature itself). Dokploy builds the image on the VPS
-(the first build took under a minute) and Swarm starts the new container before it stops the old one. A failed build
-or an unhealthy container leaves the running site untouched. If a push does not deploy, the GitHub App's Recent
-Deliveries show whether the webhook reached Dokploy.
+Since 2026-10-27, production (`https://dantech.app`) is the Cloudflare Worker `dantech-app`, described by
+`wrangler.jsonc`. It has no script: every request is answered from the files in `out/`. A push to `main` starts
+Workers Builds, Cloudflare's Git integration, which installs the dependencies, runs `npm run build`, then
+`npx wrangler deploy`, with Node 24 from `.node-version`. The new version reaches every Cloudflare location within
+about a minute. A failed build never reaches the deploy step, so the live version stays as it was. Each build shows
+on its commit in GitHub as the check "Workers Builds: dantech-app", and its log is in the dashboard (Workers & Pages →
+`dantech-app` → Deployments → View build history).
 
 Every push to `main` goes to production and no CI runs the tests: run `npm run lint`, `npm run typecheck` and
 `npm test` before pushing.
 
-### Current setup (2026-10-11)
+To deploy by hand (Workers Builds down, or trying a change to `wrangler.jsonc`), sign Wrangler in through the browser
+once with `npx wrangler login`, then run:
+
+```bash
+npm run build && npx wrangler deploy
+```
+
+### What the host does, and where it is set
+
+| Behaviour | Set by |
+| --- | --- |
+| A folder URL serves its `index.html`; `/about/index.html` redirects to `/about/` (307). | `html_handling: "auto-trailing-slash"` in `wrangler.jsonc` |
+| `/about` redirects to `/about/` with a 301 (the Worker alone would answer 307). | `public/_redirects`, one line per route in `src/lib/routes.ts`; `tests/hosting.unit.spec.ts` keeps them in step |
+| A miss gets `404.html` with status 404 and `Cache-Control: public, max-age=0, must-revalidate`, so neither a browser nor Cloudflare answers from a stored miss. | `not_found_handling: "404-page"` in `wrangler.jsonc` |
+| `/_next/static/*` and `/fonts/*` are cached for a year as immutable; everything else is revalidated on every visit. | `public/_headers` |
+| `llms.txt`, `robots.txt` and `app-ads.txt` go out as `text/plain; charset=utf-8`. The Worker alone sends a bare `text/plain`, and a browser would misread the accented letters in `llms.txt`. | `public/_headers` |
+| Responses are compressed (Brotli or gzip). | Cloudflare, by itself |
+| `www.dantech.app/…` redirects to `https://dantech.app/…` with a 301, query string kept. | A Cloudflare Redirect Rule, which runs before the Worker |
+
+`npm run build` copies `_redirects` and `_headers` into `out/`; Cloudflare reads them at deploy and never serves them.
+
+### Current setup (2026-10-27)
 
 | Piece | Setting |
 | --- | --- |
-| Dokploy application | Project `dantech-app` → environment `production` → application `dantech-app` (Swarm service `dantech-app-xuhkc4`). |
-| Source | GitHub App provider `Dokploy-2026-10-01-g7i5b9`, repository `dantech0xff/dan-tech-app-web-site`, branch `main`, build path `/`, trigger On Push, Autodeploy on, no watch paths. |
-| Build | Build type Dockerfile: file `Dockerfile`, context `.`. No environment variables; add the build argument `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` once a newsletter endpoint exists. |
-| Swarm update | `{ "Parallelism": 1, "Delay": 10000000000, "FailureAction": "rollback", "Order": "start-first" }`. No published ports: Traefik is the only way in. |
-| Traefik | Domains `dantech.app` and `www.dantech.app`: path `/`, container port 8080, HTTPS on, certificate None. Permanent redirect `^https?://www\.dantech\.app/(.*)` → `https://dantech.app/${1}`. |
-| Origin certificate | Cloudflare Origin CA certificate for `dantech.app` and `*.dantech.app` (ECDSA P-256, valid until 2041-10-07), in Dokploy → Certificates as `dantech.app Cloudflare Origin`. Traefik picks certificates by SNI; the one for `*.dantech.academy` does not cover this domain. |
+| Worker | `dantech-app` on the owner's Cloudflare account (Workers Paid plan). Route `dantech.app/*` on zone `dantech.app`. `workers.dev` and preview URLs are off, so the site exists on `dantech.app` only. |
+| Workers Builds | Repository `dantech0xff/dan-tech-app-web-site` (private), branch `main`, build command `npm run build`, deploy command `npx wrangler deploy`, root directory `/` (Settings → Build). No build variables; add `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` under "Build variables and secrets" once a newsletter endpoint exists (runtime variables never reach the build). |
+| Redirect Rule | Zone `dantech.app` → Rules → "www to root": wildcard pattern `https://www.dantech.app/*` → `https://dantech.app/${1}`, status 301, Preserve query string on. |
 | Cloudflare | Zone `dantech.app` (Free plan); Namecheap points the domain to `galilea.ns.cloudflare.com` and `noel.ns.cloudflare.com`. SSL/TLS Full (strict), Always Use HTTPS on; the edge certificate is Cloudflare's Universal SSL. |
-| DNS | `A dantech.app` → the VPS and `CNAME www` → `dantech.app`, both proxied. Email stays on Namecheap Private Email (`admin@dantech.app`) with every record DNS only: `MX` `mx1.privateemail.com` and `mx2.privateemail.com` (priority 10), `TXT` `v=spf1 include:spf.privateemail.com ~all`, `CNAME` `mail`, `autodiscover` and `autoconfig` → `privateemail.com`, `SRV _autodiscover._tcp` → `0 0 443 privateemail.com`. |
+| DNS | `A dantech.app` → the old VPS (never reached while the route exists) and `CNAME www` → `dantech.app`, both proxied: the route and the Redirect Rule only see proxied traffic. Email stays on Namecheap Private Email (`admin@dantech.app`) with every record DNS only: `MX` `mx1.privateemail.com` and `mx2.privateemail.com` (priority 10), `TXT` `v=spf1 include:spf.privateemail.com ~all`, `CNAME` `mail`, `autodiscover` and `autoconfig` → `privateemail.com`, `SRV _autodiscover._tcp` → `0 0 443 privateemail.com`. |
 
 Keep in mind:
 
 - Keep the mail records DNS only and leave Cloudflare Email Routing off; either change breaks `admin@dantech.app`.
-- Cloudflare caches a 404 for a static file for about 3 minutes (and used to pass `max-age=14400` on to browsers), so
-  a new file requested just before its deploy finished stayed "not found" after it existed. `nginx.conf` now sends
-  `Cache-Control: no-store` with every 404, so a 404 is never cached. To check a deploy anyway, poll an HTML page (not
-  cached) for something new in it and fetch the new file once afterwards; a 404 already cached expires by itself, or
-  can be purged by URL in Cloudflare (Caching, Configuration, Purge Cache, Custom Purge).
-- Cloudflare error 526 means Traefik answered without the `dantech.app` certificate. Traefik did not load the
-  certificate Dokploy stored until the `dantech.app` domain was saved again (unchanged) in Dokploy, which rewrites
-  the app's Traefik file; do the same after adding or replacing a certificate.
-- Cloudflare issues Origin CA certificates only for an active zone. The current one expires on 2041-10-07.
+- To check a deploy, poll an HTML page for something new in it and fetch a new file once afterwards. For about a
+  minute after a deploy, some locations still serve the previous version.
+- Cloudflare's Email Address Obfuscation does not apply to what a Worker sends, so since the move `admin@dantech.app`
+  appears as plain text in the pages; the Dokploy host's pages had it hidden.
 - The domain's "Redirect Domain" entry at Namecheap no longer applies, since Namecheap no longer serves its DNS.
 
-To rebuild the setup, recreate the rows above in this order: GitHub App access to the repository, the application
-with its source, build type and Swarm settings, a first deploy, the two domains and the redirect, the Cloudflare
-zone and its records (mail records DNS only), the nameservers at the registrar, and once the zone is active the
-Origin certificate in Dokploy followed by the domain save that reloads Traefik.
+To rebuild the setup: a first `npx wrangler deploy` creates the Worker and its route from `wrangler.jsonc`; then
+connect the repository in Workers Builds with the settings above, add the Redirect Rule, and keep the zone's records
+as listed (mail records DNS only, a proxied record for `dantech.app`).
+
+### The old Dokploy host (rollback until it is removed)
+
+Until 2026-10-27 the site ran on the self-hosted Dokploy at `deploy.dantech.academy`: `Dockerfile` builds the export
+and serves it with unprivileged nginx (`nginx.conf`) on port 8080. That application (project `dantech-app` →
+environment `production` → application `dantech-app`, Swarm service `dantech-app-xuhkc4`, GitHub App provider
+`Dokploy-2026-10-01-g7i5b9`) still runs and still rebuilds on every push, but gets no traffic. Its Traefik serves both
+domains with the Cloudflare Origin CA certificate stored in Dokploy as `dantech.app Cloudflare Origin` (valid until
+2041-10-07).
+
+To roll back, remove the route in the dashboard (Workers & Pages → `dantech-app` → Settings → Domains & Routes):
+`dantech.app` goes back to the VPS at once, and `www` keeps its redirect. Remove `routes` from `wrangler.jsonc` as
+well, or the next push adds the route back.
+
+To retire it: point `A dantech.app` at the placeholder `192.0.2.0` (still proxied), delete the Dokploy application
+(and its project once empty) and the certificate, and take this repository out of the Dokploy GitHub App's repository
+list (the App itself stays for the owner's other apps). Then delete `Dockerfile`, `.dockerignore` and `nginx.conf`
+and this section.
 
 ## Other hosts
 
 Any host that serves `index.html` for a folder URL and uses `404.html` for misses works; `/about` redirects to
-`/about/` the usual way.
+`/about/` the usual way. Cloudflare Pages and Netlify also read `public/_redirects` and `public/_headers` as they are.
 
 | Host | Setup |
 | --- | --- |
@@ -106,3 +132,6 @@ npm run build && npm run start   # http://127.0.0.1:4311
 
 `scripts/serve-static.mjs` mimics a production host: folder URLs redirect to the trailing-slash form,
 `index.html` is served for folders, and misses return `404.html` with status 404. It listens on localhost only.
+
+To try the Worker itself, rule files included, `npx wrangler dev` serves `out/` on http://localhost:8787. It is close
+to production but not the same: it adds a charset to text files that the deployed Worker leaves out.

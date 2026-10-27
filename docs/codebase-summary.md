@@ -45,7 +45,7 @@ All of it is produced at build time and lands in the static HTML.
 - `pageMetadata()` also sets the robots tags (`index, follow` and Googlebot's large-preview directives). Only pages built with it get them, so `not-found.tsx` keeps Next's lone `noindex`; setting robots in the root layout gave the 404 page two conflicting tags.
 - `src/lib/structured-data.ts` builds the JSON-LD; `components/json-ld.tsx` writes it into a `<script type="application/ld+json">` (`toJsonLd` escapes `<`, so no value can close the tag). `layout.tsx` renders `siteGraph()` (Organization with its social profiles and the founder, plus WebSite) on every page, and pages add `breadcrumbs()`, `productsGraph()`, `faqPage()` or `gamePage()`. Page nodes refer to the studio by `@id`, which resolves on the same page.
 - Share cards (Open Graph and Twitter) are 1200×630 pictures in `public/assets/share/`, rendered by `scripts/make-share-images.mjs` from the HTML templates in `scripts/share-images/` and committed; `pageMetadata()` defaults to the studio's card and adds `twitter:image` with the `summary_large_image` card. `tests/seo.spec.ts` decodes each card to check its size and weight.
-- `src/app/llms.txt/route.ts` (`force-static`) writes `out/llms.txt` from `src/lib/llms.ts`, which reads the same content as the pages and the markup: `pageDescriptions` in `src/content/pages.ts` (each page's meta description and its line in llms.txt), `apps`, `game` and `storeLinks`. nginx adds `charset utf-8`, so the accented letters in it (Kim Tài) are read correctly.
+- `src/app/llms.txt/route.ts` (`force-static`) writes `out/llms.txt` from `src/lib/llms.ts`, which reads the same content as the pages and the markup: `pageDescriptions` in `src/content/pages.ts` (each page's meta description and its line in llms.txt), `apps`, `game` and `storeLinks`. `public/_headers` sends it as `text/plain; charset=utf-8`, so the accented letters in it (Kim Tài) are read correctly.
 - `pageNames` in `src/lib/routes.ts` names each page in breadcrumbs; a page's `<title>` starts with its name (a test checks it). `apps` in `content/products.ts` is where the apps' names and descriptions live: Duoly in Love and Kim Tài, read by the products page and by the markup, and 1010!, read by the home card and llms.txt. `gamePage()` links Garage to AGI's Google Play listing (`sameAs`, `installUrl`) and still states no offer or rating.
 
 ## Client components
@@ -73,12 +73,14 @@ home card and the game page's hero.
 - `site.spec.ts` — every page renders without console errors (also with the clock a year past the build);
   per-page share metadata; active nav state; product deep links, same-page links and direct hash visits land
   below the sticky header (including the wrapped mobile header); reduced motion; new pages open at the top;
-  FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status, and that a miss is sent with `no-store`. The game page has its own group: share
+  FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status, and that a miss is never served from a cache. The game page has its own group: share
   card and sitemap entry, the Google Play link and no iPhone promise, no ads/purchase/upgrade words (text and alt texts), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
   The home page's games group checks the marquee names, the 1010! store links (clickable over the tilted phone), the
   Garage to AGI card's link and that card's copy rules.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
 - `structured-data.unit.spec.ts`, `llms.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
+- `hosting.unit.spec.ts` — the Cloudflare Worker's rule files: one 301 in `public/_redirects` for every folder route in
+  `src/lib/routes.ts`, and the immutable caching and UTF-8 text rules in `public/_headers`.
 
 Runs on desktop Chrome and a Pixel 7 profile against the static export.

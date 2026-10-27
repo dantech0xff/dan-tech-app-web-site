@@ -50,8 +50,8 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
   with `role="img"` and an `aria-label` built from the same strings, so its numbers reach assistive tech too.
 - **Font.** Jersey 10 (SIL Open Font License), the Latin subset Google Fonts serves, in `public/fonts/jersey-10.woff2` with
   its `@font-face` in `game.module.css`, preloaded by the page through `preload()` from `react-dom`. It is not loaded with
-  `next/font`: in this static export that preloaded the font on every page, home included. nginx caches `/fonts/` as
-  immutable, so a replacement file needs a new name.
+  `next/font`: in this static export that preloaded the font on every page, home included. The host caches `/fonts/` as
+  immutable (`public/_headers`), so a replacement file needs a new name.
 
 ## Tokens (`src/app/globals.css`)
 
