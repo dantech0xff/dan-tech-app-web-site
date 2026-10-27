@@ -1,0 +1,10 @@
+# Read by Cloudflare Workers, never served. Folder URLs end with a slash (trailingSlash: true); a 301 says so to search
+# engines, where the host's own trailing-slash handling would answer 307. One line per route in src/lib/routes.ts
+# (a unit test checks it).
+/products /products/ 301
+/about /about/ 301
+/contact /contact/ 301
+/faq /faq/ 301
+/privacy /privacy/ 301
+/terms /terms/ 301
+/idle-ai-tycoon /idle-ai-tycoon/ 301

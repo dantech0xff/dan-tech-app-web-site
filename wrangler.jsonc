@@ -1,0 +1,14 @@
+// Cloudflare Worker that serves the static export in out/ (no Worker script: every request is a static asset).
+// Workers Builds runs `npm run build`, then `npx wrangler deploy`, on every push to main.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dantech-app",
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./out",
+    // /about/ serves about/index.html; public/_redirects sends /about there with a 301 first.
+    "html_handling": "auto-trailing-slash",
+    // A miss gets out/404.html with status 404.
+    "not_found_handling": "404-page"
+  }
+}
