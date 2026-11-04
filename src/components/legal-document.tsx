@@ -3,7 +3,8 @@ import styles from "./legal-document.module.css";
 
 export type LegalClause = {
   title: string;
-  body: ReactNode;
+  /** One paragraph, or several in order. */
+  body: ReactNode | ReactNode[];
 };
 
 type LegalDocumentProps = {
@@ -29,7 +30,11 @@ export function LegalDocument({ title, effective, clauses, seeAlso }: LegalDocum
           <div key={clause.title} className={index === lastIndex ? `${styles.clause} ${styles.last}` : styles.clause}>
             {/* One text node, so glyph shaping matches the design exactly. */}
             <h2 className={styles.clauseTitle}>{`${index + 1}. ${clause.title}`}</h2>
-            <p className={styles.clauseText}>{clause.body}</p>
+            {(Array.isArray(clause.body) ? clause.body : [clause.body]).map((paragraph, paragraphIndex) => (
+              <p key={paragraphIndex} className={styles.clauseText}>
+                {paragraph}
+              </p>
+            ))}
           </div>
         ))}
         <div className={styles.seeAlso}>{seeAlso}</div>
