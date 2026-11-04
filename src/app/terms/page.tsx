@@ -58,7 +58,7 @@ const CLAUSES: LegalClause[] = [
   {
     title: "Duoly in Love: account, pairing and Duo",
     body: [
-      "Pairing, Duo and Secret Questions need an account. Once you link with your partner, what you write in Duo and your answers in Secret Questions are shared with them and kept on our servers so both phones can show them. You can unlink at any time, and you can delete your account, with your notes and photos, from the Us tab.",
+      "Pairing, Duo and Secret Questions need an account (sign in with Google or Apple). Once you pair with your partner, what you send in Duo and your answers in Secret Questions are shared with them and kept on our servers so both phones can show them. You can unpair at any time: unpairing, or deleting either account, deletes the conversation, its photos and the couple’s Secret Questions cards and answers for both of you. You can delete your account, with your notes and photos, from the Us tab.",
       "Unsending a Duo message removes it from the conversation in current versions of the app, not from everywhere: your partner may already have read or saved it, an older version of the app shows it until it is reopened, and backups keep it for as long as they are kept. Notifications tell you something new has arrived; they do not promise that your partner has seen it.",
     ],
   },
