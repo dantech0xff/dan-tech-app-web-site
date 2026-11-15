@@ -3,8 +3,7 @@
  * today, taken from the game's prototype boards and store listing. Rules for new copy:
  * - no ads, purchases or upgrades, and none of the game's paid-feature words (boost, Overclock, VC Backing,
  *   Founder Pass, Starter Pack, Server Uptime, Board Seat);
- * - nothing the app lacks yet: the weekly deepest-layer board, content drops (new model families after Layer 16),
- *   titles other players see;
+ * - nothing the app lacks yet: content drops (new model families after Layer 16);
  * - no counts that grow with content (minds, achievements, specialists);
  * - it is out on Google Play only: no promise of an iPhone release.
  * Playwright tests scan the page and the game's card on the home page for the banned words.

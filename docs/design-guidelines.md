@@ -28,8 +28,9 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
   model has a launch ceremony (benchmark tiles, then a final exam) and a tap on the HQ speeds a run up; the WORLD tab
   is not live. The sources are the game's `docs/prototype/` boards and `docs/store/listing.md`
   (the first store build); where they disagree the listing and the game's `CLAUDE.md` win. Left out until the app has
-  them: the weekly deepest-layer board, content drops (the model families repeat after Layer 16, so no "new family and ten
-  new products on every layer") and titles other players see. Use the game's own wording for names and titles ("COMET-8
+  them: content drops (the model families repeat after Layer 16, so no "new family and ten new products on every
+  layer"). The weekly deepest-layer board, where other players see your lab name and title, is on (owner, 2026-11-15),
+  so the page may describe it. Use the game's own wording for names and titles ("COMET-8
   becomes a planetary mind"). Keep counts to the stable ones (ten products and eight models per era, twelve star hires,
   100 layers) and give none for minds, achievements or specialists, which grow. English, like the rest of the site. All
   copy sits in `src/content/idle-ai-tycoon.ts`. A Playwright test scans the page text, alt texts, aria labels, image file
@@ -54,8 +55,9 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
   3x, cropped to 1170×2148 and halved to 585×1074 (WebP, 20 to 65 KB each). Two things the game always draws are kept
   off the page: its top bar (the chip counter) and its tab bar (SHOP). The LAB and MODEL shots are cropped below the
   first and above the second; the hero's phone crops the loop the same way with `aspect-ratio` and `object-position`
-  (`.phoneScreen`). Shots that name "Code Copilot" are left out (the game's compliance checklist keeps that name out of
-  store art), and so is the Hall of Minds, whose "4/19" and trophy count would state counts that grow. The loop is
+  (`.phoneScreen`). The owner keeps the product name "Code Copilot" on the page and in shots (2026-11-15), although the
+  game's compliance checklist keeps it out of store copy, and accepts the in-game "BUY x1" buttons, which spend game
+  cash. Left out: the Hall of Minds, whose "4/19" and trophy count would state counts that grow. The loop is
   silent, plays only while on screen, does not start by itself with reduced motion or Save-Data, and has a pause
   button (`gameplay-video.tsx`). Re-capture rather than reuse older store art, and keep the same rules.
 - **Install paths.** The Google Play button sits in the hero, in an install bar (`install-bar.tsx`) that shows once the

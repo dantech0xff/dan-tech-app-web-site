@@ -9,4 +9,4 @@ export const BANNED =
   /\b(ads?|advert\w*|purchas\w*|in-app|iap|subscri\w*|premium|upgrad\w*|paywall|chips?|coins?|gems?|currenc\w*|buy\w*|shop\w*|boost\w*|overclock|founder pass|vc backing|board seat|server uptime|starter pack|free)\b|\$\d/i;
 
 /** Features the app does not have yet. */
-export const NOT_YET = /weekly (deepest[- ]layer )?board|content drops?|titles? other players|new model famil\w*/i;
+export const NOT_YET = /content drops?|new model famil\w*/i;
