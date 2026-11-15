@@ -276,22 +276,130 @@ test.describe("Garage to AGI page", () => {
 
   test("links its Google Play listing and promises no iPhone release", async ({ page }) => {
     await page.goto(GAME);
-    await expect(page.getByText("Out now on Google Play")).toBeVisible();
+    await expect(page.getByText("Out now on Google Play").first()).toBeVisible();
+    // The hero, the install bar and the closing section each have the store button.
     const stores = page.locator("main a[href*='play.google.com'], main a[href*='apps.apple.com']");
-    await expect(stores).toHaveCount(1);
-    await expect(stores).toHaveAttribute("href", GAME_LISTING);
-    await expect(stores).toHaveAttribute("target", "_blank");
+    await expect(stores).toHaveCount(3);
+    for (const store of await stores.all()) {
+      await expect(store).toHaveAttribute("href", GAME_LISTING);
+      await expect(store).toHaveAttribute("target", "_blank");
+    }
     await expect(page.locator("main")).not.toContainText(/\b(iphone|ios|app store)\b/i);
+  });
+
+  test("the install bar shows only between the hero's buttons and the closing section", async ({ page }) => {
+    await page.goto(GAME);
+    const bar = page.getByRole("complementary", { name: "Garage to AGI", includeHidden: true });
+    await expect(bar).toHaveAttribute("data-visible", "false");
+    // Off screen it can be neither reached nor heard.
+    await expect(bar).toHaveAttribute("inert", "");
+    await expect(page.getByRole("complementary", { name: "Garage to AGI" })).toHaveCount(0);
+
+    await page.locator("#worlds").scrollIntoViewIfNeeded();
+    await expect(bar).toHaveAttribute("data-visible", "true");
+    await expect(bar).not.toHaveAttribute("inert", "");
+    await expect(bar.getByRole("link", { name: /Google Play/ })).toBeVisible();
+
+    await page.locator("#download").scrollIntoViewIfNeeded();
+    await expect(bar).toHaveAttribute("data-visible", "false");
+    await page.locator("footer").scrollIntoViewIfNeeded();
+    await expect(bar).toHaveAttribute("data-visible", "false");
+  });
+
+  test("the install bar follows jumps that skip the hero and the closing section", async ({ page }) => {
+    await page.goto(GAME);
+    const bar = page.getByRole("complementary", { name: "Garage to AGI", includeHidden: true });
+    // Instant jumps, as a dragged scrollbar makes them: nothing crosses the viewport on the way.
+    const jumpTo = (id: string) =>
+      page.evaluate((target) => {
+        document.documentElement.style.scrollBehavior = "auto";
+        if (target === "bottom") window.scrollTo(0, document.documentElement.scrollHeight);
+        else document.getElementById(target)?.scrollIntoView({ block: "start" });
+      }, id);
+    await jumpTo("worlds");
+    await expect(bar).toHaveAttribute("data-visible", "true");
+    await jumpTo("bottom");
+    await expect(bar).toHaveAttribute("data-visible", "false");
+    await jumpTo("events");
+    await expect(bar).toHaveAttribute("data-visible", "true");
+  });
+
+  test("the gameplay loop plays on its own and its button pauses it", async ({ page }) => {
+    await page.goto(GAME);
+    const video = page.locator("video");
+    await expect(video).toHaveJSProperty("paused", false);
+    await page.getByRole("button", { name: "Pause the gameplay video" }).click();
+    await expect(video).toHaveJSProperty("paused", true);
+    await page.getByRole("button", { name: "Play the gameplay video" }).click();
+    await expect(video).toHaveJSProperty("paused", false);
+  });
+
+  test("a computer gets a QR code of the listing, a phone does not", async ({ page, hasTouch }) => {
+    await page.goto(GAME);
+    const codes = page.getByRole("img", { name: "QR code that opens Garage to AGI on Google Play", includeHidden: true });
+    await expect(codes).toHaveCount(2);
+    if (hasTouch) {
+      for (const code of await codes.all()) await expect(code).toBeHidden();
+      return;
+    }
+    await expect(codes.first()).toBeVisible();
+    // Chromium has a QR decoder on macOS and Windows, not on Linux.
+    const decoded = await codes.first().evaluate(async (svg) => {
+      if (!("BarcodeDetector" in window)) return null;
+      const source = new XMLSerializer().serializeToString(svg);
+      const image = new Image();
+      image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(source)}`;
+      await image.decode();
+      const canvas = new OffscreenCanvas(360, 360);
+      canvas.getContext("2d")?.drawImage(image, 0, 0, 360, 360);
+      type Detector = { detect(source: ImageBitmapSource): Promise<{ rawValue: string }[]> };
+      const BarcodeDetector = (window as unknown as { BarcodeDetector: new (options: object) => Detector }).BarcodeDetector;
+      const codes = await new BarcodeDetector({ formats: ["qr_code"] }).detect(await createImageBitmap(canvas));
+      return codes.map((code) => code.rawValue);
+    });
+    test.skip(decoded === null, "this Chromium has no BarcodeDetector");
+    expect(decoded).toEqual([GAME_LISTING]);
+  });
+
+  test("the gameplay loop is silent, loops and stays still for reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(GAME);
+    const video = page.locator("video");
+    await expect(video).toHaveCount(1);
+    await expect(video).toHaveJSProperty("muted", true);
+    await expect(video).toHaveJSProperty("loop", true);
+    await expect(video).toHaveAttribute("playsinline", "");
+    await expect(video).toHaveAttribute("aria-label", /gameplay/i);
+    await page.waitForTimeout(500);
+    await expect(video).toHaveJSProperty("paused", true);
+    // The visitor can still choose to play it.
+    await page.getByRole("button", { name: "Play the gameplay video" }).click();
+    await expect(video).toHaveJSProperty("paused", false);
+  });
+
+  test("every answer of the game's questions is in the page", async ({ page }) => {
+    await page.goto(GAME);
+    const questions = page.locator("#faq details");
+    expect(await questions.count()).toBeGreaterThan(4);
+    await expect(questions.first()).toHaveAttribute("open", "");
+    const closed = questions.nth(1);
+    await expect(closed.locator("p")).toBeHidden();
+    await closed.locator("summary").click();
+    await expect(closed.locator("p")).toBeVisible();
   });
 
   test("never mentions ads, purchases or upgrades, nor features the app lacks", async ({ page }) => {
     await page.goto(GAME);
-    // The studio newsletter that closes the page is the only form; it is not the game's copy, so it is left out.
-    const sections = page.locator("main > section:not(:has(form))");
+    // The studio newsletter near the end is the only form; it is not the game's copy, so it is left out. The aside is
+    // the install bar.
+    const sections = page.locator("main > :is(section, aside):not(:has(form))");
     const text = (await sections.allInnerTexts()).join("\n");
     const images = sections.locator("img");
     const alts = (await images.evaluateAll((list) => list.map((image) => image.getAttribute("alt") ?? ""))).filter(Boolean);
-    const files = await images.evaluateAll((list) => list.map((image) => image.getAttribute("src") ?? ""));
+    const files = [
+      ...(await images.evaluateAll((list) => list.map((image) => image.getAttribute("src") ?? ""))),
+      ...(await sections.locator("video source").evaluateAll((list) => list.map((source) => source.getAttribute("src") ?? ""))),
+    ];
     const labels = await sections.locator("[aria-label]").evaluateAll((list) => list.map((element) => element.getAttribute("aria-label") ?? ""));
     const meta = await page.evaluate(() => [
       document.title,
@@ -305,7 +413,7 @@ test.describe("Garage to AGI page", () => {
     expect(text.length).toBeGreaterThan(4000);
     expect(jsonLd.length).toBeGreaterThan(1500);
     expect(alts.length).toBeGreaterThan(15);
-    expect(files.length).toBeGreaterThan(40);
+    expect(files.length).toBeGreaterThan(50);
     expect(meta.length).toBeGreaterThan(5);
 
     const surfaces = { text, alts: alts.join("\n"), labels: labels.join("\n"), files: files.join("\n"), meta: meta.join("\n"), jsonLd };
@@ -323,10 +431,17 @@ test.describe("Garage to AGI page", () => {
     await expectSectionBelowHeader(page, "gameplay");
   });
 
-  test("every picture and the pixel font are served", async ({ page, request }) => {
+  test("every picture, the gameplay loop and the pixel font are served", async ({ page, request }) => {
     await page.goto(GAME);
-    const sources = await page.evaluate(() => [...new Set([...document.images].map((image) => image.getAttribute("src") ?? ""))]);
-    expect(sources.length).toBeGreaterThan(40);
+    const sources = await page.evaluate(() => [
+      ...new Set([
+        ...[...document.images].map((image) => image.getAttribute("src") ?? ""),
+        ...[...document.querySelectorAll("video source")].map((source) => source.getAttribute("src") ?? ""),
+        ...[...document.querySelectorAll("video[poster]")].map((video) => video.getAttribute("poster") ?? ""),
+      ]),
+    ]);
+    expect(sources.length).toBeGreaterThan(50);
+    expect(sources.filter((src) => src.endsWith(".mp4"))).toHaveLength(1);
     // The share card uses the full-size icon, which no <img> shows.
     for (const src of [...sources, "/assets/idle-ai-tycoon/icon-512.png", "/fonts/jersey-10.woff2"]) {
       const response = await request.get(src);

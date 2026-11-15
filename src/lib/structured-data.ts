@@ -1,5 +1,5 @@
 import { faqGroups } from "@/content/faq";
-import { game } from "@/content/idle-ai-tycoon";
+import { art, game, screens } from "@/content/idle-ai-tycoon";
 import { apps } from "@/content/products";
 import { site, social, storeLinks } from "@/content/site";
 import { pageNames, productAnchors, routes, type SitePath } from "./routes";
@@ -126,6 +126,7 @@ export function gamePage() {
     mainEntityOfPage: url,
     // The square icon and the 1.91:1 card, so a result can use whichever shape it needs.
     image: [abs(game.iconFull), abs(game.shareImage.url)],
+    screenshot: screens.map((screen) => abs(art(screen.file))),
     genre: game.genres,
     applicationCategory: "GameApplication",
     operatingSystem: "Android",

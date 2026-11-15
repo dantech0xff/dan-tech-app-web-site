@@ -59,4 +59,8 @@ test("the game's markup links its Google Play listing and claims no price, offer
   for (const key of ["offers", "aggregateRating", "review", "isAccessibleForFree", "datePublished"]) {
     expect(game, `${key} says more than the page does`).not.toHaveProperty(key);
   }
+  // The gallery's screens, as absolute URLs.
+  const screenshots = game.screenshot as string[];
+  expect(screenshots.length).toBeGreaterThan(5);
+  for (const url of screenshots) expect(url).toMatch(/^https:\/\/dantech\.app\/assets\/idle-ai-tycoon\/screen-[a-z0-9-]+\.webp$/);
 });

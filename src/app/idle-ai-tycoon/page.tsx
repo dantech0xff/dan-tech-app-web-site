@@ -3,11 +3,15 @@ import { preload } from "react-dom";
 import { NewsletterSection } from "@/components/home/newsletter-section";
 import { JsonLd } from "@/components/json-ld";
 import { CollectSection } from "@/components/idle-ai-tycoon/collect-section";
+import { DownloadSection } from "@/components/idle-ai-tycoon/download-section";
 import { EventsSection } from "@/components/idle-ai-tycoon/events-section";
+import { FaqSection } from "@/components/idle-ai-tycoon/faq-section";
 import { GameHero } from "@/components/idle-ai-tycoon/game-hero";
 import styles from "@/components/idle-ai-tycoon/game.module.css";
 import { GameplaySection } from "@/components/idle-ai-tycoon/gameplay-section";
+import { InstallBar } from "@/components/idle-ai-tycoon/install-bar";
 import { MomentsSection } from "@/components/idle-ai-tycoon/moments-section";
+import { ScreensSection } from "@/components/idle-ai-tycoon/screens-section";
 import { WorldsSection } from "@/components/idle-ai-tycoon/worlds-section";
 import { game } from "@/content/idle-ai-tycoon";
 import { pageDescriptions } from "@/content/pages";
@@ -31,12 +35,16 @@ export default function IdleAiTycoonPage() {
       <JsonLd data={breadcrumbs(routes.idleAiTycoon)} />
       <JsonLd data={gamePage()} />
       <GameHero />
+      <ScreensSection />
       <GameplaySection />
       <WorldsSection />
       <MomentsSection />
       <CollectSection />
       <EventsSection />
+      <FaqSection />
+      <DownloadSection />
       <NewsletterSection />
+      <InstallBar />
     </main>
   );
 }

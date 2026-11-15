@@ -24,7 +24,9 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
 - **Copy rules (owner).** Never mention ads, purchases, subscriptions, premium currency or upgrades; describe only
   special features the game has today. That includes the game's own paid-feature words: "boost" (its x2 boost is an ad and
   subscription perk, so an emergent ability "adds +2 BENCH", never "a free boost"), Overclock, VC Backing, Founder Pass,
-  Starter Pack, Server Uptime, Board Seat. The sources are the game's `docs/prototype/` boards and `docs/store/listing.md`
+  Starter Pack, Server Uptime, Board Seat. Since 1.2.0 the AGI card is The Climb (The Daily Token is gone), a finished
+  model has a launch ceremony (benchmark tiles, then a final exam) and a tap on the HQ speeds a run up; the WORLD tab
+  is not live. The sources are the game's `docs/prototype/` boards and `docs/store/listing.md`
   (the first store build); where they disagree the listing and the game's `CLAUDE.md` win. Left out until the app has
   them: the weekly deepest-layer board, content drops (the model families repeat after Layer 16, so no "new family and ten
   new products on every layer") and titles other players see. Use the game's own wording for names and titles ("COMET-8
@@ -44,8 +46,22 @@ Code: `src/app/idle-ai-tycoon/`, `src/components/idle-ai-tycoon/` (one CSS modul
 - **Pixel art.** Always drawn with `image-rendering: pixelated` (`.pixel`). Sprites are 16×16, shown at a whole multiple:
   2x (32px, the minds in the era cards and the hero's training icon), 3x (48px) or 4x (64px); scenes (128×48, 128×40,
   128×64) scale with their box. The app icon is `icon-256.png` in the hero (it is shown at 120px or less) and `icon-512.png`
-  for the share card. Do not use the game's `docs/store/screenshots/`: they date
+  for the share card and the closing section. Do not use the game's `docs/store/screenshots/`: they date
   from 2026-09-27, before the Layer 100 ending and the font change, and the game's listing doc says not to publish them.
+- **Screens and the gameplay loop.** `screen-*.webp` (the gallery, `#screens`) and `gameplay-loop.mp4` with its poster
+  (the hero's phone) are captures of the game itself, 1.2.2, made by the game's session on 2026-11-15 with the game's
+  own `ads_enabled` and `iap_enabled` switches off, so no AD button, offer or price shows. The shots are 390×844 points at
+  3x, cropped to 1170×2148 and halved to 585×1074 (WebP, 20 to 65 KB each). Two things the game always draws are kept
+  off the page: its top bar (the chip counter) and its tab bar (SHOP). The LAB and MODEL shots are cropped below the
+  first and above the second; the hero's phone crops the loop the same way with `aspect-ratio` and `object-position`
+  (`.phoneScreen`). Shots that name "Code Copilot" are left out (the game's compliance checklist keeps that name out of
+  store art), and so is the Hall of Minds, whose "4/19" and trophy count would state counts that grow. The loop is
+  silent, plays only while on screen, does not start by itself with reduced motion or Save-Data, and has a pause
+  button (`gameplay-video.tsx`). Re-capture rather than reuse older store art, and keep the same rules.
+- **Install paths.** The Google Play button sits in the hero, in an install bar (`install-bar.tsx`) that shows once the
+  hero's buttons have scrolled away and hides again at the closing `#download` section, and in that section. The bar is
+  `inert` while hidden. On a computer (no touch, at least 760px wide) the hero and the closing section also show the
+  listing as a QR code, encoded at build time by `src/lib/qr-code.ts` (no dependency; a test decodes it).
   The loss-spike dialog is rebuilt in CSS from the game's `Main.dc.html` (colours, wording, bevelled buttons); it is a picture
   with `role="img"` and an `aria-label` built from the same strings, so its numbers reach assistive tech too.
 - **Font.** Jersey 10 (SIL Open Font License), the Latin subset Google Fonts serves, in `public/fonts/jersey-10.woff2` with

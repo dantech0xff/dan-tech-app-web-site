@@ -34,7 +34,8 @@ export const game = {
   kicker: ["Idle AI tycoon", "Pixel art", "Portrait"],
   /** schema.org genre of the game (the store category is Simulation). */
   genres: ["Idle", "Tycoon", "Simulation"],
-  lead: "Start with a wrapper app and a server rack in a garage. Grow it into the lab that builds AGI, then dive through a simulation all the way to Layer 100.",
+  /** The first line is the game's opening story, word for word. */
+  lead: "Investors laughed. Your mom lent you the garage. Grow one wrapper app and a rented API into the lab that builds AGI, then dive through a simulation all the way to Layer 100.",
   /** Shown above the Google Play button. */
   status: "Out now on Google Play",
   jump: "See how it plays",
@@ -57,6 +58,22 @@ export const game = {
   hud: { label: "PEBBLE-4 · TRAINING", percent: 44, meta: "70B PARAMS · ETA 25M 12S" },
 } as const;
 
+/**
+ * The hero's phone: one continuous take of the real game (taps, a loss spike pushed through, a launch with its tests
+ * and final exam), looped with a crossfade. Silent, no overlay. The frame crops the game's top bar and tab bar.
+ */
+export const heroVideo = {
+  /** H.264, 720x1280, 30 fps, 14.7 s, 1.7 MB: plays everywhere, so no second format. */
+  mp4: art("gameplay-loop.mp4"),
+  poster: art("gameplay-loop-poster.webp"),
+  width: 720,
+  height: 1280,
+  label:
+    "Garage to AGI gameplay: tapping the garage to train faster, a loss spike pushed through for +3 BENCH, then a model launch with its benchmark tests and final exam",
+  pause: "Pause the gameplay video",
+  play: "Play the gameplay video",
+} as const;
+
 export const heroScene = {
   file: "scene-garage.png",
   alt: "Pixel-art garage lab at night: a server rack, a whiteboard with a falling loss curve and the founder at a desk",
@@ -64,17 +81,44 @@ export const heroScene = {
 } as const;
 
 export const anchors = {
+  screens: "screens",
   gameplay: "gameplay",
   worlds: "worlds",
   moments: "moments",
   collect: "collect",
   events: "events",
+  faq: "faq",
+  download: "download",
 } as const;
+
+/** The strip under the hero: only counts that stay true as content grows. */
+export const facts = [
+  { value: "100", label: "simulation layers to break out of" },
+  { value: "12", label: "star hires who follow you through every era" },
+  { value: "10", label: "AI products to launch in every era" },
+  { value: "8", label: "models to train in every era" },
+] as const;
+
+/** The ways to install the game: the QR code for desktop visitors and the bar that follows the visitor down the page. */
+export const install = {
+  qr: {
+    label: "QR code that opens Garage to AGI on Google Play",
+    caption: "On a computer? Point your phone's camera here to open the game on Google Play.",
+  },
+  bar: { name: "Garage to AGI", line: game.status },
+  /** Id of the hero's button row: the bar shows once it has scrolled away, and hides again at the closing section. */
+  heroButtonsId: "hero-install",
+};
 
 export type SectionCopy = { eyebrow: string; title: string; lead: string };
 
 /** Eyebrow, headline and lead that open each section. */
 export const sections = {
+  screens: {
+    eyebrow: "In the game",
+    title: "Straight from the game.",
+    lead: "Every screen here is the game itself, from the first night in the garage to Layer 9 of the simulation.",
+  },
   gameplay: {
     eyebrow: "How it plays",
     title: "Four loops, one number.",
@@ -98,7 +142,17 @@ export const sections = {
   events: {
     eyebrow: "Weekend events",
     title: "A new event every weekend.",
-    lead: "From the Series D round on, your lab joins a four-week rotation of events, plus seasonal specials. Each has its own reward track, and ranked events seat you in a bracket of up to 50 labs.",
+    lead: "From the Series D round on, your lab joins a four-week rotation of events, and seasonal specials take a weekend's place when their time comes. Each has its own reward track, and ranked events seat you in a bracket of up to 50 labs.",
+  },
+  faq: {
+    eyebrow: "Questions",
+    title: "Before you open the garage.",
+    lead: "What players ask before their first launch.",
+  },
+  download: {
+    eyebrow: "Get the game",
+    title: "Your garage is waiting.",
+    lead: "One wrapper app, one server rack and a founder with a plan. Everything after that is up to you.",
   },
 } satisfies Record<keyof typeof anchors, SectionCopy>;
 
@@ -117,7 +171,7 @@ export const loops: Loop[] = [
     number: "02",
     icon: "icon-gpu.png",
     title: "Train bigger models",
-    text: "Scale your GPU cluster and datasets, then train a new model in real time. Every model you ship raises your BENCH score, multiplies your products and unlocks the next one.",
+    text: "Scale your GPU cluster and datasets, then train a new model in real time, and tap to make it go faster. Every model you ship raises your BENCH score, multiplies your products and unlocks the next one.",
   },
   {
     number: "03",
@@ -227,8 +281,8 @@ export const eras: Era[] = [
 export const simulation = {
   label: "Era 5",
   title: "The Simulation",
-  rule: "x10 revenue per layer",
-  text: "Your garage was the training data, so you go back to it, one layer down. Every layer brings x10 revenue, a new palette and glitches that bend the rules you already know. Clear Layer 100 to break out.",
+  rule: "100 layers deep",
+  text: "Your garage was the training data, so you go back to it, one layer down. From Layer 3 on, every layer brings x10 revenue, a new palette and glitches that bend the rules you already know, and the deeper layers stack two or three of them at once. Clear Layer 100 to break out.",
   scene: "scene-simulation.png",
   alt: "The garage lab glitching: scanlines and stray pixels break up the scene",
   mind: { sprite: "mind-layer.png", name: "PIXEL-8 sees the screen", line: "Zoomed in until the world turned into squares." } satisfies EraMind,
@@ -261,18 +315,39 @@ export const lossSpike = {
 export const agiMoment = {
   label: "End of every era",
   title: "Lights out, beam up",
-  text: "Ship an era's eighth model and its mind wakes up. In the Garage Era, every house on the street goes dark, one by one, and a beam climbs out of your garage. Six seconds of cutscene, a trophy, a front page of The Daily Token and a share card to post. Every era plays its own version.",
+  text: "Ship an era's eighth model and its mind wakes up. In the Garage Era, every house on the street goes dark, one by one, and a beam climbs out of your garage. Six seconds of cutscene, a trophy, The Climb card with the BENCH of all eight models and a share card to post. Then the moving truck takes your lab to the next world. Every era plays its own version.",
   scene: "scene-agi-street.png",
   alt: "A beam of light rises from one garage while every other house on the street is dark",
-  headline: "BREAKING: Garage startup's model aces every benchmark, asks for a bigger power plug.",
-  source: "The Daily Token",
+  /** The capstone's line on The Climb card, as the game writes it. */
+  card: { label: "Era 1 complete", title: "PEBBLE-8 IS AGI", text: "PEBBLE-8 passed every benchmark. Then it asked for more power than the whole street." },
 };
 
 export const surprises = {
   label: "Run moments",
   title: "Runs have moods",
-  text: "Some runs surprise you: an emergent ability adds a free +2 BENCH, and a node failure asks whether to spend some of your cash on a fix or let the run take longer.",
+  text: "Some runs surprise you: an emergent ability adds +2 BENCH, and a node failure asks whether to spend some of your cash on a fix or let the run take longer.",
   sprites: ["icon-sparkle.png", "icon-warn.png"],
+};
+
+export const trainTap = {
+  label: "Hands on",
+  title: "Tap to train faster",
+  text: "Idle does not mean hands off. While a model trains, tap the HQ or the loss curve: every tap takes a second off the run.",
+  sprite: "icon-gpu.png",
+};
+
+export const launchDay = {
+  label: "Launch day",
+  title: "Benchmarks, then the final exam",
+  text: "A finished model waits for your LAUNCH. Its tests light up one by one, from MATH and CODE to JOKES, VIBES and CAT PICS, then comes a final exam with one silly question. Any answer passes.",
+  sprite: "icon-trophy.png",
+};
+
+export const research = {
+  label: "Research",
+  title: "Read the papers",
+  text: "From the Series B round, put your cash into research: Better Tokenizer, Flash Attention, RLHF, Mixture of Experts and more, each raising BENCH or compute until you sell the company or move to the next world.",
+  sprite: "icon-brain.png",
 };
 
 export const viralPosts = {
@@ -347,7 +422,7 @@ export const hiddenMinds = {
 
 export const hall = {
   title: "Collect every mind.",
-  text: "Each era ends with a capstone mind that wakes up and joins the Hall of Minds. Every mind adds 5% revenue in every era, forever. The layers still to come show ??? and a one-line hint.",
+  text: "Each era ends with a capstone mind that wakes up and joins the Hall of Minds. Every mind adds 5% revenue in every era, forever, and milestones in the Hall unlock HQ skins and titles, from Neon Garage to Loop Breaker. The layers still to come show ??? and a one-line hint.",
   keepsakes: ["Trophy for every era", "Achievements", "Daily rewards", "HQ skins and titles"],
 };
 
@@ -387,15 +462,108 @@ export const events: GameEvent[] = [
   {
     label: "Seasonal · Lunar New Year",
     title: "Tet Hackathon",
-    text: "The Hackathon in festive red. The top of its reward track hangs lanterns over your HQ.",
+    text: "Hackathon Weekend in festive red. The top of its reward track hangs lanterns over your HQ.",
     banner: "event-tet.png",
     alt: "A room strung with red lanterns and gift boxes",
   },
   {
     label: "Seasonal · Halloween",
     title: "Hallucination Night",
-    text: "The Hackathon after dark. Reach the top of its reward track for a haunted HQ.",
+    text: "Hackathon Weekend after dark. Reach the top of its reward track for a haunted HQ.",
     banner: "event-halloween.png",
     alt: "A room with bats, a full moon and pumpkins",
+  },
+];
+
+/* ---------- Questions ---------- */
+
+export type GameQuestion = { q: string; a: string };
+
+export const faq: GameQuestion[] = [
+  {
+    q: "What kind of game is Garage to AGI?",
+    a: "An idle tycoon about the AI boom, drawn in pixel art and played in portrait. You launch AI products, train bigger and bigger models and hire a star team, until the startup in your garage becomes the lab that builds AGI. Then the story keeps going, through three bigger worlds and a simulation 100 layers deep.",
+  },
+  {
+    q: "Where can I play it?",
+    a: "On Android 7.0 or later, from Google Play.",
+  },
+  {
+    q: "Do I need an account or a connection?",
+    a: "No account and no sign-up: the game starts at once, plays without a connection and keeps your save on your device. Weekend events are the one part that needs to be online; they use an anonymous ID and can be switched off in the settings.",
+  },
+  {
+    q: "What happens when I close the app?",
+    a: "Your lab keeps earning for up to 8 hours, and training runs carry on in real time. A loss spike waits for your call, and a Welcome back screen shows everything that grew while you were gone.",
+  },
+  {
+    q: "Does the game have an ending?",
+    a: "Yes. After the Dyson Era your mind finds out the universe is a simulation, so you dive back in, one layer at a time. Clear Layer 100 to break out.",
+  },
+  {
+    q: "Who makes it?",
+    a: "Dan Tech Indiv., a one-person studio from Vietnam. The code, the pixel art and the design were all made for this game.",
+  },
+];
+
+/* ---------- Screens ---------- */
+
+export type Screen = { file: string; title: string; text: string; alt: string };
+
+/** Name of the gallery for assistive tech. */
+export const screensLabel = "Screens from the game";
+
+/**
+ * Captures of the game (1.2.2) at 390x844 points, 3x, halved to 585px wide. Each is cropped to one shape; the LAB and
+ * MODEL screens lose the game's top bar and tab bar.
+ */
+export const screens: Screen[] = [
+  {
+    file: "screen-story.webp",
+    title: "2:14 AM, your garage",
+    text: "Investors laughed. Your mom lent you the garage.",
+    alt: "The game's opening story: the founder at a desk in a dark garage, with the line 2:14 AM, your garage",
+  },
+  {
+    file: "screen-model.webp",
+    title: "Train the next model",
+    text: "Watch the loss curve fall, then launch.",
+    alt: "The MODEL tab: PEBBLE-4 has finished training, its loss curve has flattened and the LAUNCH NOW button is lit",
+  },
+  {
+    file: "screen-loss-spike.webp",
+    title: "Loss spike: your call",
+    text: "Roll back, or push through for +3 BENCH.",
+    alt: "The LOSS SPIKE! dialog with its ROLL BACK and PUSH THROUGH buttons",
+  },
+  {
+    file: "screen-final-exam.webp",
+    title: "The final exam",
+    text: "How many R's are in 'strawberry'?",
+    alt: "A model's benchmark tiles above its final exam, answered with: Strawberry has no R. Trust me.",
+  },
+  {
+    file: "screen-agi.webp",
+    title: "PEBBLE-8 is AGI",
+    text: "The whole street goes dark.",
+    alt: "The AGI moment: a glowing brain rises over the garage while every house on the street is dark",
+  },
+  {
+    file: "screen-moving.webp",
+    title: "Moving to Hyperscale",
+    text: "Each world multiplies revenue again.",
+    alt: "The era climb: the founder jumps from the Garage step to Hyperscale on a ladder of x1, x3, x9 and x27, with a moving truck below",
+  },
+  {
+    file: "screen-dyson.webp",
+    title: "The Dyson Era",
+    text: "Solar flares pay x3 for 20 seconds.",
+    alt: "The lab in the Dyson Era: a control room facing a star, the SOLAR FLARES rule and the era's products",
+  },
+  {
+    file: "screen-layer-9.webp",
+    title: "Layer 9: ECHO and LAG",
+    text: "Deeper layers stack their glitches.",
+    alt: "The lab on Simulation Layer 9 in a green glitch palette, with the ECHO and LAG glitches in play",
   },
 ];

@@ -10,7 +10,7 @@
 | `/contact/` | `contact/page.tsx` | `ContactForm` (mailto) + channels |
 | `/faq/` | `faq/page.tsx` | `FaqList` accordion fed by `src/content/faq.ts` |
 | `/privacy/`, `/terms/` | `privacy/page.tsx`, `terms/page.tsx` | Clauses rendered by `LegalDocument` |
-| `/idle-ai-tycoon/` | `idle-ai-tycoon/page.tsx` | Garage to AGI landing page: hero, gameplay, worlds, moments, collect, weekend events (`src/components/idle-ai-tycoon/`), then the home page's `NewsletterSection` |
+| `/idle-ai-tycoon/` | `idle-ai-tycoon/page.tsx` | Garage to AGI landing page: hero with its facts strip, gameplay, worlds, moments, collect, weekend events, questions, the closing download section (`src/components/idle-ai-tycoon/`), the home page's `NewsletterSection`, and the install bar; `install-bar.tsx` and `gameplay-video.tsx` (the hero's loop and its pause button) are its client components |
 | 404 | `not-found.tsx` | Exported as `out/404.html` |
 | `sitemap.xml`, `robots.txt` | `sitemap.ts`, `robots.ts` | Forced static for the export |
 | `app-ads.txt` | `public/app-ads.txt` | Plain file for Google AdMob, copied to the site root as it is |
@@ -66,7 +66,8 @@ Copy that repeats or is data-like sits in `src/content/` (`site.ts` links, store
 `products.ts` with the apps, `faq.ts`, `pages.ts` with each page's description, `idle-ai-tycoon.ts` for every word of the game page and its home card); one-off prose stays in the page components.
 
 `components/store-button.tsx` is the light store badge (Google Play, App Store) used by the products sections, the 1010!
-home card and the game page's hero.
+home card and the game page (hero, install bar, closing section). `lib/qr-code.ts` is a small QR Code encoder (byte mode,
+level M, versions 1 to 6) that `idle-ai-tycoon/google-play-qr.tsx` runs at build time, so the page ships a finished SVG.
 
 ## Tests (`tests/`)
 
@@ -74,12 +75,14 @@ home card and the game page's hero.
   per-page share metadata; active nav state; product deep links, same-page links and direct hash visits land
   below the sticky header (including the wrapped mobile header); reduced motion; new pages open at the top;
   FAQ accordion; contact mailto contents and focus; newsletter fallback; 404 status, and that a miss is never served from a cache. The game page has its own group: share
-  card and sitemap entry, the Google Play link and no iPhone promise, no ads/purchase/upgrade words (text and alt texts), the hero link
+  card and sitemap entry, every Google Play link and no iPhone promise, the install bar's visibility and inertness, the QR code
+  (decoded with Chromium's `BarcodeDetector` where it exists, hidden on touch screens), the questions' answers in the page, no
+  ads/purchase/upgrade words (text, alt texts, labels, file names, metadata, JSON-LD, the install bar), the hero link
   below the sticky header, every picture and the pixel font served, hard-edged pixel art, and the font preloaded on that page only.
   The home page's games group checks the marquee names, the 1010! store links (clickable over the tilted phone), the
   Garage to AGI card's link and that card's copy rules.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
-- `structured-data.unit.spec.ts`, `llms.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
+- `structured-data.unit.spec.ts`, `llms.unit.spec.ts`, `qr-code.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the QR Code's structure (finder and timing patterns, both format copies), the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
 - `hosting.unit.spec.ts` — the Cloudflare Worker's rule files: one 301 in `public/_redirects` for every folder route in
   `src/lib/routes.ts`, and the immutable caching and UTF-8 text rules in `public/_headers`.
 

@@ -1,4 +1,4 @@
-import { agiMoment, anchors, away, founder, lossSpike, sections, surprises, viralPosts } from "@/content/idle-ai-tycoon";
+import { agiMoment, anchors, away, founder, launchDay, lossSpike, research, sections, surprises, trainTap, viralPosts } from "@/content/idle-ai-tycoon";
 import styles from "./game.module.css";
 import { PixelImage, Sprite } from "./pixel-image";
 import { SectionHeading } from "./section-heading";
@@ -56,10 +56,12 @@ export function MomentsSection() {
               <div className={styles.cardLabel}>{agiMoment.label}</div>
               <h3 className={styles.featureTitle}>{agiMoment.title}</h3>
               <p className={styles.featureText}>{agiMoment.text}</p>
-              <figure className={styles.paper}>
-                <figcaption className={styles.paperSource}>{agiMoment.source}</figcaption>
-                <blockquote className={styles.paperText}>{agiMoment.headline}</blockquote>
-              </figure>
+              {/* The capstone's line on the game's Climb card. */}
+              <div className={styles.paper}>
+                <div className={styles.paperSource}>{agiMoment.card.label}</div>
+                <div className={styles.paperTitle}>{agiMoment.card.title}</div>
+                <p className={styles.paperText}>{agiMoment.card.text}</p>
+              </div>
             </div>
             <div className={`${styles.featureStage} ${styles.flush}`}>
               <PixelImage file={agiMoment.scene} width={128} height={64} alt={agiMoment.alt} className={styles.fill} />
@@ -67,6 +69,17 @@ export function MomentsSection() {
           </div>
 
           <div className={styles.minis}>
+            {[trainTap, launchDay, research].map((card) => (
+              <article key={card.title} className={`${styles.mini} dt-reveal-50`}>
+                <div className={styles.miniSprites}>
+                  <Sprite file={card.sprite} />
+                </div>
+                <div className={styles.cardLabel}>{card.label}</div>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <p className={styles.cardText}>{card.text}</p>
+              </article>
+            ))}
+
             <article className={`${styles.mini} dt-reveal-50`}>
               <div className={styles.miniSprites}>
                 {surprises.sprites.map((file) => (

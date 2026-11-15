@@ -42,9 +42,9 @@ Set it at build time (it is inlined into the static bundle), e.g. in `.env.local
 
 ## Pages
 
-`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`), plus a 404 page, `sitemap.xml`, `robots.txt` and `app-ads.txt`. URLs end with a slash (`trailingSlash: true`).
+`/` · `/products/` (anchors `#duoly`, `#kim-tai`, `#earlier`) · `/about/` · `/contact/` · `/faq/` · `/privacy/` · `/terms/` · `/idle-ai-tycoon/` (the Garage to AGI game; sections `#screens`, `#gameplay`, `#worlds`, `#moments`, `#collect`, `#events`, `#faq`, `#download`), plus a 404 page, `sitemap.xml`, `robots.txt` and `app-ads.txt`. URLs end with a slash (`trailingSlash: true`).
 
-The game page is in the sitemap and has a card on the home page, but it is not in the header, footer or Products page. It says "Out now on Google Play" and links the game's listing; it promises no iPhone release. Rules for its copy, which its home card follows too, are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
+The game page is in the sitemap and has a card on the home page, but it is not in the header, footer or Products page. It says "Out now on Google Play" and links the game's listing from the hero, the closing download section and an install bar that follows the visitor in between; on a computer it also shows the listing as a QR code (encoded at build time by `src/lib/qr-code.ts`, no dependency). It promises no iPhone release. Rules for its copy, which its home card follows too, are in [docs/design-guidelines.md](docs/design-guidelines.md#garage-to-agi-page-idle-ai-tycoon).
 
 The home page also presents the block puzzle game 1010! (listed in the stores as "Block Puzzle Original"). It has no page on the site: its card links its Google Play and App Store listings (`storeLinks` in `src/content/site.ts`).
 
