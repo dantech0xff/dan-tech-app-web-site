@@ -17,7 +17,9 @@ plus `index.html`, `404.html`, `sitemap.xml`, `robots.txt`, `app-ads.txt`, icons
 ## Production: Cloudflare Worker, deploy on push to `main`
 
 Since 2026-10-27, production (`https://dantech.app`) is the Cloudflare Worker `dantech-app`, described by
-`wrangler.jsonc`. It has no script: every request is answered from the files in `out/`. A push to `main` starts
+`wrangler.jsonc`. Every request is answered from the files in `out/`; its small script, `worker/index.ts`, runs only
+for videos (`run_worker_first: ["/assets/*.mp4"]`) and for misses that are not page loads, which it hands back to the
+asset layer unchanged. A push to `main` starts
 Workers Builds, Cloudflare's Git integration, which installs the dependencies, runs `npm run build`, then
 `npx wrangler deploy`, with Node 24 from `.node-version`. The new version reaches every Cloudflare location within
 about a minute. A failed build never reaches the deploy step, so the live version stays as it was. Each build shows
@@ -44,6 +46,7 @@ npm run build && npx wrangler deploy
 | `/_next/static/*` and `/fonts/*` are cached for a year as immutable; everything else is revalidated on every visit. | `public/_headers` |
 | `llms.txt`, `robots.txt` and `app-ads.txt` go out as `text/plain; charset=utf-8`. The Worker alone sends a bare `text/plain`, and a browser would misread the accented letters in `llms.txt`. | `public/_headers` |
 | Responses are compressed (Brotli or gzip). | Cloudflare, by itself |
+| A video answers a `Range` request with `206 Partial Content` (Safari plays no video without it). The static assets alone send the whole file with 200, so the script fetches the file from the `ASSETS` binding and cuts the range (`worker/byte-range.ts`, tested by `tests/byte-range.unit.spec.ts`). | `main` and `run_worker_first` in `wrangler.jsonc` |
 | `www.dantech.app/…` redirects to `https://dantech.app/…` with a 301, query string kept. | A Cloudflare Redirect Rule, which runs before the Worker |
 
 `npm run build` copies `_redirects` and `_headers` into `out/`; Cloudflare reads them at deploy and never serves them.

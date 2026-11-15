@@ -1,6 +1,6 @@
 # Garage to AGI page refresh (`/idle-ai-tycoon/`)
 
-Status: done, not committed (waiting on the owner) · Created 2026-11-15
+Status: done, live on dantech.app since 2026-11-15 · Created 2026-11-15
 
 ## Outcome
 The game page sells the game better: real screens of the game, more of what it offers, and a way to install it
@@ -39,7 +39,9 @@ Header/footer/Products links to the page, a new share card, the store listing it
    wording, QR at 2 and 3 px a module, FAQ signs silent for screen readers, `role="list"`, MP4 type in the preview
    server. 136 Playwright tests pass.
    Left to the owner: "Code Copilot" in the products grid; whether the in-game "BUY x1" buttons (game cash) may show.
-   After deploy: check that production answers a range request for the MP4 (Safari needs it to play).
+   After deploy: production answered a range request for the MP4 with 200 and the whole file (a documented limit of
+   Workers static assets), so Safari would only show the poster. Fixed with a Worker script that runs for `*.mp4` only
+   and returns 206 (`worker/`), checked with `wrangler dev` before the push.
 
 ## Acceptance criteria
 - Every store link on the page opens the game's Google Play listing in a new tab; the copy-rule test covers

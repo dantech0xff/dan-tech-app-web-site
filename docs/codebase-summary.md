@@ -82,6 +82,7 @@ level M, versions 1 to 6) that `idle-ai-tycoon/google-play-qr.tsx` runs at build
   The home page's games group checks the marquee names, the 1010! store links (clickable over the tilted phone), the
   Garage to AGI card's link and that card's copy rules.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
+- `byte-range.unit.spec.ts` — the Worker script's answer to video range requests (206, 416, If-Range, pass-through).
 - `structured-data.unit.spec.ts`, `llms.unit.spec.ts`, `qr-code.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the QR Code's structure (finder and timing patterns, both format copies), the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
 - `hosting.unit.spec.ts` — the Cloudflare Worker's rule files: one 301 in `public/_redirects` for every folder route in
   `src/lib/routes.ts`, and the immutable caching and UTF-8 text rules in `public/_headers`.

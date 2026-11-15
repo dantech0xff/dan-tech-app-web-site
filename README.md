@@ -78,13 +78,14 @@ public/fonts/   self-hosted icon font subset and the game page's pixel font
 public/_redirects, public/_headers
                 the Cloudflare Worker's 301s and headers (read at deploy, never served)
 scripts/        static preview server, icon font updater
+worker/         the Cloudflare Worker's script: byte ranges for videos
 tests/          Playwright specs
 docs/           design guidelines, codebase summary, deployment guide
 ```
 
 ## Deployment
 
-Production (https://dantech.app) is a Cloudflare Worker that serves the static export (`wrangler.jsonc`): every push to `main` runs Workers Builds, which builds the site and deploys it. Slash redirects and cache headers live in `public/_redirects` and `public/_headers`. The current Worker, Cloudflare and DNS setup and other static hosts are in [docs/deployment-guide.md](docs/deployment-guide.md).
+Production (https://dantech.app) is a Cloudflare Worker that serves the static export (`wrangler.jsonc`); its only script, `worker/index.ts`, answers byte-range requests for videos. Every push to `main` runs Workers Builds, which builds the site and deploys it. Slash redirects and cache headers live in `public/_redirects` and `public/_headers`. The current Worker, Cloudflare and DNS setup and other static hosts are in [docs/deployment-guide.md](docs/deployment-guide.md).
 
 ## Design fidelity
 

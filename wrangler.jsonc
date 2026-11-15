@@ -1,4 +1,5 @@
-// Cloudflare Worker that serves the static export in out/ (no Worker script: every request is a static asset).
+// Cloudflare Worker that serves the static export in out/. Its script (worker/index.ts) runs only for videos, to answer
+// byte-range requests, which the static assets alone answer with the whole file (Safari then plays no video).
 // Workers Builds runs `npm run build`, then `npx wrangler deploy`, on every push to main.
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
@@ -10,8 +11,11 @@
   // The site lives on dantech.app only: no copy on workers.dev, no per-version preview URLs.
   "workers_dev": false,
   "preview_urls": false,
+  "main": "./worker/index.ts",
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
+    "run_worker_first": ["/assets/*.mp4"],
     // /about/ serves about/index.html; public/_redirects sends /about there with a 301 first.
     "html_handling": "auto-trailing-slash",
     // A miss gets out/404.html with status 404.
