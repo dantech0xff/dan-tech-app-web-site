@@ -89,7 +89,7 @@ const CLAUSES: LegalClause[] = [
     body: [
       "VC Backing is a weekly subscription (see Subscriptions). While it is active, the x2 revenue boost is always on, rewarded ad rewards arrive without watching the ad (they still count toward the daily limits), you get +200 chips at your first session each day (missed days are not paid later), and time away earns for up to 16 hours instead of 8 (24 hours with the Server Uptime upgrade). The game checks the subscription with the store; if it cannot check for 72 hours, for example because you stay offline, the benefits pause until it can.",
       "The Founder Pass is a one-time purchase offered with weekend events. It unlocks the premium lane of every event reward track, in the event on when you buy it and in every event after it, for as long as we run weekend events; it has no time limit and nothing renews. It also gives 3,000 chips at once (once per game). In each event, every reward track tier you reach pays its chips twice more and its free recruits a second time, and the last tier of each track one more free recruit; tiers you reached earlier in the event that is on when you buy it pay too, and nothing is paid for events that already ended. The game checks the pass with the store; if it cannot check for 72 hours, the premium lane pauses until it can. A refund ends it.",
-      "The Starter Pack is a one-time offer of 1,500 chips and an Epic hire (or +1 level of that hire if it is already on your team), shown for 72 hours from your first Shop visit after the Series A funding round.",
+      "The Starter Pack is a one-time offer of 1,500 chips and an Epic hire (or +1 level of that hire if it is already on your team), shown for 72 hours from the first time you play the game.",
     ],
   },
   {
@@ -151,7 +151,7 @@ export default function TermsPage() {
       <JsonLd data={breadcrumbs(routes.terms)} />
       <LegalDocument
         title="Terms of Service"
-        effective="5 November 2026"
+        effective="15 November 2026"
         clauses={CLAUSES}
         seeAlso={
           <>
