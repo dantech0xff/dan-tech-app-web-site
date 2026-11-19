@@ -11,11 +11,13 @@ type LegalDocumentProps = {
   title: string;
   effective: string;
   clauses: LegalClause[];
-  /** Cross-link line under the last clause. */
+  /** A complete text of its own after the clauses, such as one app's full policy. */
+  appendix?: ReactNode;
+  /** Cross-link line at the end. */
   seeAlso: ReactNode;
 };
 
-export function LegalDocument({ title, effective, clauses, seeAlso }: LegalDocumentProps) {
+export function LegalDocument({ title, effective, clauses, appendix, seeAlso }: LegalDocumentProps) {
   const lastIndex = clauses.length - 1;
 
   return (
@@ -37,6 +39,7 @@ export function LegalDocument({ title, effective, clauses, seeAlso }: LegalDocum
             ))}
           </div>
         ))}
+        {appendix}
         <div className={styles.seeAlso}>{seeAlso}</div>
       </section>
     </main>

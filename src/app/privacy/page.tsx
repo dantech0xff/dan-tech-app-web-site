@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/json-ld";
 import { LegalDocument, type LegalClause } from "@/components/legal-document";
+import { LegalText } from "@/components/legal-text";
 import { SiteLink } from "@/components/site-link";
+import { garageToAgiPrivacy } from "@/content/garage-to-agi-privacy";
 import { pageDescriptions } from "@/content/pages";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
@@ -15,8 +17,13 @@ export const metadata: Metadata = pageMetadata({
 });
 
 // The apps link this page as their privacy policy (store listings, paywalls, settings), so each app's clauses follow
-// what that app collects today. Garage to AGI's come from docs/legal/privacy-policy.md in its repo; Duoly in Love's
-// from the privacy boundary in its docs/system-architecture.md, its iOS privacy manifest and its Supabase migrations.
+// what that app collects today. Duoly in Love's come from the privacy boundary in its docs/system-architecture.md, its
+// iOS privacy manifest and its Supabase migrations. Garage to AGI's policy is published whole, word for word as its
+// owner approved it (src/content/garage-to-agi-privacy.ts), at the end of the page.
+
+/** Anchor of Garage to AGI's own policy, for links from the game and its store listings. */
+const GAME_POLICY_ID = "garage-to-agi";
+
 const CLAUSES: LegalClause[] = [
   {
     title: "Who we are",
@@ -26,7 +33,7 @@ const CLAUSES: LegalClause[] = [
         decides how the personal data described here is used (the “controller”). For anything in this policy, write
         to <a href={`mailto:${site.email}`}>{site.email}</a>.
       </>,
-      "This policy covers dantech.app and every app we publish on Google Play and the Apple App Store. Clauses named after one app describe that app only; the others apply to all of them.",
+      "This policy covers dantech.app and every app we publish on Google Play and the Apple App Store. Clauses named after one app describe that app only; the others apply to all of them, except Garage to AGI, whose own policy follows at the end of this page.",
     ],
   },
   {
@@ -62,35 +69,15 @@ const CLAUSES: LegalClause[] = [
     body: "Signing out erases everything Duoly kept on the phone and restarts the app as if newly installed; notes that have not synced yet are lost, and the app warns you first. Delete account, at the bottom of the Us tab, deletes your photos and files, your notes, moods, couple data, Duo conversation and Secret Questions from our servers, then your account itself, and erases Duoly’s data on the phone. If a step fails the app says so and keeps your account as it was. If a file could not be deleted, email us and we will remove it. Purchases belong to your store account and are not affected.",
   },
   {
-    title: "Garage to AGI: what it collects",
-    body: [
-      "You do not create an account or sign in, and the game never asks for your name, email address, phone number or contacts. Your progress, settings, purchase ledger and the clock readings used to pay time-away earnings stay on your phone and in your phone’s backup. Local notifications and the picture you can share from the AGI moment are made on the phone; a shared picture goes only to the app you choose.",
-      "Google AdMob and its consent platform receive your advertising identifiers (on Android the advertising ID and app set ID; on iPhone the IDFA, only if you allow tracking), IP address and the approximate location derived from it, device and app information, ad requests and interactions, to show the rewarded ads you choose, confirm the reward, measure ads and prevent fraud. Firebase Analytics receives an app instance ID, game events (tutorial steps, models shipped, rounds closed, chips earned and spent, ads watched, purchases with product, value and currency), properties such as your furthest era and whether VC Backing is active, device model, OS version, language and approximate location; the advertising ID only while advertising storage is allowed. Firebase Crashlytics receives crash reports with recent log lines and an installation ID; Firebase Remote Config receives an installation ID, the app version, language, country and time zone, to deliver settings without an update.",
-      "RevenueCat receives a random anonymous user ID, your purchase history (product, transaction ID, price, currency, dates, subscription status) and store receipts, to validate, deliver and restore purchases; while analytics storage is allowed, also the Firebase app instance ID. Analytics never receives a personal user ID or free text.",
-    ],
-  },
-  {
-    title: "Garage to AGI: your choices",
-    body: [
-      "Analytics and advertising storage start switched off on every install. The consent step switches them on: without asking where no consent is required, and only as you choose where Google’s consent form applies; change your choice at any time in SHOP → SETTINGS → Privacy options (the row appears where it applies). On iPhone, Apple’s tracking prompt may follow the consent form; “Ask App Not to Track” keeps the IDFA unused. On Android you can reset or delete the advertising ID in your device settings.",
-      "Under some US state laws, personalised ads may count as “sharing” personal information; where Google’s US state privacy message appears, you can opt out in SHOP → SETTINGS → Privacy options.",
-    ],
-  },
-  {
-    title: "Garage to AGI: backups",
-    body: "There is no cloud save. On Android the game limits its backup to what it needs to bring your game back (the save and its safety copies, settings, the purchase ledger and subscription cache, and the purchases SDK’s own file); Google keeps it under your Google account and we cannot reach it. On iPhone the game is part of your normal device backup. Purchases always come back from the store through SHOP → SETTINGS → Restore purchases.",
-  },
-  {
-    title: "Garage to AGI: online features",
-    body: [
-      "Weekend events and a weekly board are available after the Series D funding round while the Online features switch in SHOP → SETTINGS is on. The game then signs in to an anonymous Firebase account, with no name, email or password, and our servers (Google Cloud Firestore and Cloud Functions) store: the anonymous ID, the date they first saw it and the day of your last visit; a lab name the server picks from its own word lists, and your titles; for ranked events you join, when you joined, your best score and when you reached it, whether a score was above what is possible, your bracket and final rank, and for Benchmark Wars the stage your lab is at; rewards held for you; your deepest era or layer each week on the weekly board; and today’s request counts, to limit abuse. Events without a leaderboard store nothing about you on our servers.",
-      "Each request carries a device-integrity token (Firebase App Check, with Play Integrity or App Attest), and on Android a Firebase Cloud Messaging registration token; we store neither. Server logs record the time, IP address and user agent of each request. Other labs in your bracket see your lab name and score, and the weekly board shows every player your lab name, equipped title and deepest layer that week, never your ID. New game content downloads from Firebase Hosting without any ID.",
-      "SHOP → SETTINGS → Delete online data (tap it twice) erases your profile, scores, entries, board rows and rewards and turns the switch off on that phone. For 180 days we keep a keyed hash of the ID with the date it was first seen and the date of the deletion, so deleting cannot reset the anti-cheat checks, and for up to two days today’s request count; the anonymous Firebase account itself (an ID and its sign-in dates, no game data) stays until you ask us to delete it. On iPhone the anonymous ID may survive reinstalling the game; on Android a reinstall or a new phone starts a new one, and we delete the old one’s data on request (send your lab name and roughly when you played).",
-    ],
-  },
-  {
-    title: "Garage to AGI: how long data is kept",
-    body: "Game data on your phone: until you delete the game, plus the life of your backups. Analytics events: up to 14 months. Crash reports: 90 days. Ads and remote settings: as Google’s policies describe. Purchase records: as long as needed to restore purchases and meet accounting and tax duties. Support emails: up to two years after the conversation ends. Online data: until you delete it or ask us to; weekly board rows four weeks after that week ends; server request logs 30 days.",
+    title: "Garage to AGI",
+    body: (
+      <>
+        Garage to AGI has a privacy policy of its own, given in full at the end of this page (
+        <a href={`#${GAME_POLICY_ID}`}>Privacy Policy: Garage to AGI</a>). It describes everything the game collects,
+        including its online features and the WORLD map, and for that game it takes the place of the other clauses of
+        this policy.
+      </>
+    ),
   },
   {
     title: "Kim Tài",
@@ -139,8 +126,9 @@ export default function PrivacyPage() {
       <JsonLd data={breadcrumbs(routes.privacy)} />
       <LegalDocument
         title="Privacy Policy"
-        effective="5 November 2026"
+        effective="19 November 2026"
         clauses={CLAUSES}
+        appendix={<LegalText id={GAME_POLICY_ID} source={garageToAgiPrivacy} />}
         seeAlso={
           <>
             See also the <SiteLink href={routes.terms}>Terms of Service</SiteLink>.

@@ -9,7 +9,7 @@
 | `/about/` | `about/page.tsx` | Statements, four rules, tool list, contact CTA |
 | `/contact/` | `contact/page.tsx` | `ContactForm` (mailto) + channels |
 | `/faq/` | `faq/page.tsx` | `FaqList` accordion fed by `src/content/faq.ts` |
-| `/privacy/`, `/terms/` | `privacy/page.tsx`, `terms/page.tsx` | Clauses rendered by `LegalDocument` |
+| `/privacy/`, `/terms/` | `privacy/page.tsx`, `terms/page.tsx` | Clauses rendered by `LegalDocument`; the privacy page ends with Garage to AGI's own policy in full (`#garage-to-agi`), word for word from the game repo's `docs/legal/privacy-policy.md` (`content/garage-to-agi-privacy.ts`), rendered by `components/legal-text.tsx` from the small Markdown subset `lib/legal-markdown.ts` parses at build time |
 | `/idle-ai-tycoon/` | `idle-ai-tycoon/page.tsx` | Garage to AGI landing page: hero with its facts strip, gameplay, worlds, moments, collect, weekend events, questions, the closing download section (`src/components/idle-ai-tycoon/`), the home page's `NewsletterSection`, and the install bar; `install-bar.tsx` and `gameplay-video.tsx` (the hero's loop and its pause button) are its client components |
 | 404 | `not-found.tsx` | Exported as `out/404.html` |
 | `sitemap.xml`, `robots.txt` | `sitemap.ts`, `robots.ts` | Forced static for the export |
@@ -83,6 +83,7 @@ level M, versions 1 to 6) that `idle-ai-tycoon/google-play-qr.tsx` runs at build
   Garage to AGI card's link and that card's copy rules.
 - `seo.spec.ts` — for every page the sitemap lists: canonical address, title and description length, share tags that match, unique titles, robots tags, valid JSON-LD that points at the studio, breadcrumbs named like the title, and the page-specific markup (apps, FAQ, game). Also `robots.txt` and the 404 `noindex`.
 - `byte-range.unit.spec.ts` — the Worker script's answer to video range requests (206, 416, If-Range, pass-through).
+- `legal-markdown.unit.spec.ts` — the legal Markdown parser, and that Garage to AGI's published policy has sections 1 to 15, its four tables, a date and none of the owner's blanks or notes.
 - `structured-data.unit.spec.ts`, `llms.unit.spec.ts`, `qr-code.unit.spec.ts` and `mailto-and-newsletter.unit.spec.ts` — pure logic (no browser): the QR Code's structure (finder and timing patterns, both format copies), the JSON-LD builders and their escaping, the llms.txt layout and its rules (every page listed, no email, the game's line), the mailto builders and the endpoint client. `copy-rules.ts` holds the banned-word lists the game page's tests share.
 - `hosting.unit.spec.ts` — the Cloudflare Worker's rule files: one 301 in `public/_redirects` for every folder route in
   `src/lib/routes.ts`, and the immutable caching and UTF-8 text rules in `public/_headers`.

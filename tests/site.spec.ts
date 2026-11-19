@@ -480,6 +480,23 @@ test.describe("Garage to AGI page", () => {
   });
 });
 
+test("the privacy page publishes Garage to AGI's own policy in full", async ({ page }) => {
+  await page.goto("/privacy/");
+  const policy = page.locator("#garage-to-agi");
+  await expect(policy.getByRole("heading", { level: 2, name: "Privacy Policy: Garage to AGI" })).toBeVisible();
+  await expect(policy).toContainText(/Last updated \d{1,2} \w+ \d{4}/);
+  const sections = policy.getByRole("heading", { level: 3 });
+  await expect(sections).toHaveCount(15);
+  await expect(sections.first()).toHaveText("1. Who we are");
+  await expect(sections.last()).toHaveText("15. Contact");
+  await expect(policy).toContainText("The WORLD map.");
+  await expect(policy.locator("table")).toHaveCount(4);
+  await expect(page.locator("main")).not.toContainText(/TO BE COMPLETED|Notes for the owner/);
+  // The studio's clause for the game points to it.
+  await page.getByRole("link", { name: "Privacy Policy: Garage to AGI" }).click();
+  await expect(page).toHaveURL(/\/privacy\/#garage-to-agi$/);
+});
+
 test("a missing file is never served from a cache", async ({ request }) => {
   // A new file requested before its deploy is live must not stay "not found" in a CDN or a browser once it exists:
   // the 404 is either not stored (the local preview server) or revalidated on every request (Cloudflare Workers).

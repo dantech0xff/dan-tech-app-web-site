@@ -54,3 +54,67 @@
   font: 400 14px/1.6 var(--font-sans);
   color: rgba(250,250,252,0.55);
 }
+
+/* A complete text of its own after the clauses (one app's full policy): its title, lists and tables. */
+.part {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 32px;
+  scroll-margin-top: var(--anchor-offset);
+}
+.partTitle {
+  margin: 0;
+  font: 700 clamp(28px, 3.6vw, 40px)/1.08 var(--font-sans);
+  letter-spacing: -0.035em;
+  color: var(--fg);
+}
+.part .clauseText a,
+.list a,
+.table a { overflow-wrap: anywhere; }
+.part code {
+  font: 400 0.88em/1 var(--font-mono);
+  color: var(--fg);
+}
+
+.list {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font: 400 16px/1.7 var(--font-sans);
+  color: rgba(250,250,252,0.72);
+}
+.list strong { color: var(--fg); font-weight: 500; }
+.list .list { margin-top: 8px; }
+.list .clauseText + .clauseText,
+.list .clauseText + .list,
+.list .list + .clauseText { margin-top: 8px; }
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid rgba(250,250,252,0.1);
+  border-radius: 8px;
+}
+.tableWrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font: 400 14px/1.6 var(--font-sans);
+  color: rgba(250,250,252,0.72);
+}
+.table th,
+.table td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid rgba(250,250,252,0.08);
+}
+.table thead th {
+  border-top: 0;
+  background: rgba(250,250,252,0.04);
+  color: var(--fg);
+  font-weight: 500;
+}
