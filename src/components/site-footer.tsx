@@ -48,7 +48,7 @@ export function SiteFooter() {
         </div>
 
         <div className={styles.column}>
-          <div className={styles.heading}>Legal &amp; social</div>
+          <div className={styles.heading}>Policies &amp; social</div>
           <SiteLink href={routes.privacy} className={styles.link}>
             Privacy Policy
           </SiteLink>

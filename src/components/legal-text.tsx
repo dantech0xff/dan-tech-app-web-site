@@ -1,4 +1,5 @@
 import type { Block, Inline } from "@/lib/legal-markdown";
+import { site } from "@/content/site";
 import { parseLegalText } from "@/lib/legal-markdown";
 import styles from "./legal-document.module.css";
 
@@ -10,7 +11,12 @@ function InlineText({ parts }: { parts: Inline[] }) {
       case "code":
         return <code key={index}>{part.text}</code>;
       case "url":
-        return (
+        // A link to another page of this site stays in the same tab.
+        return part.text.startsWith(`${site.url}/`) ? (
+          <a key={index} href={part.text.slice(site.url.length)}>
+            {part.text}
+          </a>
+        ) : (
           <a key={index} href={part.text} target="_blank" rel="noopener">
             {part.text}
           </a>

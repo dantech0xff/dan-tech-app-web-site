@@ -9,7 +9,7 @@
 | `/about/` | `about/page.tsx` | Statements, four rules, tool list, contact CTA |
 | `/contact/` | `contact/page.tsx` | `ContactForm` (mailto) + channels |
 | `/faq/` | `faq/page.tsx` | `FaqList` accordion fed by `src/content/faq.ts` |
-| `/privacy/`, `/terms/` | `privacy/page.tsx`, `terms/page.tsx` | Clauses rendered by `LegalDocument`; the privacy page ends with Garage to AGI's own policy in full (`#garage-to-agi`), word for word from the game repo's `docs/legal/privacy-policy.md` (`content/garage-to-agi-privacy.ts`), rendered by `components/legal-text.tsx` from the small Markdown subset `lib/legal-markdown.ts` parses at build time |
+| `/privacy/`, `/terms/` | `privacy/page.tsx`, `terms/page.tsx` | Clauses rendered by `LegalDocument`; each page ends with Garage to AGI's own text in full (`#garage-to-agi`), word for word from the game repo's `docs/legal/privacy-policy.md` and `docs/legal/terms-of-service.md` (`content/garage-to-agi-privacy.ts`, `content/garage-to-agi-terms.ts`), rendered by `components/legal-text.tsx` from the small Markdown subset `lib/legal-markdown.ts` parses at build time |
 | `/idle-ai-tycoon/` | `idle-ai-tycoon/page.tsx` | Garage to AGI landing page: hero with its facts strip, gameplay, worlds, moments, collect, weekend events, questions, the closing download section (`src/components/idle-ai-tycoon/`), the home page's `NewsletterSection`, and the install bar; `install-bar.tsx` and `gameplay-video.tsx` (the hero's loop and its pause button) are its client components |
 | 404 | `not-found.tsx` | Exported as `out/404.html` |
 | `sitemap.xml`, `robots.txt` | `sitemap.ts`, `robots.ts` | Forced static for the export |

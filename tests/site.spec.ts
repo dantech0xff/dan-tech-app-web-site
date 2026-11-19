@@ -497,6 +497,32 @@ test("the privacy page publishes Garage to AGI's own policy in full", async ({ p
   await expect(page).toHaveURL(/\/privacy\/#garage-to-agi$/);
 });
 
+test("the terms page publishes Garage to AGI's own terms in full", async ({ page }) => {
+  await page.goto("/terms/");
+  const terms = page.locator("#garage-to-agi");
+  await expect(terms.getByRole("heading", { level: 2, name: "Terms of Service: Garage to AGI" })).toBeVisible();
+  await expect(terms).toContainText(/Last updated \d{1,2} \w+ \d{4}/);
+  const sections = terms.getByRole("heading", { level: 3 });
+  await expect(sections).toHaveCount(17);
+  await expect(sections.first()).toHaveText("1. Agreement");
+  await expect(sections.last()).toHaveText("17. Contact");
+  await expect(terms).toContainText("The WORLD map shows your lab only after you choose to show it");
+  await expect(page.locator("main")).not.toContainText(/TO BE COMPLETED|Notes for the owner|Postal address/);
+  // The owner's rule: the terms describe the apps and their service, with no word on law, courts or legal matters.
+  await expect(page.locator("body")).not.toContainText(
+    /\b(laws?|legal\w*|illegal|courts?|statutory|liab\w*|warrant\w*|disputes?|governing|jurisdiction)\b/i,
+  );
+  // The studio's clause for the game points to it.
+  await page.getByRole("link", { name: "Terms of Service: Garage to AGI" }).click();
+  await expect(page).toHaveURL(/\/terms\/#garage-to-agi$/);
+  // Its Privacy Policy link opens the game's own policy on this site, in the same tab.
+  const privacy = terms.getByRole("link", { name: "https://dantech.app/privacy/#garage-to-agi" });
+  await expect(privacy).not.toHaveAttribute("target");
+  await privacy.click();
+  await expect(page).toHaveURL(/\/privacy\/#garage-to-agi$/);
+  await expect(page.locator("#garage-to-agi")).toBeInViewport();
+});
+
 test("a missing file is never served from a cache", async ({ request }) => {
   // A new file requested before its deploy is live must not stay "not found" in a CDN or a browser once it exists:
   // the 404 is either not stored (the local preview server) or revalidated on every request (Cloudflare Workers).
